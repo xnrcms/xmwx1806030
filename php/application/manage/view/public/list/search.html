@@ -1,0 +1,70 @@
+<div class="mDiv">
+<div class="ftitle">
+    <h3>{$pageData['title1']}</h3>
+    <h5>(共{$_total}条记录)</h5>
+</div>
+<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>   
+{notempty name="listNode.search"}  
+<form class="navbar-form form-inline" id="searchForm" action="" method="post" onSubmit="return false;">
+    <div class="sDiv">
+        <div class="sDiv2">
+            {volist name="listNode.search" id="vo"}
+            {switch name="vo.type"}
+                {case string}{/*字符串类型*/}
+                    <input type="text" size="30" class="qsbox" name="search[{$vo.tag}]" placeholder="{$vo.title}" {$vo.attr}>
+                {/case}
+                {case number}{/*数字类型*/}
+                    <input type="text" size="30" class="qsbox" name="search[{$vo.tag}]" placeholder="{$vo.title}" {$vo.attr}>
+                </case>
+                {case price}{/*价格类型*/}
+                    <input type="text" size="30" class="qsbox" name="search[{$vo.tag}]" placeholder="{$vo.title}" {$vo.attr}>
+                {/case}
+
+                {case select}{/*枚举类型*/}
+                <select name="search[{$vo.tag}]" class="select" {$vo.attr}>
+                    <option value="">请选择</option>
+                    {if condition="$vo['default']['type'] eq 'string'"}
+                        {volist name="vo.default.parame" id="pa"}
+                            <option value="{$key}" {if condition="$_fieldInfo.type eq $key"}selected{/if}>{$pa}</option>
+                        {/volist}
+                        {else /}
+                        {volist name="$vo.default.parame" id="pa"}
+                            <option value="{$key}" {if condition="$_fieldInfo.type eq $key"}selected{/if}>{$pa}</option>
+                        {/volist}
+                    {/if}
+                </select>
+                {/case}
+                {case bool}{/*布尔类型*/}
+                <div class="onoff" style="display: inline-block">
+                    {if condition="$vo['default']['type'] eq 'string'"}
+                    {volist name="vo.default.parame" id="bo"}
+                    {if condition="$i eq 1"}
+                        <label for="menu_{$form.tag}{$i}" class="cb-enable {if condition="$list[$vo['tag']] eq $key"}selected{/if}">{$bo}</label>
+                        <input id="menu_{$form.tag}{$i}" name="search[{$vo.tag}]" value="{$key}" type="radio" {if condition="$list[$vo['tag']] eq $key"} checked="checked"{/if}>
+                    {else /}
+                        <label for="menu_{$form.tag}{$i}" class="cb-disable {if condition="$list[$vo['tag']] eq $key"}selected{/if}">{$bo}</label>
+                        <input id="menu_{$form.tag}{$i}" name="search[{$vo.tag}]" value="{$key}" type="radio" {if condition="$list[$vo['tag']] eq $key"} checked="checked"{/if}>
+                    {/if}
+                    {/volist}
+                    {else /}
+                        {volist name="vo.default.parame" id="bo"}
+                            {if condition="$i eq 1"}
+                                <label for="menu_{$form.tag}{$i}" class="cb-enable {if condition="$list[$vo['tag']] eq $key1"}selected{/if}">{$bo}</label>
+                                <input id="menu_{$form.tag}{$i}" name="search[{$vo.tag}]" value="{$key}" type="radio" {if condition="$list[$vo['tag']] eq $key"} checked="checked"{/if}>
+                            {else /}
+                                <label for="menu_{$form.tag}{$i}" class="cb-disable {if condition="$list[$vo['tag']] eq $key"}selected{/if}">{$bo}</label>
+                                <input id="menu_{$form.tag}{$i}" name="search[{$vo.tag}]" value="{$key}" type="radio" {if condition="$list[$vo['tag']] eq $key"} checked="checked"{/if}>
+                            {/if}
+                        {/volist}
+                    {/if}
+                </div>
+                {/case}
+                {default /}
+            {/switch}
+            {/volist}
+            <button type="button" class="btn search-input-btn" onClick="return CommonJs.LoadSearch();">提交</button>
+        </div>
+    </div>
+</form>
+{/notempty}
+</div>
