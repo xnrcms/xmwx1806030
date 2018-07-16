@@ -15,11 +15,11 @@ return [
     // 服务器地址
     'hostname'        => 'rm-uf6p1mr3qpip1f1g4o.mysql.rds.aliyuncs.com',
     // 数据库名
-    'database'        => 'basecode3.0',
+    'database'        => 'xmwx1806030',
     // 用户名
-    'username'        => 'basecode3.0',
+    'username'        => 'xmwx1806030',
     // 密码
-    'password'        => 'mTyK2RsGJO1qghhrxHHT',
+    'password'        => 'HuBsQovazylCtbVnf5TV',
     // 端口
     'hostport'        => '',
     // 连接dsn

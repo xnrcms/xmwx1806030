@@ -24,20 +24,19 @@ return [
     'is_verify'			        => 0,
     //接口授权配置
     'api_auth_url'              => '',//'http://api3.com/',
-    'api_auth_id'				=> '59c28645d615d7b4eafde3ab8a088e8d',
-    'api_auth_key'				=> '316d8c27ed26fdf827e8fe1dc93e0ba8',
+    'api_auth_id'				=> '9f55a50de0b54ea642c0d77ce97391c4',
+    'api_auth_key'				=> 'a6f89b7600de61a159bb362ddf9aec46',
     //接口导入配置
-    'import_api_url'            => 'http://api3.php.hzxmnet.com',
+    'import_api_url'            => 'http://xmwx1806030.php.hzxmnet.com',
     'import_api_id'             => '59c28645d615d7b4eafde3ab8a088e8d',
     'import_api_key'            => '316d8c27ed26fdf827e8fe1dc93e0ba8',
     //项目开发必须在本地
-    'apidoc_project_id'         =>'1',
-    'apidoc_project_url'        =>'http://api3.com/',
-    //'apidoc_url'                =>'http://apidoc3.com',
+    'apidoc_project_id'         =>'16',
+    'apidoc_project_url'        =>'http://dev.xmwx1806030.com/',
     'apidoc_url'                => 'http://apidoc.php.hzxmnet.com/',
     //站点配置
-    'xnrcms_name'               =>'小能人CMS',
-    'xnrcms_var'                =>'3.0',
+    'xnrcms_name'               =>'利客购物商行',
+    'xnrcms_var'                =>'1.0',
     'is_dev'                    => 1,
     'form_type_list'            => [
         'hidden'        => '隐藏域',
