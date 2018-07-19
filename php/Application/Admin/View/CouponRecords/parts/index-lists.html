@@ -1,0 +1,36 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<!--
+			<th width="2%" data-field="td_id" title="ID"><input type="checkbox" id="selectid_0"></th>
+			-->
+			<th width="15%" data-field="td_phone">用户</th>
+			<th width="28%" data-field="td_name">优惠券</th>
+			<th width="10%" data-field="td_isUsed">是否使用</th>
+			<!-- 
+			<th width="10%" data-field="td_done">操作</th>
+			 -->
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<!--
+			<td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+			-->
+			<td class="td_phone">{$vo.nickname}</td>
+			<td class="td_name">{$vo.name}</td>
+			<td class="td_isUsed"><if condition="$vo.isUsed eq 1"><span style="color:red;">已使用</span><else /><span style="color:green;">未使用</span></if></td>
+			<!-- 
+			<td class="td_done"><include file="Public/button-right" /></td>
+			-->
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="6" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

@@ -1,0 +1,39 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.orderno				= $("input[name='orderno']").val();
+			CommonJs.SubmitData.province		    = $("input[name='province']").val();
+			CommonJs.SubmitData.city				= $("input[name='city']").val();
+			CommonJs.SubmitData.county				= $("input[name='county']").val();
+			CommonJs.SubmitData.address				= $("input[name='address']").val();
+			CommonJs.SubmitData.rname				= $("input[name='rname']").val();
+			CommonJs.SubmitData.phone				= $("input[name='phone']").val();
+			CommonJs.SubmitData.total				= $("input[name='total']").val();
+			CommonJs.SubmitData.status				= 3;
+			CommonJs.SubmitData.remarks				= $("input[name='remarks']").val();
+			CommonJs.SubmitData.express_company		= $("input[name='express_company']").val();
+			CommonJs.SubmitData.express_no			= $("input[name='express_no']").val();
+			CommonJs.SubmitData.id                  = $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.express_company)){
+				_inform('请输入快递公司名称',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.express_no)){
+				_inform('请输入快递公司单号',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+});
+</script>

@@ -1,0 +1,22 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="50%" data-field="td_uid">当日兑领红包个数</th>
+			<th width="50%" data-field="td_order_no">红包个数</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_uid">当日拥有第{$vo.packet_num}个兑领红包者</td>
+            <td class="td_order_no">{$vo.t}</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="30" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

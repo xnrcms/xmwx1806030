@@ -1,0 +1,44 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" data-field="td_id">id</th>
+			<th width="8%" data-field="td_shop_name">提现商家</th>
+			<th width="10%" data-field="td_card_number">银行卡号</th>
+			<th width="8%" data-field="td_bank_name">开户行</th>
+			<th width="5%" data-field="td_xindou">提现鑫豆</th>
+			<th width="5%" data-field="td_appreciation">升值比例</th>
+			<th width="5%" data-field="td_money">提现金额</th>
+			<th width="8%" data-field="td_create_time">申请时间</th>
+			<th width="5%" data-field="td_status">审核状态</th>
+			<th width="5%" data-field="td_done">是否打款</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_id">{$vo.id}</td>
+			<td class="td_shop_name">{$vo.shop_name}</td>
+			<td class="td_card_number">{$vo.card_number}</td>
+			<td class="td_bank_name">{$vo.bank_name}</td>
+			<td class="td_xindou">{$vo.xindou}</td>
+			<td class="td_appreciation">{$vo.appreciation}</td>
+			<td class="td_money">{$vo.money}</td>
+			<td class="td_create_time">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+			<td class="td_status"><span style="color:<if condition='$vo.status eq 1'>green<elseif condition='$vo.status eq 2'/>red<else /></if>">{$vo.status_name}</span></td>
+			<td class="td_done">
+			<if condition="$vo.pay_status == 1 ">
+			<span style="color:green;">已打款</span>
+			<else />
+			<span style="color:red;">未打款</span>
+			</if>
+			</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

@@ -1,0 +1,11 @@
+<form action="{:U('GoodsParameters/add')}" method="post" class="form form-horizontal" id="form-member-add">
+<div class="text-c search-form"> 
+参数名：
+<input type="text" name="pname" placeholder="请输参数名" value="" class="input-text" style="width:100px;">
+排序：
+<input type="text" name="sort" placeholder="请输排序" value="" class="input-text" style="width:100px;">
+参数值：<input type="text" name="pvalue" placeholder="请输排序" value="" class="input-text" style="width:100px;">
+<input type="hidden" name="gid"  value="{$gid}" class="input-text" style="width:100px;">
+	<button class="btn btn-secondary radius" type="submit" ><i class="Hui-iconfont">&#xe632;</i>添加</button>
+</div>
+</form>

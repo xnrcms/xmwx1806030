@@ -1,0 +1,36 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" class="td_id"><input type="checkbox" id="selectid_0"></th>
+			<th width="10%" data-field="td_iid">序号</th>
+			<th width="10%" data-field="td_uid">用户ID</th>
+			<th width="15%" data-field="td_username">二级代理账号</th>
+			<th width="10%" data-field="td_score">代理名称</th>
+			<th width="10%" data-field="td_login">旗下商家积分购买总额</th>
+			<th width="12%" data-field="td_account">积分余额</th>
+			<th width="12%" data-field="td_done">商家</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id"><input type="checkbox" value="{$vo.uid}-{$vo.uid|safely_id}" name="ids[]" id="selectid_{$vo.uid}"></td>
+			<td class="td_iid">{$vo.i}</td>
+			<td class="td_uid">{$vo.uid}</td>
+			<td class="td_username">{$vo.username}</td>
+			<td class="td_score">{$vo.nickname}</td>
+			<td class="td_login">{$vo.total_integral}</td>
+			<td class="td_account">{$vo.current_integral}</td>
+			<td class="td_done">
+				<a style="text-decoration:none" class="ml-5" href="{:U('Integral/sale',array('pid'=>$vo['uid'],'type'=>2))}" title="查询">查询</a>
+			</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

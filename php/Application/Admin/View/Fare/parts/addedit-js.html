@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.area				= $("input[name='area']").val();
+			CommonJs.SubmitData.fee				    = $("input[name='fee']").val();
+			CommonJs.SubmitData.id					= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.fee)){
+				_inform('请输入费用金额',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.SubmitType	= 1;
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+});
+</script>

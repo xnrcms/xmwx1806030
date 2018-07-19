@@ -1,0 +1,148 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+    <link rel="stylesheet" href="__PUBLIC__/Admin/js/kindeditor/themes/default/default.css" />
+</block>
+
+<block name="title">联系我们</block>
+<block name="menu">
+    <include file="System/menu" />
+</block>
+
+<block name="main">
+    <div class="pageheader">
+        <h1 class="pagetitle">联系我们</h1>
+        <span class="pagedesc"></span>
+    </div>
+
+    <div id="contentwrapper" class="contentwrapper">
+        <form class="stdform stdform2" action="{:U('System/introduction')}" method="post" id="JgoodsForm">
+            <div class="">
+                <label></label>
+                <span class="">
+                    <textarea class="text" name="FeedbaceMail" id="FeedbaceMail" rows="6">{$FeedbaceMail}</textarea>
+                </span>
+            </div>
+          
+            <div class="line-dete">
+                <label></label>
+                <span class="">
+                    <input type="submit" id="JgoodsSubmit" class="stdbtn" value="提交" />
+                    <span id="wordage"></span>
+                </span>
+            </div>
+        </form>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/datetime.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/lang/zh_CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+            var limitNum = 120;
+
+            var pattern = '还可以输入' + limitNum + '字';
+            var remain1 = $("#FeedbaceMail").val().length;
+                    console.log(remain1);
+            if(remain1 > limitNum){
+                    pattern = "字数超过"+limitNum+"个限制！";
+            }else{
+                    var result = limitNum - remain1;
+                    pattern = '还可以输入' + result + '字';
+            }
+            $('#wordage').html(pattern);
+
+            $('#FeedbaceMail').keyup(
+                    function(){
+                            var remain = $(this).val().length;
+                            if(remain > limitNum){
+                                    pattern = "字数超过"+limitNum+"个限制！";
+                            }else{
+                                    var result = limitNum - remain;
+                                    pattern = '还可以输入' + result + '字';
+                            }
+                            $('#wordage').html(pattern);
+                    }
+            );
+
+    });	
+    </script>
+    <script type="text/javascript">
+        var firstUpload = true;
+
+        var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('#goodsDetail', {
+                height: "600px",
+                allowFileManager: true,
+                uploadJson: '{:U("Goods/descUploadPic")}',
+                items : ['source','fontname','fontsize','forecolor','preview','selectall','justifyleft','justifycenter','justifyright','link','unlink','image'],
+                afterCreate : function() {
+                    this.loadPlugin('autoheight');
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function(){
+                $("#goods_nums").change(function(){
+                    var room_price  =   $("#room_price").val();
+                    var goods_nums  =   $(this).val();
+                    $("#goods_price").val(parseFloat(room_price*goods_nums));
+                });
+                
+                //上传图片
+                $("#photoList").on('click', 'img', function() {
+			$("#photoList").find('img').removeClass('s-cover');
+			$(this).addClass('s-cover');
+			$('#JcoverPid').val($(this).attr('src'));
+		});
+
+		$('#photoList').on('click', '.del-pic', function() {
+			$(this).parent().remove();
+                        $('#JgoodsListWrap').append('<div class="upload-wrap"> <input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" /> </div>');
+		});
+
+		$(document).on('change', '#fileToUpload', function() {
+			ajaxFileUpload();
+		});
+
+		function ajaxFileUpload() {
+			$.ajaxFileUpload({
+				url: "{:U('Goods/photoUpload')}",
+				secureuri: false,
+				fileElementId: 'fileToUpload',
+				dataType: 'json',
+				success: function (data, status) {
+					if(typeof(data.error) != 'undefined') {
+						if(data.error != '') {
+							alert(data.error);
+						} else {
+							$("#photoList").append('<div class="pic-wrap"><i class="del-pic"></i><img src="' + data.msg + '" /><input type="hidden" name="photo[]" value="' + data.msg + '" /></div>');
+                                                        $('#JcoverPid').val(data.msg);
+                                                        $("#photoList").find('img').addClass('s-cover');
+						}
+						$('.upload-wrap').remove();
+//						$('#JgoodsListWrap').append('<div class="upload-wrap"> <input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" /> </div>');
+					}
+				},
+				error: function (data, status, e) {
+					var html='<div class="title">提示</div><div>' + e + '</div>';
+					popbox(html);
+				}
+			})
+			return false;
+		}
+                
+                
+                
+                
+                
+        });
+    </script>
+</block>

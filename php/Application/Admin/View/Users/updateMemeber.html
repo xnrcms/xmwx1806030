@@ -1,0 +1,29 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<php>
+$col_xs1		= 4;
+$col_sm1		= 2;
+
+$col_xs2		= 8;
+$col_sm2		= 10;
+
+$col_xs3		= 8;
+$col_sm3		= 9;
+
+$col_xs_offset1	= 4;
+$col_sm_offset1	= 2;
+</php>
+<div class="page-container">
+	<form action="{:U('',$extends_param)}" method="post" class="form form-horizontal" id="form-member-add">
+		<input style="display:none" type="password" name="password">
+		<include file="User/parts/addedit-form" />
+	</form>
+</div>
+</block>
+<block name="footjs">
+<include file="User/parts/member-js" />
+</block>

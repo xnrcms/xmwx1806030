@@ -1,0 +1,39 @@
+<include file="Public/form" />
+<div class="row cl">
+	<div class="formControls col-xs-8 col-sm-12">
+		<notempty name="node_list">
+		<volist name="node_list" id="node" key="key1">
+		<dl class="permission-list">
+			<dt>
+				<label><input type="checkbox" value="<?php echo $main_rules[$node['url']] ?>" name="rules[]" id="user-Character-{$key1}">{$node.title}管理</label>
+			</dt>
+			<present name="node['child']">
+			<dd>
+				<volist name="node['child']" id="child" key="key2">
+				<dl class="cl permission-list2">
+					<dt>
+						<label class=""><input type="checkbox" value="<?php echo $auth_rules[$child['url']] ?>" name="rules[]" id="user-Character-{$key1}-{$key2}">{$child.title}</label>
+					</dt>
+					<notempty name="child['operator']">
+					<dd>
+						<volist name="child['operator']" id="op" key="key3">
+							<label class=""><input type="checkbox" value="<?php echo $auth_rules[$op['url']] ?>" name="rules[]" id="user-Character-{$key1}-{$key2}-{$key3}">{$op.title}</label>
+                        </volist>
+					</dd>
+					</notempty>
+				</dl>
+				</volist>
+			</dd>
+			</present>
+		</dl>
+		</volist>
+		</notempty>
+	</div>
+</div>
+<input type="hidden" name="id" value="{$this_group.id}" />
+<div class="row cl">
+	<div class="col-xs-{$col_xs3} col-sm-{$col_sm3} col-xs-offset-{$col_xs_offset1} col-sm-offset-{$col_sm_offset1}">
+		<button class="btn btn-secondary radius" type="submit" ><i class="Hui-iconfont">&#xe632;</i>保存</button>
+		<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+	</div>
+</div>

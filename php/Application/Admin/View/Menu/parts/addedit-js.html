@@ -1,0 +1,48 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.title		= $("input[name='title']").val();
+			CommonJs.SubmitData.url			= $("input[name='url']").val();
+			CommonJs.SubmitData.pid			= $("select[name='pid']").val();
+			CommonJs.SubmitData.group		= $("input[name='group']").val();
+			CommonJs.SubmitData.sort		= $("input[name='sort']").val();
+			CommonJs.SubmitData.status		= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.hide		= rcVal($("input[name='hide']"),1);
+			CommonJs.SubmitData.is_dev		= rcVal($("input[name='is_dev']"),1);
+			CommonJs.SubmitData.posttype	= rcVal($("input[name='posttype']"),1);
+			CommonJs.SubmitData.tip			= $("input[name='tip']").val();
+			CommonJs.SubmitData.id			= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.title)){
+				_inform('请输入菜单名称',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.rangelength(CommonJs.SubmitData.title,[1,8])){
+				_inform('用户名长度必须1-8个字符以内',function(){CommonJs.Loading = false;});return false;
+			}
+			/*
+			if(!CheckJs.required(CommonJs.SubmitData.url)){
+				_inform('请输入菜单链接',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.rangelength(CommonJs.SubmitData.password,[8,16])){
+				_inform('登录密码必须8-16个字符以内',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.repassword)){
+				_inform('请输入确认密码',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CommonJs.SubmitData.password !== CommonJs.SubmitData.repassword){
+				_inform('两次密码输入不一致',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CheckJs.required(CommonJs.SubmitData.email) && !CheckJs.email(CommonJs.SubmitData.email)){
+				_inform('请输入正确的邮箱账号',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CheckJs.required(CommonJs.SubmitData.mobile) && !CheckJs.mobile(CommonJs.SubmitData.mobile)){
+				_inform('请输入正确的手机号码',function(){CommonJs.Loading = false;});return false;
+			}*/
+			CommonJs.Loading = false
+			return true;
+	};
+	CommonJs.JsSave("#form-member-add");
+});
+</script>

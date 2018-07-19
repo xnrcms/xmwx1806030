@@ -1,0 +1,30 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<include file="Integral/parts/index-nav" />
+<div class="page-container">
+	<include file="Integral/parts/index-search" />
+	<div class="mt-5">
+		<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+		    <thead>
+				<tr class="text-l">
+					<th width="25%" style="line-height: 35px;">总积分(<span style="color:red">{$data.total_integral}</span>)</th>
+					<th width="25%" style="line-height: 35px;">总积分余额(<span style="color:red">{$data.current_integral}</span>)</th>
+				</tr>
+		    </thead>
+		</table>
+	</div>
+	<div class="mt-5">
+	商家列表
+	</div>
+	<include file="Integral/parts/index-button" />
+	<include file="Integral/parts/sale-lists" />
+	<include file="Integral/parts/index-button" />
+</div>
+</block>
+<block name="footjs">
+<include file="Integral/parts/index-js" />
+</block>

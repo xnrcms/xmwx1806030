@@ -1,0 +1,45 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			//优惠券
+			var couponIds			= [];
+			var couponIdsObj		= $("input[name='couponId']");
+			couponIdsObj.each(function(i,k){
+				if(this.checked == true){
+					couponIds.push(this.value); 	// 添加数组
+				}
+			});
+			CommonJs.SubmitData.couponId			= couponIds;
+			if(CommonJs.SubmitData.couponId.length == 0){
+				_inform('请选择优惠券',function(){CommonJs.Loading = false;});return false;
+			}
+			
+			//用户
+			var userIds			= [];
+			var userIdsObj		= $("input[name='userId']");
+			userIdsObj.each(function(i,k){
+				if(this.checked == true){
+					userIds.push(this.value); 	// 添加数组
+				}
+			});
+			CommonJs.SubmitData.userId				= userIds;
+			if(CommonJs.SubmitData.userId.length == 0){
+				_inform('请选择优惠券发送用户',function(){CommonJs.Loading = false;});return false;
+			}
+			
+			CommonJs.Loading = false
+			return true;
+	};
+	//CommonJs.SubmitType	= 3;
+	CommonJs.JsSave("#form-member-add");
+
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	//上传插件
+	//CommonJs.StartUpload();
+});
+</script>

@@ -1,0 +1,47 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData							= {};
+			CommonJs.SubmitData.MOBILE					= $("input[name='MOBILE']").val();
+			//CommonJs.SubmitData.DISCOUNT				= $("input[name='DISCOUNT']").val();
+			CommonJs.SubmitData.SHARE_TITLE				= $("input[name='SHARE_TITLE']").val();
+			CommonJs.SubmitData.SHARE_CONTENT			= $("textarea[name='SHARE_CONTENT']").val();
+			CommonJs.SubmitData.SHARE_IMG				= $("input[name='SHARE_IMG']").val();
+			
+			if(!CheckJs.required(CommonJs.SubmitData.MOBILE)){
+				_inform('请输入平台电话',function(){CommonJs.Loading = false;});return false;
+			}
+			/* if(CommonJs.SubmitData.DISCOUNT <= 0){
+				_inform('折扣不能小于等于0',function(){CommonJs.Loading = false;});return false;
+			} 
+			if(CommonJs.SubmitData.DISCOUNT > 10){
+				_inform('折扣不能大于10',function(){CommonJs.Loading = false;});return false;
+			}
+			*/
+			if(!CheckJs.required(CommonJs.SubmitData.SHARE_TITLE)){
+				_inform('请输入分享标题',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.SHARE_CONTENT)){
+				_inform('请输入分享内容',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.SHARE_IMG)){
+				_inform('请上传分享图片',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.SubmitType	= 3;
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+});
+</script>

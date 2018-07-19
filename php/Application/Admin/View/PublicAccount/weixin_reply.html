@@ -1,0 +1,79 @@
+<extend name="Common:base" />
+
+<block name="title">关键词回复</block>
+
+<block name="menu">
+    <include file="System:menu" />
+</block>
+
+<block name="main">
+    <div class="pageheader">
+        <h1 class="pagetitle">关键词回复</h1>
+        <span class="pagedesc"></span>
+    </div>
+    <div id="contentwrapper" class="contentwrapper">
+        <div>
+            <form action="" metod="get">
+                <input type="button" id="voAdd" data-goodsid="{$goodsInfo['id']}" class="stdbtn" value="新增╋" style="background: #09c;border: 1px solid #09c;" /> 
+                &nbsp;
+                关键词&nbsp;:&nbsp;<input type="text" name="goods_vo_sn" id="goods_vo_sn" value="{:remove_xss(I('get.goods_vo_sn'))}">
+                <input type="submit" value="查询" class="stdbtn">
+                <p></p>
+                <p></p>
+            </form>
+        </div>
+        <p></p>
+        <form action="{:U('Goods/batchOperate')}" method="post" id="operate">
+            <input type="hidden" name="operate" id="operate_type" value="sale" />
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+                <tr>
+                    <th width="5%"><label>ID</label></th>
+                    <th width="10%">类型</th>
+                    <th width="15%">规则名</th>
+                    <th width="30%">关键词</th>
+                    <th width="10%">时间</th>
+                    <th width="10%">状态</th>
+                    <th>操作</th>
+                </tr>
+
+                <if condition="empty($list)">
+                    <tr>
+                        <td colspan="7" align="center">没有数据！</td>
+                    </tr>
+                    <else />
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td class="center">{$vo['id']}</td>
+                            <td class="center">{$index_reply_type[$vo['reply_type']]}</td>
+                            <td class="center">{$vo['rule_name']}</td>
+                            <td class="center">{$vo['keywords']}</td>
+                            <td class="center">{$vo['update_time']|date="Y-m-d H:i:s",###}</td>
+                            <td class="center">{$vo['status_text']}</td>
+                            <td class="center">
+                                <a class="stdbtn btn_lime" href="{:U('weixinReplyEdit', array('id'=>$vo['id']))}">编辑</a>&nbsp;&nbsp;
+                                <a class="stdbtn btn_lime" href="{:U('weixinReplyDel', array('id'=>$vo['id']))}">删除</a>&nbsp;&nbsp;
+                            </td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td colspan="7">
+                            <div class="page-box">
+                                {$show}
+                            </div>
+                        </td>
+                    </tr>
+                </if>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function(){
+            $("#voAdd").click(function(){
+                window.location.href    =   "{:U('weixin_reply_select')}";
+            });
+        })
+    </script>
+</block>

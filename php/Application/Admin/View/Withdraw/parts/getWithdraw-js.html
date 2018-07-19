@@ -1,0 +1,33 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData							= {};
+			CommonJs.SubmitData.card_id					= $("select[name='card_id']").val();
+			CommonJs.SubmitData.money					= $("input[name='money']").val();
+			if(parseInt(CommonJs.SubmitData.card_id) <= 0){
+				_inform('请选择银行卡',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.money)){
+				_inform('请输入提现金额',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.isMoney(CommonJs.SubmitData.money)){
+				_inform('提现金额请输入正确的格式',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.SubmitType	= 3;
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	//上传插件
+	//CommonJs.StartUpload();
+});
+</script>

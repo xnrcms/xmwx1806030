@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	//表单验证
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 				= true;
+			CommonJs.SubmitData.face		= $("input[name='face']").val();
+			CommonJs.SubmitData.nickname	= $("input[name='nickname']").val();
+			CommonJs.SubmitData.uid			= $("input[name='uid']").val();
+			CommonJs.SubmitData.hashid		= $("input[name='hashid']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.face)){
+				_inform('请上传用户头像',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.nickname)){
+				_inform('请输入用户昵称',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//上传插件
+	CommonJs.StartUpload();
+});
+</script>

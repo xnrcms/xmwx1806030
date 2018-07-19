@@ -1,0 +1,321 @@
+<input type="password" style="display:none;">
+<input type="text" style="display:none;">
+<volist name="FormData" id="FD">
+<if condition="!empty($FD['fieldName']) && !empty($FD['fieldValue']) && !empty($FD['fieldType'])">
+<switch name="FD.fieldType">
+<case value="show">{/*纯展示本*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">{$info[$FD['fieldValue']]}</div>
+</div>
+</case>
+<case value="text">{/*文本*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="text" id="id_{$FD['fieldValue']}" class="input-text class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" {$FD['attrExtend']}>
+	</div>
+</div>
+</case>
+<case value="password">{/*密码*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="password" id="id_{$FD['fieldValue']}" class="input-text class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" {$FD['attrExtend']}>
+	</div>
+</div>
+</case>
+<case value="checkbox">{/*复选框*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<notempty name="FD['fieldData']">
+	<div class="formControls col-xs-{$col_xs1} col-sm-10 skin-minimal">
+	<volist name="FD['fieldData']" id="checkboxData">
+		<div class="check-box">
+			<in name="key" value="$info[$FD['fieldValue']]">
+			<input type="checkbox" id="{$FD['fieldValue']}-{$key}" name="{$FD['fieldValue']}" value="{$key}" checked>
+			<else />
+			<input type="checkbox" id="{$FD['fieldValue']}-{$key}" name="{$FD['fieldValue']}" value="{$key}">
+			</in>
+			<label for="{$FD['fieldValue']}-{$key}"><notempty name="checkboxData">{$checkboxData}<else/>&nbsp;</notempty></label>
+		</div>
+	</volist>
+	</div>
+	</notempty>
+</div>
+</case>
+<case value="radio">{/*单选框*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<notempty name="FD['fieldData']">
+	<div class="formControls col-xs-{$col_xs1} col-sm-10 skin-minimal">
+	<volist name="FD['fieldData']" id="checkboxData">
+		<div class="radio-box">
+			<eq name="info[$FD['fieldValue']]" value="$key">
+			<input type="radio" id="{$FD['fieldValue']}-{$key}" name="{$FD['fieldValue']}" value="{$key}" checked>
+			<else />
+			<input type="radio" id="{$FD['fieldValue']}-{$key}" name="{$FD['fieldValue']}" value="{$key}">
+			</eq>
+			<label for="{$FD['fieldValue']}-{$key}"><notempty name="checkboxData">{$checkboxData}<else/>&nbsp;</notempty></label>
+		</div>
+	</volist>
+	</div>
+	</notempty>
+</div>
+</case>
+<case value="select">{/*下拉选择*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-10">
+		<span class="select-box">
+			<select id="id_{$FD['fieldValue']}" class="select class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" {$FD['attrExtend']}>
+				<notempty name="FD['fieldData']">
+				<volist name="FD['fieldData']" id="SFD">
+				<if condition="is_array($SFD)">
+					<eq name="info['pid']" value="$SFD['id']">
+					<option value="{$SFD.id}" selected>{$SFD.name}</option>
+					<else />
+					<option value="{$SFD.id}">{$SFD.name}</option>
+					</eq>
+				<else />
+					<eq name="info[$FD['fieldValue']]" value="$key">
+					<option value="{$key}" selected>{$SFD}</option>
+					<else />
+					<option value="{$key}">{$SFD}</option>
+					</eq>
+				</if>
+				</volist>
+				</notempty>
+			</select>
+		</span>
+	</div>
+</div>
+</case>
+<case value="select2">{/*下拉选择*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-10">
+		<span class="select-box">
+			<select id="id_{$FD['fieldValue']}" class="select class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" {$FD['attrExtend']}>
+				<notempty name="FD['fieldData']">
+				<volist name="FD['fieldData']" id="SFD">
+				<if condition="is_array($SFD)">
+					<eq name="info[$FD['fieldValue']]" value="$SFD['id']">
+					<option value="{$SFD.id}" selected>{$SFD.name}</option>
+					<else />
+					<option value="{$SFD.id}">{$SFD.name}</option>
+					</eq>
+				<else />
+					<eq name="info[$FD['fieldValue']]" value="$key">
+					<option value="{$key}" selected>{$SFD}</option>
+					<else />
+					<option value="{$key}">{$SFD}</option>
+					</eq>
+				</if>
+				</volist>
+				</notempty>
+			</select>
+		</span>
+	</div>
+</div>
+</case>
+<case value="textarea">
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<textarea id="id_{$FD['fieldValue']}" class="textarea class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" {$FD['attrExtend']}>{$info[$FD['fieldValue']]}</textarea>
+	</div>
+</div>
+</case>
+<case value="image">{/*单图上传*/}
+<php>$is_upload++;</php>
+<eq name="is_upload" value="1">
+<script type="text/javascript" src="__PUBLIC__/Package/uploadify/jquery.uploadify.min.js"></script>
+</eq>
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="file" class="upload_picture" id="upload-pictures-{$FD['fieldValue']}" data-type="one" {$FD['attrExtend']}>
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-pictures-id_{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}" />
+		<div class="upload-img-box">
+		<notempty name="info[$FD['fieldValue']]">
+			<div class="upload-pre-item">
+				<img src="{$info[$FD['fieldValue']]|get_cover3}" width="120"/>
+				<span class='btn-close btn-close-{$FD["fieldValue"]}' title='删除图片'onclick='CommonJs.UploadDel(event,"{$FD[fieldValue]}");'></span>
+			</div>
+		</notempty>
+		</div>
+	</div>
+</div>
+</case>
+<case value="images">{/*多图上传*/}
+<php>$is_upload++;</php>
+<eq name="is_upload" value="1">
+<script type="text/javascript" src="__PUBLIC__/Package/uploadify/jquery.uploadify.min.js"></script>
+</eq>
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="file" class="upload_picture" id="upload-pictures-{$FD['fieldValue']}" data-type="more" {$FD['attrExtend']}>
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-pictures-id_{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}" />
+		<php> 
+ 			$valArr	= !empty($info[$FD['fieldValue']]) ? explode(',',$info[$FD['fieldValue']]) : array();
+ 		</php>
+		<div class="upload-img-box">
+		<notempty name="valArr">
+             <volist name="valArr" id="v">
+                <div class="upload-pre-item">
+                    <img src="{$v|get_cover3='path'}" data-id="{$v}"/>
+                    <span class='btn-close btn-close-{$FD["fieldValue"]}' title='删除图片'onclick='CommonJs.UploadDel(event,"{$FD[fieldValue]}");'></span>
+                </div>
+             </volist>
+        </notempty>
+		</div>
+	</div>
+</div>
+</case>
+<case value="images_show">{/*多图展示*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-pictures-id_{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}" />
+		<php> 
+ 			$valArr	= !empty($info[$FD['fieldValue']]) ? explode(',',$info[$FD['fieldValue']]) : array();
+ 		</php>
+		<div class="upload-img-box">
+		<notempty name="valArr">
+             <volist name="valArr" id="v">
+                 <a href="{$v|get_cover3}" target="_blank">
+                    <div class="upload-pre-item">
+                        <img src="{$v|get_cover3}" data-id="{$v}"/>
+                    </div>
+                </a>
+             </volist>
+        </notempty>
+		</div>
+	</div>
+</div>
+</case>
+<case value="qrcode_one">{/*多图展示*/}
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-pictures-id_{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}" />
+		<div class="upload-img-box">
+                    <div class="upload-pre-item" style="max-height:280px;">
+                       <img src="{$info[$FD['fieldValue']]}" style="max-height:280px;" />
+                    </div>
+		</div>
+	</div>
+</div>
+</case>
+<case value="file">{/*文件上传*/}
+<php>$is_upload++;</php>
+<eq name="is_upload" value="1">
+<script type="text/javascript" src="__PUBLIC__/Package/uploadify/jquery.uploadify.min.js"></script>
+</eq>
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="file" class="upload_picture" id="upload-file-{$FD['fieldValue']}" data-type="file" {$FD['attrExtend']}>
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-file_id-{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}"/>
+		<div class="upload-img-box">
+			<present name="info[$FD['fieldValue']]">
+				<div class="upload-pre-file"><span class="upload_icon_all"></span>{$info[$FD['fieldValue']]}</div>
+			</present>
+		</div>
+	</div>
+</div>
+</case>
+<case value="hidden">{/*隐藏域*/}
+<div class="row cl">
+<volist name="FD['fieldValue']" id="Fhidden">
+	<input type="hidden" id="hiddenid_{$Fhidden}" class="input-text hiddenclass_{$Fhidden}" name="{$Fhidden}" value="{$info[$Fhidden]}" {$FD['attrExtend']}>
+</volist>
+</div>
+</case>
+<case value="datetime">
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="text" id="hiddenid_{$Fhidden}" class="input-text Wdate class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" {$FD['attrExtend']} onFocus="WdatePicker()">
+	</div>
+</div>
+</case>
+<case value="times">
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-{$col_xs2} col-sm-{$col_sm2}">
+		<input type="text" id="hiddenid_{$Fhidden}" class="input-text Wdate class_{$FD['fieldValue']}" name="{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" {$FD['attrExtend']} onFocus="WdatePicker({skin:'whyGreen',dateFmt:'H:mm:ss'})">
+	</div>
+</div>
+</case>
+<case value="bool">
+<div class="form-item cf">
+	<label class="item-label">{$field['title']}<span class="check-tips"><notempty name="field['remark']">（{:str_replace('modelname',$modelInfo['title'],$field['remark'])}）</notempty></span></label>
+	<div class="controls">
+		<select name="{$FD['fieldValue']}" style="width:228px;">
+			<volist name=":parse_field_attr($field['extra'])" id="vo">
+				<notempty name="info[$FD['fieldValue']]" value="0">
+				<option value="{$key}" <eq name="info[$FD['fieldValue']]" value="$key">selected</eq>>{$vo}</option>
+				<else/>
+				<option value="{$key}" <eq name="field['value']" value="$key">selected</eq>>{$vo}</option>
+				</notempty>
+			</volist>
+		</select>
+	</div>
+</div>
+</case>
+<case value="editor">
+<php>$is_editor++;</php>
+<eq name="is_editor" value="1">
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Package/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Package/ueditor/1.4.3/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Package/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+</eq>
+<div class="row cl">
+	<label class="form-label col-xs-{$col_xs1} col-sm-{$col_sm1}"><eq name="FD['isMust']" value="1"><span class="c-red">*</span></eq>{$FD['fieldName']}</label>
+	<div class="formControls col-xs-8 col-sm-10 editorPlug" data-id="{$FD['fieldValue']}">
+		<script id="{$FD['fieldValue']}" type="text/plain" name="{$FD['fieldValue']}" style="width:100%;height:400px;">{$info[$FD['fieldValue']]|default=""}</script> 
+	</div>
+</div>
+</case>
+<case value="pictures">
+<div class="form-item cf">
+	<label class="item-label">{$field['title']}<span class="check-tips"><notempty name="field['remark']">（{:str_replace('modelname',$modelInfo['title'],$field['remark'])}）</notempty></span></label>
+	<div class="controls">
+		<input type="file" class="upload_picture" id="upload-pictures-{$FD['fieldValue']}" data-type="more" data-table="{$modelInfo.name}" data-field="{$FD['fieldValue']}" data-size="{$field.extra}">
+		<input type="hidden" name="{$FD['fieldValue']}" id="upload-pictures-id_{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" class="icon {$FD['fieldValue']}" />
+		<php> 
+ 			$valArr	= !empty($info[$FD['fieldValue']]) ? explode(',',$info[$FD['fieldValue']]) : array();
+ 		</php>
+		<div class="upload-img-box">
+		<notempty name="valArr">
+             <volist name="valArr" id="v">
+                <div class="upload-pre-item">
+                    <img src="{$v|get_cover3='path'}" data-id="{$v}"/>
+                    <span class='btn-close btn-close-01' title='删除图片' onclick='CommonJs.UploadDel(event,"{$FD['fieldValue']}");'></span>
+                </div>
+             </volist>
+        </notempty>
+		</div>
+	</div>
+</div>
+<php>$is_upload++;</php>
+</case>
+<case value="position">
+	<include file="Public/Custommade/system_position"/>
+</case>
+<case value="custommade">
+	<include file="Public/Custommade/system_load"/>
+</case>
+<default/>
+<div class="form-item cf">
+	<label class="item-label">{$field['title']}<span class="check-tips"><notempty name="field['remark']">（{:str_replace('modelname',$modelInfo['title'],$field['remark'])}）</notempty></span></label>
+	<div class="controls">
+		<input type="text" class="text input-large" name="{$FD['fieldValue']}" value="{$info[$FD['fieldValue']]}" placeholder="请输入{$field['title']}">
+	</div>
+</div>
+</switch>
+</if>
+</volist>

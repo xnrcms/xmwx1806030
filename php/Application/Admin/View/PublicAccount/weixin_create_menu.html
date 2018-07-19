@@ -1,0 +1,776 @@
+<extend name="edit"/>
+<block name="heardercss">
+<link rel="stylesheet" href="__PUBLIC__/Common/createmenu/css/bootstrap.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/createmenu/css/style.css">
+<link rel="stylesheet" href="__PUBLIC__/Admin/createmenu/css/default.css">
+<!-- <link href="http://cdn.bootcss.com/meyer-reset/2.0/reset.min.css" rel="stylesheet"> -->
+<style type="text/css">
+	.card{
+		margin: 0;
+	}
+	.card:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+
+	.card-item {
+		position: relative;
+		float: left;
+		width: 180px;
+		min-width: 150px;
+		padding: 10px;
+		margin: 5px;
+		border: 1px solid #e4e4e4;
+		background-color: #fff;
+		cursor: pointer;
+	}
+
+	.card-date {
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #f1f1f1;
+	}
+
+	.card-title {
+		margin-bottom: 10px;
+		line-height: 1.2;
+		min-height:38px;
+                max-height: 38px;
+	}
+
+	.card-cover{
+		text-align: center;
+	}
+	.card-cover img {
+		max-width: 100%;
+		max-height:100px;
+	}
+
+	.card-mask {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url("__PUBLIC__/Common/createmenu/image/selected.png") no-repeat center rgba(0,0,0,.35);
+		display: none;
+	}
+
+	.card-item:hover .card-mask {
+		display: block;
+	}
+
+	.card-item-selected .card-mask {
+		display: block;
+	}
+
+	.page {
+		float: right;
+		margin: 10px;
+		border: 1px solid #e4e4e4;
+	}
+
+	.page-item {
+		float: left;
+		min-width: 20px;
+		padding: 5px;
+		text-align: center;
+		background-color: #fff;
+		cursor: pointer;
+	}
+
+	.page-item + .page-item {
+		border-left: 1px solid #e4e4e4;
+	}
+
+	.page-item:hover {
+		background-color: #f8f8f8;
+	}
+</style>
+</block>
+<block name="listname"></block>
+<block name="editcontent">
+<script type="text/javascript">var yyuc_jspath = "__PUBLIC__/Common/createmenu/image";</script>
+<script type="text/javascript" src="__PUBLIC__/Common/createmenu/js/yyucadapter.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/createmenu/js/kindeditor-min.js"></script>
+<script type="text/javascript">
+$(function(){
+	suitdata();
+	$('.maincd').click(function(){
+		suitdata();
+		window.curcd = this;
+		window.curctyp = '1';
+		backdata();		
+	});
+	
+	$('.zizicd').click(function(){
+		suitdata();
+		window.curcd = this;
+		window.curctyp = '2';
+		backdata();		
+	});
+	$('#answertype').change(function(){
+		$("#touchnews").attr('data','');
+		$("#touchnews").text('');
+		$('.szcjbt').hide();
+		$("#clr").css('display',"none");
+		$('#'+$(this).val()).show();
+	});
+	
+	$('.szcjbt').find('input,textarea,.editArea').on('keyup click change mouseup',function(){
+		suitdata();
+	});
+	$(".editArea textarea").on("contentValueChange",suitdata);
+	$('#cdmcinpo').on('keyup click change mouseup',function(){
+		suitdata();
+	});
+	
+	initthedata();
+	$('.maincd').eq(0).trigger('click');
+	
+	$('.zizicd,.maincd').click(function(){
+		$('.zizicd,.maincd').unmask();
+		$(this).mask();
+	});
+});
+//把菜单信息转化为控制信息
+function backdata(){
+	$('#res_ejcd').find('input[type="text"]').val('');
+	$(".editArea div").html('');
+	$('#xsejcdopt').remove();
+	if(window.curctyp == '1'){
+		$('#answertype').prepend('<option value="res_ejcd" id="xsejcdopt">显示二级菜单</option>');
+	}
+	var cdid = $(window.curcd).attr('id');
+	var cddata = $.trim($(window.curcd).attr('reldata'));
+	if(cddata!=''){
+		cddata = $.evalJSON(cddata);
+		$('#answertype').val(cddata.typ);
+		$('#answertype').trigger('change');
+		if(cddata.typ=='res_ejcd'){
+			//回填菜单
+			var zcddiv = $('div[zcdrel="'+cdid+'"]');
+			if($.trim(cddata.data) !=''){
+				var ds = cddata.data.split('@');
+				zcddiv.find('.zizicd').hide();
+				for(var i=0;i<ds.length;i++){
+					$('#res_ejcd').find('input[type="text"]').eq(parseInt(ds[i])-1).val(zcddiv.find('.zizicd').eq(parseInt(ds[i])-1).show().text());
+				}
+			}			
+		}else if(cddata.typ=='res_wb'){
+			//Emotion.replaceInput
+			//$(".editArea div").html(Emotion.replaceEmoji(cddata.data));
+		}else if(cddata.typ=="res_app"){
+				var obj = document.getElementById("rad_app"); //定位id
+				for (var i = 0; i < obj.options.length; i++) { 
+					if (obj.options[i].text == cddata.apptype) {        
+						       obj.selectedIndex=i;
+					}        
+				}  
+				var controls=document.getElementsByName("rad_apps");
+				for(var i=0;i<controls.length;i++)
+				{
+					controls[i].style.display="none";
+					if(cddata.apptype==controls[i].id){
+						cnow=controls[i];
+						for (var j = 0; j < cnow.options.length; j++) { 
+							if (cnow.options[j].text == cddata.text) {        
+									   cnow.selectedIndex=j;
+							}        
+						} 
+						cnow.style.display="block";
+					}
+				}
+				var menus=document.getElementsByName("menutype");
+				for(var i=0;i<menus.length;i++)
+				{
+					var v=menus[i].value;
+					if(v==cddata.menutype){
+						menus[i].checked=true
+					}
+
+					
+				}
+		}else if(cddata.typ=="res_touch"){
+				$("#touchnews").attr('data',cddata.data);
+				$("#touchnews").text(cddata.text);
+				var arr=cddata.actionParam.split("|");
+				var controls=document.getElementById("rad_touch");
+				for(var i=0;i<controls.length;i++)
+				{
+					if(arr[0]==controls[i].value){
+						controls[i].selected='true';
+					}
+				}
+				if(cddata.data !=''){
+					$("#clr").css('display',"inline");
+				}
+		}else if(cddata.typ=="res_url"){
+			$('#'+cddata.typ).find('input[type="text"]').val(cddata.data);
+			var menus=document.getElementsByName("linktype");
+			for(var i=0;i<menus.length;i++)
+			{
+				var v=menus[i].value;
+				if(v==cddata.linktype){
+					menus[i].checked=true
+				}
+			}
+		}else{
+			$('#'+cddata.typ).find('input[type="text"]').val(cddata.data);
+		}
+	}else{
+		cddata = {};
+		if(window.curctyp == '1'){
+			$('#answertype').val('res_ejcd');
+		}else{
+			$('#answertype').val('res_wb');
+		}
+		$('#answertype').trigger('change');
+	}
+	var anobj=document.getElementById("answertype");
+	var index = anobj.selectedIndex; // 选中索引
+	if(index=='-1'){
+		anobj.selectedIndex=0;
+		$("#event_url").val('');
+		$("#res_url").show();
+	}
+	$('#czselarea').show();
+	$('#cdmcinpo').val($(window.curcd).html());
+}
+
+//把控制信息回填到菜单中
+function suitdata(){
+	if(window.curcd){
+		var cdid 		= $(window.curcd).attr('id');
+		var cddata 		= $.trim($(window.curcd).attr('reldata'));
+			cddata		= cddata !='' ? $.evalJSON(cddata) : {};
+			cddata.typ 	= $('#answertype').val();
+		var zcddiv 		= $('div[zcdrel="'+cdid+'"]');
+		if(cddata.typ=='res_ejcd'){			
+			//填充菜单
+			var sjarr = [];
+			$('#res_ejcd').find('input[type="text"]').each(function(i){
+				var temp_zcd = zcddiv.find('.zizicd').eq(i);
+				
+				if($.trim($(this).val())!=''){	
+					temp_zcd.parent().show();
+					temp_zcd.text($.trim($(this).val())).show();
+					sjarr[sjarr.length] = i+1;
+				}else{
+					temp_zcd.hide();
+				}
+			});
+			cddata.data = sjarr.join('@');
+		}else{
+			zcddiv.hide();
+			if(cddata.typ=='res_wb'){
+				//cddata.data = Emotion.replaceInput($.trim($(".editArea div").html()));
+			}else if(cddata.typ=='res_app'){
+				var obj = document.getElementById("rad_app"); //定位id
+				var index = obj.selectedIndex; // 选中索引
+				var value = obj.options[index].value; // 选中值
+				var controls=document.getElementsByName("rad_apps");
+				var cnow=null;
+				var apptype=obj.options[index].text;
+				for(var i=0;i<controls.length;i++)
+				{
+					controls[i].style.display="none";
+				
+					if(value==controls[i].id){
+						cnow=controls[i];
+						cnow.style.display="block";
+					}
+				}
+				var index = cnow.selectedIndex; // 选中索引
+				var value = cnow.options[index].value; // 选中值
+				var did = cnow.options[index].id; // 选中值
+				var text = cnow.options[index].text; // 选中值
+				cddata.apptype = apptype;
+				cddata.text = text;
+				cddata.data = value;
+				cddata.actionParam=value;
+				cddata.type = "view";
+				var menus=document.getElementsByName("menutype");
+				for(var i=0;i<menus.length;i++)
+				{
+					var v=menus[i].value;
+					if(menus[i].checked==true){
+						cddata.menutype = v;
+						if(v==2){
+							cddata.type = "click";
+							cddata.actionParam=did;
+						}else{
+							cddata.type = "view";
+							cddata.actionParam=value;
+						}
+					}
+				}
+			}else if(cddata.typ=='res_touch'){
+				var text=$("#touchnews").attr('data');
+				cddata.text = $("#touchnews").text();
+				cddata.apptype = $("#rad_touch").val();
+				cddata.data = text;
+				cddata.type = "click";
+				cddata.actionParam = $("#rad_touch").val()+'|'+text+"|is_touch";
+				$("#clr").css('display',"inline");
+			}else if(cddata.typ=='res_url'){
+				cddata.data = $('#'+cddata.typ).find('input[type="text"]').val();
+				cddata.actionParam = cddata.data;
+				cddata.type = "view";
+				var menus=document.getElementsByName("linktype");
+				for(var i=0;i<menus.length;i++)
+				{
+					var v=menus[i].value;
+					if(menus[i].checked==true){
+						cddata.linktype = v;
+					}
+				};
+			}else{
+				cddata.data = $('#'+cddata.typ).find('input[type="text"]').val();
+			}
+		}
+		$(window.curcd).text($('#cdmcinpo').val());
+		$(window.curcd).attr('reldata',$.toJSON(cddata));
+	}
+}
+function saveMenu(fun){
+	suitdata();
+	var alldata = [];
+	var error=0;
+	var errmsg="";
+	$('.maincd').each(function(i){
+		var reldata=$.trim($(this).attr('reldata'));
+		if (reldata)
+		{
+			var cddata = $.evalJSON($.trim($(this).attr('reldata')));
+			var cdid = $(this).attr('id');
+			cddata.name = $.trim($(this).text());
+			cddata.name = $.trim($(this).text());
+			if(cddata.data =="" && cddata.name !=""){
+				error=1;
+				errmsg=cddata.name+"没有选择应用！";
+			};	
+			if(cddata.typ=='res_ejcd'){
+				//回填菜单
+				var zcddiv = $('div[zcdrel="'+cdid+'"]');
+				cddata.type="click";
+				if($.trim(cddata.data) !=''){
+					var ds = cddata.data.split('@');
+					cddata.subdata = {};
+					cddata.list = {};
+					for(var i=0;i<ds.length;i++){
+						var ind = parseInt(ds[i])-1;
+						var zcd = zcddiv.find('.zizicd').eq(ind);
+						var ttstr = $.trim(zcd.attr('reldata'));
+						var ssdata = {};
+						ssdata.actionParam=ssdata.data;
+						if(ttstr != ''){
+							ssdata = $.evalJSON(zcd.attr('reldata'));
+						}
+						ssdata.tit = $.trim(zcd.text());
+						ssdata.name = $.trim(zcd.text());
+						if(ssdata.typ == 'res_tel'){
+							ssdata.type = 'tel';
+						}else if(ssdata.typ == 'res_touch')
+						{
+							cddata.apptype =ssdata.apptype;
+							ssdata.type = 'click';
+							ssdata.actionParam = ssdata.apptype+"|"+ssdata.data+"|is_touch";
+						}else if(ssdata.typ == 'res_app')
+						{
+							ssdata.type = ssdata.type;
+
+						}else{
+							ssdata.type = 'view';
+						}
+						
+						cddata.list[i] = ssdata;
+						cddata.subdata['zizicd'+ds[i]] = ssdata;
+						if(ssdata.data==def){
+							ssdata.data='';
+						};
+						if(ssdata.data =="" && ssdata.name !="" && errmsg==""){
+							error=1;
+							errmsg=ssdata.name+"没有选择触发信息！";
+						};	
+					}
+				}			
+			}else{
+						cddata.list={};
+			}
+			alldata[alldata.length] = cddata;
+		}
+	});
+	// console.log(alldata);return;
+	if(error==1){
+		toast(errmsg);
+		return false;
+	}
+	loading('数据保存中...');
+	ajax('{:U("saveMenu")}',{ id:$('#initdatat').attr('menuid'),menu:$.toJSON(alldata)},function(data){
+		loading(false);
+		if(fun){
+			fun();
+			return false;
+		}
+		toast(data.info,function(){
+			if(data.url != '') window.location.href = data.url;
+		});
+	});
+}
+
+function publishMenu(){
+	saveMenu(function(){
+		loading('菜单发布中...');
+		ajax('{:U("publishMenu")}',{id:$('#initdatat').attr('menuid')},function(data){
+			loading(false);
+			var cdatas = $.evalJSON(data);
+			toast(cdatas.error);
+		});
+	});
+}
+
+function initthedata(){
+	var idata = $.trim($('#initdatat').val());
+	if(idata !=''){
+		var csdata = $.evalJSON(idata);
+		for(var i=0;i<csdata.length;i++){
+			var mcd = $('.maincd').eq(i);
+			var zcddiv = $('div[zcdrel="'+mcd.attr('id')+'"]');
+			var cdjda = csdata[i];
+			if(cdjda.typ=='res_ejcd'){
+				for(var ejcd in cdjda.subdata){
+					zcddiv.find('[rel="'+ejcd+'"]').attr('reldata',$.toJSON(cdjda.subdata[ejcd])).text(cdjda.subdata[ejcd].tit).show();
+				}
+			}
+			cdjda.subdata = null;
+			mcd.attr('reldata',$.toJSON(cdjda));
+			mcd.text(cdjda.tit);			
+		}
+	}
+}
+function clrNews(obj){
+
+		$('#touchnews').text('');
+		$('#touchnews').attr('data','');
+		$(obj).css('display',"none");
+}
+</script>
+	<textarea menuid="{$info['id']}" style="display:none;" id="initdatat">{$info['menu']}</textarea>
+	<php>$menus	= json_decode($info['menu'],true);</php>
+	<table>
+	<tr>
+	<td>
+		<div style="background-image: url('__PUBLIC__/Common/createmenu/image/3CustomLt.png');width: 344px;height: 623px;position: relative;">
+			<php>$sonMenu	= array(array('id'=>1,'left'=>'46px'),array('id'=>2,'left'=>'131px'),array('id'=>3,'left'=>'216px'));</php>
+			<volist name="sonMenu" id="vo">
+			<div style="position: absolute;bottom: 170px;left:{$vo['left']}; width: 83px;" zcdrel="maincd{$vo.id}">
+				<php>for($ii=1;$ii<=5;$ii++){</php>
+				<div class="zizicd" rel="zizicd{$ii}">子菜单</div>
+				<php>}</php>
+			</div>
+			</volist>
+			<div style="position: absolute;bottom: 122px;left: 43px;">
+				<table style="border: none;" cellpadding="0" cellspacing="0">
+					<tr>
+						<td><div style="height: 45px;width: 85px;line-height: 45px;text-align: center;overflow:hidden;" id="maincd1" reldata="" class="maincd"><php> echo empty($menus[0]) ? '菜单一' : trim($menus[0]['name']);</php></div></td>
+						<td><div style="height: 45px;width: 87px;line-height: 45px;text-align: center;overflow:hidden;" id="maincd2" reldata="" class="maincd"><php> echo (empty($menus[1])&& empty($menus[0])) ? '菜单二' : trim($menus[1]['name']);</php></div></td>
+						<td><div style="height: 45px;width: 85px;line-height: 45px;text-align: center;overflow:hidden;" id="maincd3" reldata="" class="maincd"><php> echo (empty($menus[2])&& empty($menus[0])) ? '菜单三' : trim($menus[2]['name']);</php></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</td>
+	<td valign="top">
+		<div style="position: relative;width: 100%;margin-top:30px;">
+			<button class="btn btn-return" id="weixinMaterial">公众平台图文数据采集</button>   
+			<br><br>
+			<button class="btn submit-btn" id="saveOrder" onclick="saveMenu()">保存菜单数据</button> 
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-return" id="sync" onclick="publishMenu()">发布菜单</button>  
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<!-- <button class="btn btn-return" id="weixinMaterial">公众平台图文数据采集【认证服务号】</button>       -->
+		</div><br>
+		<div style="display: block;" id="czselarea">
+			<div id="top" class="alert alert-info" style="padding-bottom:0px;padding-left:0px;width:300px;background:#F5F5F5;border:none;">
+				<label class="control-label" style="color:#333333;">菜单名称</label>
+				<input value="菜单一" id="cdmcinpo" style="margin-bottom: 6px;" type="text">
+			</div>
+			<div class="control-group">
+			  <label class="control-label" for="answertype">菜单点击事件</label>
+			    <div class="controls">
+					<select class="span2" id="answertype" style="width:140px;" name="answertype">
+					  <option selected="selected" value="res_ejcd" id="xsejcdopt">显示二级菜单</option>
+					  <option selected="selected" value="res_url">链接</option>
+					 <!-- <option value="res_app">应用</option>-->
+					  <option value="res_touch">素材</option>
+					  <!--<option value="res_tel">电话</option>-->
+					</select>
+			   </div>
+		  	</div>
+		</div>
+		<!-- 应用 -->
+		<!-- <div style="display: none;width:140px;" class="szcjbt" id="res_app">
+			<select name="rad_app"  style="width:140px;" id="rad_app">
+					<notempty name="AppCatList">
+					<volist name="AppCatList" id="voApp">
+					<option value="{$voApp}">{$voApp}</option>
+					</volist>
+					</notempty>
+			</select>
+			<notempty name="AppList">
+			<volist name="AppList" id="voAppList">
+			<select name="rad_apps"  style="width:140px;display: none;margin-top:10px;" id="{$key}">
+				<notempty name="voAppList">
+				<volist name="voAppList" id="voAppSon">
+				<option value="{$voAppSon['template_url']}" id="app|{$voAppSon['id']}|is_app">{$voAppSon['title']}</option>
+				</volist>
+				</notempty>
+			</select>
+			</volist>
+			</notempty>
+			<div style="margin-top:5px;width:200px;">
+				<input type="radio" value="1" name="menutype" checked="checked" id="selectid_1" style="vertical-align:middle;display:inline;margin:0;">
+				<label for="selectid_1" style="vertical-align:middle;display:inline;padding-right:10px;">直接打开</label>
+				<input type="radio" value="2" name="menutype" id="selectid_2" style="vertical-align:middle;display:inline;margin:0;">
+				<label for="selectid_2" style="vertical-align:middle;display:inline;padding-right:10px;">图文推送</label>
+			</div>
+		</div> -->
+		<!-- 应用 -->
+		<div style="display: none;width:540px;" class="szcjbt" id="res_touch">
+			<select name="rad_touch"  style="width:140px;" id="rad_touch">
+					<!-- <option value="text">文本</option> -->
+					<option value="news">图文</option>
+			</select>
+			&nbsp;&nbsp;
+			<span id="touchnews" data=""></span>
+			<a href="javascript:clrNews(this);" id="clr" style="display:none;width:25px;">清除</a>
+			<div style="margin-top:10px;" >
+				<a class="btn blue  dropdown-toggle" href="javascript:;" title="新增素材" id="addtouch" style="margin-top:-10px;">选择素材</a>
+			</div>
+		</div>
+		<!-- 二级菜单 -->
+		<div style="display: block;" class="szcjbt" id="res_ejcd">
+			<div id="top" class="alert alert-info">至少填写一项子菜单</div>
+			<span class="res_ejcd_1">
+			<label class="control-label" for="answertype">子菜单一:</label>
+			<input type="text">
+			</span><br>
+			<span class="res_ejcd_2">
+			<label class="control-label" for="answertype">子菜单二:</label>
+			<input type="text">
+			</span><br>
+			<span class="res_ejcd_3">
+			<label class="control-label" for="answertype">子菜单三:</label>
+			<input type="text">
+			</span><br>
+			<span class="res_ejcd_4">
+			<label class="control-label" for="answertype">子菜单四:</label>
+			<input type="text">
+			</span><br>
+			<span class="res_ejcd_5">
+			<label class="control-label" for="answertype">字菜单五:</label>
+			<input type="text">
+			</span><br>
+		</div>	
+		<!-- 关键字  -->
+		<div style="display: none;" class="szcjbt" id="res_gjz">要触发的关键字：<input name="event_gjz" type="text"></div>
+		<!-- 关键字  -->
+		<div style="display: none;" class="szcjbt" id="res_url">
+			<input name="event_url" type="text" style="width:240px;"id="event_url" default="URL地址,例:http://www.zlvyun.com" value="URL地址,例:http://www.zlvyun.com">必须加http://
+			<div style="margin-top:5px;">
+				<!-- <input type="radio" value="1" name="linktype" checked="checked" id="selectid_3" style="vertical-align:middle;display:inline;margin:0;">
+				<label for="selectid_3" style="vertical-align:middle;display:inline;padding-right:10px;">授权后打开链接，可获取完整的用户信息</label>
+				<a href="/article/help?id=246" target="__blank" style="vertical-align:middle;display:inline;padding-right:5px;">授权设置</a><br/> -->
+				<input type="radio" value="2" name="linktype" checked="checked" id="selectid_4" style="vertical-align:middle;display:inline;margin:0;">
+				<label for="selectid_4" style="vertical-align:middle;display:inline;">直接打开链接</label>
+			</div>
+		</div>
+		<!-- 关键字  -->
+		<div style="display: none;" class="szcjbt" id="res_tel">
+		要拨打的电话：<input name="event_tel" type="text">
+		</div>
+	</td>
+	</tr>
+	</table>
+        <script>
+
+        	$(function(){
+        		$("#weixinMaterial").click(function(){
+	        		var _url=   "{:U('collectionWeixinNewsMaterial')}";
+	                var _param  =   new Object();
+	                    _param.page =   0;
+	                var mdata  = '';
+	                loading('公众平台图文采集中...');
+	                $.post(_url,_param,function(res){
+	                	loading(false);
+	                	alert('采集成功');
+	                },'json');
+        		});
+        	});
+
+			KindEditor.ready(function(K) {
+				K('#addtouch').click(function() {
+                    var _url=   "{:U('getWxNewsMaterial')}";
+                    var _param  =   new Object();
+                        _param.page =   0;
+                    var mdata  = '';
+                    loading('数据采集中...');
+                    $.post(_url,_param,function(res){
+						loading(false);
+                    	mdata   +=   '<div style="margin:10px;">';
+                    	mdata 	+=	 '<div style="width: 655px;height: 400px;margin:0 auto;background-color: #f8f8f8;overflow: hidden;overflow-y: scroll;">';
+                        console.log(res);
+                        var news_list = res.result;
+                    	mdata 	+=	 '<ul class="card">';
+                        $.each(news_list,function(i,n){
+                        	mdata 	+=	'<li class="card-item" onclick="checeked(this)" data-media_id="'+n.media_id+'">';
+							mdata 	+=	'<div class="card-date">'+n.update_time+'</div>';
+							mdata 	+=	'<div class="card-title">'+n.title+'</div>';
+							mdata 	+=	'<div class="card-cover">';
+							mdata 	+=	'<img src="'+n.cover_image+'">';
+							mdata 	+=	'</div>';
+							mdata 	+=	'<div class="card-mask"></div>';
+							mdata 	+=	'</li>';
+                        });
+                    	mdata   +=      '</ul>';
+                        mdata   +=      '</div>';
+                        mdata   +=      '</div>';
+					var dialog = K.dialog({
+							width : 760,
+							height: 500,
+							title : '选择素材',
+							body : mdata,
+							scroll : true,
+							closeBtn : {
+								name : '关闭',
+								click : function(e) {
+									dialog.remove();
+								}
+							},
+							yesBtn : {
+								name : '确定',
+								click : function(e) {
+									if (!$(".card-item").hasClass('card-item-selected')) {
+										alert('请选择素材');
+                                                                                return false;
+									}else{
+                                                                            console.log($(".card").find('.card-item-selected'));
+                                                                            	$('#touchnews').text($(".card").find('.card-item-selected').find(".card-title").text());
+                                                                            	$("#touchnews").attr('data',$(".card").find('.card-item-selected').attr("data-media_id"));
+										dialog.remove();
+									}
+								}
+							},
+							noBtn : {
+								name : '取消',
+								click : function(e) {
+									dialog.remove();
+								}
+							}
+						});
+
+
+                    },'json');
+					
+				});
+			});
+		</script>
+
+<script>
+function checeked(obj){
+	$(obj).addClass('card-item-selected').siblings().removeClass('card-item-selected');
+
+//	$('#touchnews').text($(obj).find(".card-title").text());
+//	$("#touchnews").attr('data',$(obj).attr("data-media_id"));
+	// $(this).css('display',"none");
+
+
+	// alert($(obj).find(".card-title").text());
+}
+var def=$("#event_url").attr('default');
+
+$(function(){
+
+			
+	var obj = document.getElementById("rad_app"); //定位id
+	var index = obj.selectedIndex; // 选中索引
+	var value = obj.options[index].value; // 选中值
+
+	var controls=document.getElementsByName("rad_apps");
+	for(var i=0;i<controls.length;i++)
+	{
+		controls[i].style.display="none";
+		if(value==controls[i].id){
+			controls[i].style.display="block";
+		}
+	}
+	$("#rad_app").bind('change',function(){
+		for(var i=0;i<controls.length;i++)
+		{
+			controls[i].style.display="none";
+			if(this.value==controls[i].id){
+				controls[i].style.display="block";
+			}
+		}
+	});
+
+	$("#sel").bind('click',function(){
+		  $.get("/system/touch/index/option/news/?id=9&ajax=1&_=1415090821146",function(result){
+			  toast(result);
+		});
+	});
+	$("#event_url").bind('click',function(){
+		if($(this).val()==$(this).attr('default')){
+			$(this).val('');
+		}
+	});
+	$("#close1").bind('click',function(){
+		$("#AjaxModal1").addClass("hide").addClass("fade");
+	});
+	$("#close2").bind('click',function(){
+		$("#AjaxModal2").addClass("hide").addClass("fade");
+	});
+
+	$("#cancel1").bind('click',function(){
+		$("#AjaxModal1").addClass("hide").addClass("fade");
+	});
+	$("#cancel2").bind('click',function(){
+		$("#AjaxModal2").addClass("hide").addClass("fade");
+	});
+
+	$("#CallbackA").bind('click',function(){
+		$("#AjaxModal").addClass("hide").addClass("fade");
+	});
+	// $("#clr").bind('click',function(){
+	// 	alert('22');
+	// });
+	$("#rad_touch").bind('change',function(){
+		$('#touchnews').text('');
+		$("#clr").css('display',"none");
+	});
+	// $("#addtouch").bind('click',function(){
+	// 	var type=$("#rad_touch").val();
+	// 	var url='';
+	// 	if(type=='text'){
+	// 		url="/system/touch/index/option/text/?id=&ajax=1&isdiy=1&t="+Math.random();
+	// 	}else if(type=='news'){
+	// 		url="/system/touch/index/option/news/?id=&ajax=1&isdiy=1&t="+Math.random();
+	// 	}else if(type=='app'){
+	// 		url="/system/touch/index/option/app/?id=&ajax=1&isdiy=1&t="+Math.random();
+	// 	}
+	// 	 $.get(url,function(result){
+	// 		 	$("#f1").css("display",'inline');
+	// 			$("#f2").css("display",'none');
+	// 			$("#menuadd").text("素材添加");
+	// 			$("#menuadd").attr("data",'0');
+	// 			$("#modal-body2").html(result);
+	// 			$("#AjaxModal2").removeClass("hide").removeClass("fade");
+	// 			$("#btn2").removeClass("hide").removeClass("fade");
+	// 	 });
+	// });
+});
+</script>
+</block>
+<block name="editbutton">{/*操作按钮*/}</block>

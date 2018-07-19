@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData = {};
+			CommonJs.SubmitData.bank_name			= $("input[name='bank_name']").val();
+			CommonJs.SubmitData.card_number			= $("input[name='card_number']").val();
+			CommonJs.SubmitData.user_name			= $("input[name='user_name']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.bank_name)){
+				_inform('请输入开户银行',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.card_number)){
+				_inform('请输入开户账号',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.user_name)){
+				_inform('请输入开户名称',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	CommonJs.SubmitType	= 3;
+	CommonJs.JsSave("#form-member-add");
+});
+</script>

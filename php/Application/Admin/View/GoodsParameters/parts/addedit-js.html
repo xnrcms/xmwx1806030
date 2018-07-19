@@ -1,0 +1,19 @@
+<script type="text/javascript">
+    CommonJs.SearchData();
+    CommonJs.SetTableWidth();
+    CommonJs.SetColspan();
+    /*此处可扩展更多JS代码*/
+    CommonJs.FormCheck = function (FormObj) {
+        CommonJs.Loading = true;
+        CommonJs.SubmitData.pname = $("input[name='pname']").val();
+        CommonJs.SubmitData.pvalue = $("input[name='pvalue']").val();
+        CommonJs.SubmitData.sort = $("input[name='sort']").val();
+        CommonJs.SubmitData.id = $("input[name='id']").val();
+        CommonJs.SubmitData.gid = $("input[name='gid']").val();
+        CommonJs.Loading = false
+        return true;
+    };
+//数据提交
+    CommonJs.JsSave("#form-member-add");
+    /*此处可扩展更多JS代码*/
+</script>

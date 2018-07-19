@@ -1,0 +1,19 @@
+{/*按钮区域=============================================================================start*/}
+<div class="cl pd-5 bg-1 bk-gray mt-20">
+	<span class="l">
+		<notempty name="ListTopNav">
+		<volist name="ListTopNav" id="ltn">
+			<switch name="ltn.posttype">
+				<case value="1"><a class="btn btn-primary radius" onClick="return CommonJs.IsUrl('{$ltn.title}','{:U($ltn[url],$extends_param)}',900,600);" href="javascript:;">{$ltn.title}</a></case>
+				<case value="2">&nbsp;<a class="btn btn-primary radius" onClick="return CommonJs.IsUrl('{$ltn.title}','{:U($ltn[url],$extends_param)}',900,600);" href="javascript:;">{$ltn.title}</a></case>
+				<case value="3">&nbsp;<a class="btn" href="javascript:void(0);">{$ltn.title}</a></case>
+				<case value="4">&nbsp;<a class="btn btn-danger radius" onClick="CommonJs.IsAjax(0,'{:U($ltn[url],$extends_param)}','{$ltn.title}')" href="javascript:;">{$ltn.title}</a></case>
+				<case value="5">&nbsp;</case>
+				<default/>&nbsp;<a class="btn" onclick="return CommonJs.IsUrlFull('{$ltn.title}','{:U($ltn[url],$extends_param)}',2);" href="javascript:;">{$ltn.title}</a>
+			</switch>
+		</volist>
+		</notempty>
+	</span>
+	<span class="r page">{$_page}</span>
+</div>
+{/*按钮区域*=============================================================================end*/}

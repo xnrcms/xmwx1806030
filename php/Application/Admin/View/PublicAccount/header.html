@@ -1,0 +1,88 @@
+<php>
+$load_time 		= 0;
+$load_upload   	= 0;
+
+/*动态加载是否需要引入js文件*/
+if(CONTROLLER_NAME == 'Goods' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'GoodsAttr' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'Order' && in_array(ACTION_NAME,array('index','detail','aftersaleslist','aftersalesdetail'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'Withdrawcash' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'Profit' && in_array(ACTION_NAME,array('rednet','customerservice','user'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'User' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'AuthManager' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'RedNet' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'Scenario' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}elseif(CONTROLLER_NAME == 'Customerservice' && in_array(ACTION_NAME,array('index'))){
+    $show_msg = true;
+}else{
+    $show_msg = false;
+}
+</php>
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>自定义菜单|网红美妆后台管理系统</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Common/createmenu/css/base.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Common/createmenu/css/common.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Common/createmenu/css/module.css">
+    <block name="heardercss"></block>
+    <script type="text/javascript">
+    //定义JS常量
+    var AjaxUrl = "{:U('Ajax/AjaxHandle')}";
+    var ThisUrl = window.location.href;
+    var PublicPath = "__PUBLIC__/";
+    </script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__PUBLIC__/Package/jquery/jquery-1.10.2.min.js"></script>
+    <![endif]--><!--[if gte IE 9]><!-->
+    <script type="text/javascript" src="__PUBLIC__/Common/createmenu/jquery/jquery-2.0.3.min.js"></script>
+    <!--<![endif]-->
+    <script type="text/javascript" src="__PUBLIC__/Common/createmenu/js/common.js"></script>
+    <php>
+        if($show_msg == true){
+    </php>
+    <script type="text/javascript" src="__PUBLIC__/Package/jquery/jquery-1.2.6.pack.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Package/jquery/jquery.messager.js"></script>
+    <script type="text/javascript">
+        function GetOrderCount()
+        {
+            $.post("{:U('Order/getOrderMessage')}",{},function(res){
+                    if(res.code == '1'){
+                        var msg_html = '';
+
+                        if(res.new_order > 0){
+                            msg_html += '目前尚有<font color=red>'+res.new_order+'</font>个已支付订单未处理，请相关客服尽快处理！<a href="{:U(\'Admin/Order/index/menuid/268\')}" target="_self">进入处理>></a>';
+                            msg_html += '<br><br>';
+                        }
+
+                        if(res.new_aftersales > 0){
+                            msg_html += '目前尚有<font color=red>'+res.new_aftersales+'</font>个售后订单未处理，请相关客服尽快处理！<a href="{:U(\'Admin/Order/aftersaleslist/menuid/280\')}" target="_self">进入处理>></a>';
+                        }
+
+                        if(msg_html != ''){
+                            $.messager.lays(300, 200);
+                            $.messager.show('<font color=red>消息提醒</font>',msg_html,10000); 
+                        }
+                    }
+            },'json');
+        }
+        $(document).ready(function() {
+//            GetOrderCount();
+            window.setInterval("GetOrderCount()", 10000);//1分钟刷新1次 
+        });
+    </script>
+    <php>
+        }
+    </php>
+</head>
+<body style="background-color:#F6F6F6;">

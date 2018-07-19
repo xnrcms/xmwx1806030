@@ -1,0 +1,27 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<include file="MemberFinance/parts/currency-nav" />
+<div class="page-container">
+	<include file="MemberFinance/parts/currency-search" />
+	<include file="MemberFinance/parts/currency-button" />
+	<div class="mt-5">
+		<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+		    <thead>
+				<tr class="text-l">
+					<th width="25%" style="line-height: 35px;">累计聚蚁币(<span style="color:red">{$memberInfo.total_currency}</span>)<br>可用聚蚁币(<span style="color:green">{$memberInfo.current_currency}</span>)</th>
+					<th width="25%" style="line-height: 35px;">累计积分(<span style="color:red">{$memberInfo.total_integral}</span>)<br>可用积分(<span style="color:green">{$memberInfo.current_integral}</span>)</th>
+				</tr>
+		    </thead>
+		</table>
+	</div>
+	<include file="MemberFinance/parts/currency-lists" />
+	<include file="MemberFinance/parts/currency-button" />
+</div>
+</block>
+<block name="footjs">
+<include file="MemberFinance/parts/currency-js" />
+</block>

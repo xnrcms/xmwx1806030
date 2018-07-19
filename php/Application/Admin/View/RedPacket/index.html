@@ -1,0 +1,17 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<include file="RedPacket/parts/index-nav" />
+<div class="page-container">
+	<include file="RedPacket/parts/index-search" />
+	<include file="Public/button-top" />
+	<include file="RedPacket/parts/index-lists" />
+	<include file="Public/button-top" />
+</div>
+</block>
+<block name="footjs">
+<include file="RedPacket/parts/index-js" />
+</block>

@@ -1,0 +1,56 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="3%" data-field="td_id">订单ID</th>
+			<th width="10%" data-field="td_order_no">订单编号</th>
+			<th width="5%" data-field="td_m_username">商家用户名</th>
+			<th width="5%" data-field="td_nickname">商家名称</th>
+			<th width="12%" data-field="td_goodsInfo">商品信息</th>
+			<th width="5%" data-field="td_total_integral">积分</th>
+			<th width="5%" data-field="td_username">兑换账户</th>
+			<th width="8%" data-field="td_exchange_time">兑换时间</th>
+			<th width="5%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id">{$vo.id}</td>
+            <td class="td_order_no">{$vo.order_no}</td>
+			<td class="td_m_username">{$vo.m_username}</td>
+			<td class="td_nickname">{$vo.nickname}</td>
+			<th class="td_goodsInfo">{$vo.goodsInfo}</th>
+			<th class="td_total_integral">{$vo.total_integral}</th>
+			<td class="td_username">{$vo.username}</td>
+			<td class="td_exchange_time">{$vo.exchange_time}</td>
+			<td class="td_done">
+			<notempty name="ListRightNav">
+			<volist name="ListRightNav" id="lrn">
+				<switch name="lrn.posttype">
+					<case value="0">
+						<a style="text-decoration:none" class="ml-5" href="{:U($lrn[url],'id='.$vo[id].$extends_param)}" title="{$lrn.title}">{$lrn.title}</a>
+					</case>
+					<case value="4">
+						<a style="text-decoration:none" class="ml-5" onClick="CommonJs.IsAjax('{$vo[id]}','{:U($lrn[url],'ids='.$vo[id].$extends_param)}','{$lrn.title}')" href="javascript:;" title="{$lrn.title}">{$lrn.title}</a>
+					</case>
+					<case value="5">
+						<php>if((strpos($lrn['url'],'/exchange') >0) && $vo['redeem_code'] != '' && $vo['member_id'] == 0 && IS_ROOT != true){</php>
+						<a style="text-decoration:none" class="ml-5" onClick="CommonJs.IsAjax('{$vo[id]}','{:U($lrn[url],'ids='.$vo[id].$extends_param)}','{$lrn.title}')" href="javascript:;" title="{$lrn.title}">{$lrn.title}</a>
+						<php>}</php>
+					</case>
+					<default/>
+						<a style="text-decoration:none" class="ml-5" onClick="return layer_show('{$lrn.title}','{:U($lrn[url],'id='.$vo[id].$extends_param)}',900,600);" href="javascript:;" title="{$lrn.title}">{$lrn.title}</a>
+				</switch>
+			</volist>
+			</notempty>
+			</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

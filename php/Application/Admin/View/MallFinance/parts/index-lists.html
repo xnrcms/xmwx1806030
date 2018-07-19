@@ -1,0 +1,40 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" data-field="td_id" title="ID"><input type="checkbox" id="selectid_0"></th>
+			<th width="4%" data-field="td_uid">用户ID</th>
+			<th width="7%" data-field="td_phone">用户账号</th>
+			<th width="5%" data-field="td_goods_total_money">商品总金额</th>
+			<th width="5%" data-field="td_xinlidou">鑫利豆抵扣</th>
+			<th width="5%" data-field="td_xianglidou">享利豆抵扣</th>
+			<th width="5%" data-field="td_fulidou">福利豆抵扣</th>
+			<th width="5%" data-field="td_discount_money">抵扣金额</th>
+			<th width="5%" data-field="td_shipping_fee">运费</th>
+			<th width="5%" data-field="td_total_money">支付金额</th>
+			<th width="5%" data-field="td_pay_time">日期</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+			<td class="td_uid">{$vo.uid}</td>
+			<th class="td_phone">{$vo.phone}</th>
+			<td class="td_goods_total_money">¥{$vo.goods_total_money}</td>
+			<td class="td_xinlidou">{$vo.xinlidou}</td>
+			<td class="td_xianglidou">{$vo.xianglidou}</td>
+			<td class="td_fulidou">{$vo.fulidou}</td>
+			<td class="td_discount_money">¥{$vo.discount_money}</td>
+			<td class="td_shipping_fee">¥{$vo.shipping_fee}</td>
+            <td class="td_total">¥{$vo.total_money}</td>
+            <td class="td_pay_time">{$vo.pay_time}</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

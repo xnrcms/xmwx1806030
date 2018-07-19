@@ -1,0 +1,38 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="5%" data-field="td_uid">用户ID</th>
+			<th width="10%" data-field="td_username">昵称</th>
+			<th width="10%" data-field="td_phone">手机号码</th>
+			<th width="8%" data-field="td_total_money">累计收益</th>
+			<th width="8%" data-field="td_current_money">账户余额</th>
+			<th width="8%" data-field="td_total_integral">用户总积分</th>
+			<th width="8%" data-field="td_current_integral">用户当前积分</th>
+			<th width="8%" data-field="td_current_coin">用户当前聚蚁币</th>
+			<th width="8%" data-field="td_status_text">账号状态</th>
+			<th width="10%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_uid">{$vo.id}</td>
+			<td class="td_username">{$vo.nickname}</td>
+			<td class="td_phone">{$vo.phone}</td>
+			<td class="td_current_money">{$vo.current_money}</td>
+			<td class="td_total_integral">{$vo.total_integral}</td>
+			<td class="td_current_integral">{$vo.current_integral}</td>
+			<td class="td_total_integral">{$vo.total_integral}</td>
+			<td class="td_current_coin">{$vo.current_coin}</td>
+			<td class="td_status_text">{$vo.status}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

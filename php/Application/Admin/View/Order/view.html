@@ -1,0 +1,139 @@
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/h-ui.admin/css/H-ui.admin.css" />
+
+<block name="main">
+    <style type="text/css">
+        /*.line-dete label{
+            padding: 0;
+        }*/
+        .td_text1{
+            text-align: right;
+            padding-right: 20px;
+        }
+        .td_text2{
+            text-align: left;
+            padding-left: 20px;
+        }
+    </style>
+    <div class="pageheader">
+        <h1 class="pagetitle">订单详情</h1>
+        <span class="pagedesc"></span>
+    </div>
+    <div id="contentwrapper" class="contentwrapper">
+        <form class="stdform stdform2">
+            <table cellpadding="2" cellspacing="2" border="0" class="stdtable stdtablequick">
+                <tr>
+                    <td width='15%' class="td_text1">订单编号：</td>
+                    <td width='25%' class="td_text2">{$info['order_no']}</td>
+                    <td width='15%' class="td_text1">下单时间：</td>
+                    <td width='25%' class="td_text2">{$info['create_time']}</td>
+                </tr>
+                <tr>
+                    <td class="td_text1">下单用户账号：</td>
+                    <td class="td_text2"><?php echo empty($info['username'])?'':$info['username'];?></td>
+                    <td class="td_text1">收件人：</td>
+                    <td class="td_text2">{$info['rname']}</td>
+                </tr>
+                <tr>
+                    <td class="td_text1">联系电话：</td>
+                    <td class="td_text2">{$info['phone']}</td>
+                    <td class="td_text1">收件地址：</td>
+                    <td class="td_text2">{$info['province']}{$info['city']}{$info['county']}{$info['address']}</td>
+                </tr>
+                <tr>
+                    <td width='10%' class="td_text1">物流公司：</td>
+                    <td width='30%' class="td_text2">
+                        <empty name="info.express_company">
+                            暂无物流信息
+                        <else />
+                        {$info['express_company']}
+                        </empty>
+
+                    </td>
+                    <td width='10%' class="td_text1">物流单号：</td>
+                    <td width='30%' class="td_text2">
+                        <empty name="info.express_no">
+                            暂无物流信息
+                        <else />
+                        {$info['express_no']}
+                        </empty>
+                    </td>
+                </tr>
+                <tr>
+                    <td width='10%' class="td_text1">快递费：</td>
+                    <td width='30%' class="td_text2">¥{$info['shipping_fee']}</td>
+                    <td width='10%' class="td_text1">商品总数：</td>
+                    <td width='30%' class="td_text2">{$info['gnum']}</td>
+                </tr>
+                <tr>
+                    <td width='10%' class="td_text1">商品总金额：</td>
+                    <td width='30%' class="td_text2">{$info['goods_total_money']}</td>
+                    <td width='10%' class="td_text1">支付状态：</td>
+                    <td width='30%' class="td_text2">{$info['pay_status']}</td>
+                </tr>
+                <tr>
+                    <td width='10%' class="td_text1">订单备注：</td>
+                    <td width='30%' class="td_text2">{$info['remarks']|default="暂无备注"}</td>
+                    <td width='10%' class="td_text1">订单状态：</td>
+                    <td width='30%' class="td_text2">{$info['status']}</td>
+                </tr>
+                <tr>
+                    <td width='10%' class="td_text1">鑫豆抵扣金额：</td>
+                    <td width='30%' class="td_text2">¥{$info['discount_money']}元</td>
+                    <td width='10%' class="td_text1">实付金额：</td>
+                    <td width='30%' class="td_text2">¥{$info['total_money']}</td>
+                </tr>
+            </table>
+        </form>
+        <p></p>
+        <p></p>
+        <table cellpadding="5" cellspacing="5" border="0" class="stdtable stdtablequick">
+            <tr>
+                <th width='35%'>商品名称</th>
+                <th width='15%'>商品图片</th>
+                <th width='12%'>购买价格</th>
+                <th width='12%'>购买数量</th>
+                <th width='12%'>商品属性</th>
+                <th width='12%'>商品状态</th>
+            </tr>
+            <volist name="info.glist" id="od">
+            <tr>
+                <td align='center'>{$od.gname}</td>
+                <td align='center'><img src='{$od.gimg}' width='80' /></td>
+                <td align='center'>¥{$od.price}元</td>
+                <td align='center'>{$od.num}</td>
+                <td align='center'>{$od.avalue}</td>
+                <td align='center'>正常</td>
+              </tr>
+            </volist>
+        </table>
+		<if condition="($info.state eq 5) OR ($info.state eq 6) OR ($info.state eq 7)">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+            <tr>
+                <th colspan="7">退款信息</th>
+            </tr>
+            <tr>
+                <th width='15%'>订单编号</th>
+                <th width='10%'>订单状态</th>
+                <th width='10%'>上一个状态</th>
+                <th width='10%'>退款金额</th>
+                <th width='10%'>退款原因</th>
+                <th width='10%'>申请服务</th>
+                <th width='15%'>申请时间</th>
+            </tr>
+            <tr>
+                <td align='center'>{$info.order_no}</td>
+                <td align='center'>{$info.status}</td>
+                <td align='center'>{$refund.original_status}</td>
+                <td align='center'>{$refund.money}</td>
+                <td align='center'>{$refund.reason}</td>
+                <td align='center'>{$refund.service}</td>
+                <td align='center'>{$refund.create_time}</td>
+              </tr>
+        </table>
+		</if>
+
+    </div>
+</block>
+<block name="script">
+</block>

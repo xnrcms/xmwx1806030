@@ -1,0 +1,35 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.shakenum			= $("input[name='shakenum']").val();
+			CommonJs.SubmitData.probability			= $("input[name='probability']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.shakenum)){
+				_inform('请输入摇券次数',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.digits(CommonJs.SubmitData.shakenum)){
+				_inform('摇券次数必须为正整数',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.probability)){
+				_inform('请输入概率',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.number(CommonJs.SubmitData.probability)){
+				_inform('概率必须为数字',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.SubmitType	= 3;
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	//上传插件
+	//CommonJs.StartUpload();
+});
+</script>

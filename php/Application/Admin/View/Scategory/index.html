@@ -1,0 +1,19 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/module.css" />
+</block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<include file="Category/parts/index-nav" />
+<div class="page-container">
+	<include file="Scategory/parts/index-search" />
+	<include file="Public/button-top" />
+	<include file="Scategory/parts/index-lists" />
+	<include file="Scategory/parts/index-button" />
+</div>
+</block>
+<block name="footjs">
+<include file="Scategory/parts/index-js" />
+</block>

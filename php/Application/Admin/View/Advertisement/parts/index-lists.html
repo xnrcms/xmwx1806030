@@ -1,0 +1,58 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" class="td_id">id</th>
+			<th width="3%" data-field="td_uid">用户id</th>
+			<th width="6%" data-field="td_order_no">订单编号</th>
+			<th width="3%" data-field="td_shop_id">商家编号</th>
+			<th width="5%" data-field="td_mode">推广方式</th>
+			<th width="5%" data-field="td_show_time">推广日期</th>
+			<th width="3%" data-field="td_num">推广人数</th>
+			<th width="3%" data-field="td_price">推广单价</th>
+			<th width="5%" data-field="td_design_type">设计方式</th>
+			<th width="5%" data-field="td_content">材料内容</th>
+			<th width="5%" data-field="td_img">广告图片</th>
+			<th width="4%" data-field="td_xinlidou">鑫利豆抵扣</th>
+			<th width="4%" data-field="td_xianglidou">享利豆抵扣</th>
+			<th width="4%" data-field="td_total_money">应付金额</th>
+			<th width="4%" data-field="td_design_money">设计金额</th>
+			<th width="4%" data-field="td_pay_money">实付金额</th>
+			<th width="4%" data-field="td_pay_status">是否支付</th>
+			<th width="4%" data-field="td_check_status">审核状态</th>
+			<th width="7%" data-field="td_create_time">添加时间</th>
+			<th width="9%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+            <td class="td_uid">{$vo.uid}</td>
+            <td class="td_order_no">{$vo.order_no}</td>
+			<td class="td_shop_id">{$vo.shop_id}</td>
+			<td class="td_mode">{$vo.mode}</td>
+			<td class="td_show_time">{$vo.show_time}</td>
+			<td class="td_num">{$vo.num}</td>
+			<td class="td_price">{$vo.price}</td>
+			<td class="td_design_type">{$vo.design_type_name}</td>
+			<td class="td_content">{$vo.content}</td>
+			<td class="td_img"><empty name="vo.img">--<else/><img src="{$vo.img}" width="80" height="80"></empty></td>
+			<td class="td_xinlidou">{$vo.xinlidou}</td>
+			<td class="td_xianglidou">{$vo.xianglidou}</td>
+			<td class="td_total_money">{$vo.total_money}</td>
+			<td class="td_design_money">{$vo.design_money}</td>
+			<td class="td_pay_money">{$vo.pay_money}</td>
+			<td class="td_pay_status"><if condition="$vo.pay_status eq 0"><font color="red">未支付</font><elseif condition="$vo.pay_status eq 1"/><font color="green">已支付</font></if></td>
+			<td class="td_status"><if condition="$vo.check_status eq 1">审核中<elseif condition="$vo.check_status eq 2"/><font color="green">审核通过</font><elseif condition="$vo.check_status eq 3"/><font color="red">审核不通过</font></if></td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="30" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

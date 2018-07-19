@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.password	= $("input[name='password']").val();
+			CommonJs.SubmitData.email		= $("input[name='email']").val();
+			CommonJs.SubmitData.mobile		= $("input[name='mobile']").val();
+			CommonJs.SubmitData.shopname    = $("input[name='shopname']").val();
+			CommonJs.SubmitData.status		= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.id			= $("input[name='id']").val();
+			CommonJs.SubmitData.hashid		= $("input[name='hashid']").val();
+			CommonJs.SubmitData.longitude	= $("input[name='longitude']").val();
+			CommonJs.SubmitData.latitude	= $("input[name='latitude']").val();
+			if(CheckJs.required(CommonJs.SubmitData.password) && !CheckJs.rangelength(CommonJs.SubmitData.password,[8,16])){
+				_inform('登录密码必须8-16个字符以内',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CheckJs.required(CommonJs.SubmitData.email) && !CheckJs.email(CommonJs.SubmitData.email)){
+				_inform('请输入正确的邮箱账号',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CheckJs.required(CommonJs.SubmitData.mobile) && !CheckJs.mobile(CommonJs.SubmitData.mobile)){
+				_inform('请输入正确的手机号码',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	CommonJs.JsSave("#form-member-add");
+});
+</script>

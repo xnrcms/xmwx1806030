@@ -1,0 +1,57 @@
+<div class="row cl">
+	<label class="form-label col-xs-2 col-sm-1">接口URL:</label>
+	<div class="formControls col-xs-3 col-sm-5">{$info.url}</div>
+</div>
+<div class="row cl">
+	<label class="form-label col-xs-2 col-sm-1">接口作者:</label>
+	<div class="formControls col-xs-3 col-sm-5">{$info.author}</div>
+</div>
+<div class="row cl">
+	<label class="form-label col-xs-2 col-sm-1">接口说明:</label>
+	<div class="formControls col-xs-3 col-sm-3">{$info.apidesc}</div>
+</div>
+<div class="row cl">
+	<label class="form-label col-xs-2 col-sm-1">接口参数:</label>
+	<div class="formControls col-xs-1 col-sm-11">
+		<notempty name="info.parames">
+		<volist name="info.parames" id="vo">
+			<span style="width:30%;display:block;text-align:left;font-weight: bold;margin-top:3px;">
+				<font color="#30A9E1">{:str_replace('_xnrcms','',$vo)}</font>
+				<font color="#999">({$info['parames_desc'][$i-1]})</font>
+			</span>
+			<div class="row cl" style="margin-top:2px;">
+				<div class="formControls col-xs-8 col-sm-4">
+					<switch name="vo">
+						<case value="uid">
+						<input type="text" class="input-text" name="{$vo}" value="{$info.uid}">
+						</case>
+						<case value="hashid">
+						<input type="text" class="input-text" name="{$vo}" value="{$info.hashid}">
+						</case>
+						<case value="updata">
+						<textarea name="{$vo}" placeholder="输入格式=参数:值,参数:值"  rows="" cols="" class="textarea"></textarea>
+						</case>
+						<default/>
+						<input type="text" class="input-text" name="{$vo}">
+					</switch>
+				</div>
+			</div>
+		</volist>
+		</notempty>
+	</div>
+</div>
+<input type="hidden" name="id" value="{$info['id']}"/>
+<div class="row cl">
+	<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-1">
+		<button class="btn btn-secondary radius" type="submit" ><i class="Hui-iconfont">&#xe632;</i>确认</button>
+		<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+	</div>
+</div>
+<div style="position:fixed;right:28%;top:50px;width:30%;height:90%;background-color:#EFEFEF;border:1px solid #D3D3D4;">
+	<div>接口调试结果</div>
+	<textarea readonly="readonly" style="width: 100%;outline: medium none; resize: both; min-width: 100%; max-width: 100%;height:96.7%;border:none;" id="json_input" spellcheck="false"></textarea>
+</div>
+<div style="position:fixed;right:0.5%;top:50px;width:27%;height:90%;background-color:#EFEFEF;border:1px solid #D3D3D4;">
+	<div>返回字段说明</div>
+	<textarea readonly="readonly" style="width: 100%;outline: medium none; resize: both; min-width: 100%; max-width: 100%;height:96.7%;border:none;" spellcheck="false">{$info.parames_back}</textarea>
+</div>

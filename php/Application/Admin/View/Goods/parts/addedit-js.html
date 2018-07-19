@@ -1,0 +1,61 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.goodsname				= $("input[name='goodsname']").val();
+			CommonJs.SubmitData.category_id				= $("select[name='category_id']").val();
+			CommonJs.SubmitData.originalprice			= $("input[name='originalprice']").val();
+			CommonJs.SubmitData.goodsprice				= $("input[name='goodsprice']").val();
+			CommonJs.SubmitData.percentage				= $("input[name='percentage']").val();
+			CommonJs.SubmitData.express_fee				= $("input[name='express_fee']").val();
+			CommonJs.SubmitData.goodsimg				= $("input[name='goodsimg']").val();
+			CommonJs.SubmitData.goodsimgs				= $("input[name='goodsimgs']").val();
+			CommonJs.SubmitData.goodssorts				= $("input[name='goodssorts']").val();
+			CommonJs.SubmitData.status					= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.is_recommend			= rcVal($("input[name='is_recommend']"),1);
+			CommonJs.SubmitData.content					= $("textarea[name='content']").val();
+			CommonJs.SubmitData.id						= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.goodsname)){
+				_inform('请输入商品名称',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.category_id)){
+				_inform('请选择商品分类',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.originalprice)){
+				_inform('请输入商品原价',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.goodsprice)){
+				_inform('请输入商品价格',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.percentage)){
+				_inform('请输入鑫豆抵扣',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.express_fee)){
+				_inform('请输入快递费',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.goodsimg)){
+				_inform('请上传商品封面',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.goodsimgs)){
+				_inform('请上传商品相册',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+
+	CommonJs.GetPlatformCategory = function(Obj){
+		aler(1);
+	}
+});
+</script>

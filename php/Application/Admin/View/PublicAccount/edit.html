@@ -1,0 +1,221 @@
+<include file="header" />
+<php>$is_datatime=$is_upload=$is_editor=$is_maps=$is_address=0;</php>
+<div class="main_center">
+	<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">这是内容</div>
+    </div>
+    <!-- 内容区 -->
+    <div id="main" class="main">
+    	<block name="listname">{/*列表名称*/}
+    		<div class="main-title">
+				<h2>{$meta_title}</h2>
+			</div>
+    	</block>
+    	<block name="editcontent">{/*编辑内容*/}</block>
+    	<block name="editbutton">{/*操作按钮*/}
+	    	<div class="controls" style="paddin:0;margin:0;position: fixed; bottom:10px;z-index:10000;">
+				<button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+				<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+			</div>
+		</block>
+    </div>
+</div>
+<script>
+var EditPage = {
+		//图片上传相关
+		UploadHeight:30,
+		UploadWidth:120,
+		UploadRemoveTimeout:1,
+		UploadFileExts:"*.jpg; *.png; *.gif;",
+		UploadSwfPath:"__PUBLIC__/Package/uploadify/uploadify.swf",
+		UploadFileName:"download",
+		UploadButtonText:"上传图片",
+		UploadDer:"{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+		UploadSuccess:null,
+		/*图片上传*/
+		StartUpload:function(){
+			$(".upload_picture").each(function(){
+				var UploadId 		= $(this).attr("id");
+				var UploadType		= $(this).attr("data-type");
+				var UploadTable		= $(this).attr("data-table");
+				var UploadField		= $(this).attr("data-field");
+				var UploadSize		= $(this).attr("data-size");
+					if(UploadType == 'file')
+					{
+						EditPage.UploadButtonText 	= '上传附件';
+						EditPage.UploadDer			= "{:U('File/upload',array('session_id'=>session_id()))}";
+						EditPage.UploadFileExts		= '';
+						EditPage.UploadSuccess 		= EditPage.UploadFile;
+					}
+					else
+					{
+						EditPage.UploadSuccess 		= EditPage.UploadPicture;
+						EditPage.UploadDer			= "{:U('File/uploadPicture',array('session_id'=>session_id()))}";
+					}
+					$("#"+UploadId).uploadify({
+				       "height"          : EditPage.UploadHeight,
+				       "swf"             : EditPage.UploadSwfPath,
+				       "fileObjName"     : EditPage.UploadFileName,
+				       "buttonText"      : EditPage.UploadButtonText,
+				       "uploader"        : EditPage.UploadDer,
+				       "width"           : EditPage.UploadWidth,
+				       'removeTimeout'	 : EditPage.UploadRemoveTimeout,
+				       'fileTypeExts'	 : EditPage.UploadFileExts,
+				       'uploadId'	 	 : UploadId,
+				       'uploadType'		 : UploadType,
+				       "onUploadSuccess" : EditPage.UploadSuccess,
+				       "formData"		 :{'tabname':UploadTable,'filedname':UploadField,'uploadsize':UploadSize},
+				       'onFallback' : function() {
+							XnrCmsAlert('未检测到兼容版本的Flash.');
+				       }
+				   });
+			});
+		},
+		UploadFile:function(file, data){
+			var data 			= $.parseJSON(data);
+			var UploadId		= this.settings.uploadId;
+			var UploadValueId 	= $("#"+UploadId).parent().find("input").eq(0).attr("id");
+			var UploadType		= this.settings.uploadType;
+	        if(data.status)
+		    {
+	        	FieldId = UploadId.split('-')[2];
+	        	$("#"+UploadValueId).val(data.data);
+	        	$("#"+UploadValueId).parent().find('.upload-img-box').html("<div class=\"upload-pre-file\"><span class=\"upload_icon_all\"></span>" + data.info + "</div>");
+	        } else {
+	        	XnrCmsAlert(data.info);
+	        }
+	    },
+		UploadPicture:function(file, data){
+			var data 			= $.parseJSON(data);
+		   	var src 			= '';
+		   	var UploadId		= this.settings.uploadId;
+			var UploadValueId 	= $("#"+UploadId).parent().find("input").eq(0).attr("id");
+			var UploadType		= this.settings.uploadType;
+		       if(data.status)
+			   {
+				    src = data.url || '__ROOT__' + data.path;
+				    //多图上传
+				    if(UploadType == 'more')
+				    {
+						var FieldId = UploadId.split('_')[2];
+					    	upload_img 	= "<div class='upload-pre-item'><img src=" + src +" title='' data-id="+data.id+"> <span class='btn-close btn-close-"+FieldId+"' title='删除图片' onclick='EditPage.UploadDel(event,"+FieldId+");'></span></div>";
+				            picsbox 	= $("#"+UploadId).siblings('.upload-img-box');
+				            picsbox.append(upload_img)
+				            picArr = [];
+				            for (var i = 0; i < picsbox.children().length ; i++) {
+				                picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+				            };
+				            picStr = picArr.join(',');
+					       	$("#"+UploadValueId).val(picStr);
+					}
+				  	//单图上传
+				    else
+				    {
+					       	$("#"+UploadValueId).val(data.id);
+					       	$("#"+UploadValueId).parent().find('.upload-img-box').html('<div class="upload-pre-item"><img src="' + src + '"/></div>');
+					}
+		       }
+		       else
+			   {
+		       		XnrCmsAlert(data.info);
+		       }
+		},
+		UploadDel:function(event,id)
+		{
+			 //获取事件源
+				event 	= event ? event : window.event; 
+			var obj 	= event.srcElement ? event.srcElement : event.target;
+				str 	= obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+			var $obj 	= $(obj);
+				$obj.parents(".upload-pre-item").remove();
+			   	picsbox = $("#upload-pictures-"+id).siblings('.upload-img-box');
+	            picArr = [];
+	            for (var i = 0; i < picsbox.children().length ; i++) {
+	                picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+	            };
+	            picStr = picArr.join(',');
+			var UploadValueId 	= $("#upload-pictures-"+id).parent().find("input").eq(0).attr("id");
+				$("#"+UploadValueId).val(picStr);	
+		},
+		//模拟select下拉框
+		isSelect:false,
+		selectInput:function(){
+			$('.selectInput').bind('focus',function(){
+				EditPage.selectAfter($(this));
+			}).bind('blur',function(){
+				if(EditPage.isSelect == false)
+				{
+					$(this).parent().find('.selectBox').hide();
+				}
+			}).bind('keyup', function () {
+				EditPage.selectAfter($(this));
+		    }).bind('keydown', function(e2){
+				var thisObj		= $(this);
+		    	/***tab事件***/
+		        if (e2.which == 9){
+			        var selectObj	= thisObj.parent().find('.selectBox');
+			        	selectObj.hide();return;
+		        };
+			}); 
+		},
+		selectAfter:function(obj){
+	        var thisVal 	= obj.val();
+	        var selectCon	= '';
+	        var selectObj	= obj.parent().find('.selectBox');
+	        	EditPage.selectValue = 0;
+	        	obj.parent().find('.selectBoxContent div').each(function(index,element){
+		        	var content	= $(this).html();
+			        	if(content.indexOf(thisVal)>=0)
+			        	{
+			        		selectCon += element.outerHTML;
+			        	}
+			        	if(selectCon != '')
+			        	{
+			        		selectObj.show().html(selectCon);
+				        }
+			        	else
+			        	{
+			        		selectObj.hide();
+				        }
+	        	});
+	        	selectObj.find("div").bind('mouseover', function () {
+	        		EditPage.isSelect = true;
+	            	$(this).css({'background-color': '#e7e7e7'});
+	        	}).bind('mouseleave', function () {
+	        		EditPage.isSelect = false;
+	            	$(this).css({'background-color': '#ffffff'});
+	        	}).bind('click', function () {
+	        		obj.val($(this).html());
+	        		obj.parent().find('input').eq(1).val($(this).attr('id').split('-')[1]);
+		            selectObj.hide();
+	        	});
+		},
+		selectAjaxAfter:function(obj){
+	        var selectCon	= '';
+	        var selectObj	= obj.parent().find('.selectBox');
+	        	selectObj.show();
+	        	selectObj.find("div").bind('mouseover', function () {
+	        		EditPage.isSelect = true;
+	            	$(this).css({'background-color': '#e7e7e7'});
+	        	}).bind('mouseleave', function () {
+	        		EditPage.isSelect = false;
+	            	$(this).css({'background-color': '#ffffff'});
+	        	}).bind('click', function () {
+	        		obj.val($(this).html());
+	        		obj.parent().find('input').eq(1).val($(this).attr('id').split('-')[1]);
+		            selectObj.hide();
+	        	});
+		},
+		writeObj:function (obj){
+		      var description = "";
+		      for(var i in obj){  
+		          var property=obj[i];  
+		          description+=i+" = "+property+"\n";  
+		      }  
+		      alert(description);
+		}
+};
+</script>
+<!-- /内容区 -->
+<include file="Public/footer" />

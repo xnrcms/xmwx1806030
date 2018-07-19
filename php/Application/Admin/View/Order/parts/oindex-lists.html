@@ -1,0 +1,26 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" data-field="td_id" title="ID"><input type="checkbox" id="selectid_0"></th>
+			<th width="18%" data-field="td_uid">成功下单人数</th>
+			<th width="18%" data-field="td_order_no">成单数量</th>
+			<th width="18%" data-field="td_rname">成功销售额(元)</th>
+			<th width="15%" data-field="td_phone">已支付订单量</th>
+			<th width="15%" data-field="td_gnum">待支付订单量</th>
+			<th width="15%" data-field="td_total">订单退货量</th>
+		</tr>
+    </thead>
+	<tbody>
+		<tr>
+            <td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+			<td class="td_uid">{$info.data1}</td>
+			<td class="td_order_no">{$info.data2}</td>
+			<th class="td_rname">{$info.data3}</th>
+			<th class="td_phone">{$info.data4}</th>
+			<td class="td_gnum">{$info.data5}</td>
+			<td class="td_total">{$info.data6}</td>
+		</tr>
+	</tbody>
+</table>
+</div>

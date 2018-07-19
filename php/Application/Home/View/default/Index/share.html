@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <script>!function(n){var e=n.document,t=e.documentElement,i=750,d=i/100,o="orientationchange" in n?"orientationchange":"resize",a=function(){var n=t.clientWidth||320;n>750&&(n=750),t.style.fontSize=n/d+"px"};e.addEventListener&&(n.addEventListener(o,a,!1),e.addEventListener("DOMContentLoaded",a,!1))}(window);</script>
+  <link rel="stylesheet" href="__CSS__/style.css">
+  <title>分享</title>
+  <style>
+	.cover{
+	  position: fixed;
+	  width: 100%;
+	  height: 100%;
+	  left: 0;
+	  top: 0;
+	  z-index: 100;
+	  background: rgba(0,0,0,0.9);
+	  display: none;
+	}
+	.cover-tip{
+	  margin-top: 125px;
+	  color: #fff;
+	  font-size: 22px;
+	  margin-left: 50px;
+	  line-height: 30px;
+	}
+	.cover-tip p{
+	  margin-top: 10px;
+	}
+	.cover-tip p i{
+	  display: inline-block;
+	  width: 25px;
+	  height: 25px;
+	  border-radius: 10px;
+	  background: #ff6316;
+	  text-align: center;
+	  line-height: 25px;
+	  vertical-align: middle;
+	  font-size: 16px;
+	  font-weight: 500;
+	}
+	.cover-tip p span{
+	  vertical-align: middle;
+	  margin-left: 10px;
+	}
+	.cover img{
+	  position: absolute;
+	  width: 100px;
+	  height: 100px;
+	  top: 15px;
+	  right: 50px;
+	}
+	</style>
+</head>
+<body>
+<div class="share-contain">
+  <img src="__IMG__/c.png" alt="" class="share-bg">
+  <div class="share-con">
+  <empty name="user.avatar">
+<img src="__IMG__/h.jpg" alt=""  class="share-avatar">
+<else /> 
+<img src="{$user.avatar}" alt=""  class="share-avatar">
+</empty> 
+    <h3 class="name">{$user.nickname}</h3>
+    <p>推荐您使用省鑫APP</p>
+    <p>我的邀请码:<em>{$user.code}</em></p>
+    <div class="share-code">
+      <img src="__IMG__/wx.png" alt="">
+    </div>
+    <a href="javascript:;" class="share-link reg-a">去下载</a>
+  </div>
+</div>
+<div class="cover">
+    <div class="cover-tip">
+      <p><i>1</i><span>点击右上角按钮</span></p>
+      <p><i>2</i><span>在浏览器中打开</span></p>
+    </div>
+    <img src="__IMG__/mark.svg" alt="">
+  </div>
+ <script type="text/javascript" src="__JS__/jquery.min.js"></script>
+<script>
+	var inBrowser = typeof window !== 'undefined';            
+	var UA = inBrowser && window.navigator.userAgent.toLowerCase();
+	var isWeixin = UA && UA.indexOf('micromessenger') > 0; //是否微信
+	var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);  //是否IOS浏览器
+	var Uid = getQueryString('uid');
+	$('.reg-a').on('click',function(){
+	  if(isWeixin){
+	    $('.cover').fadeIn(200);
+	  }else{
+	    if(isIOS){
+	      window.location.href = "http://xmap1802009.php.hzxmnet.com/Home/Index/down.html";
+	    }else{
+	      window.location.href = "http://xmap1802009.php.hzxmnet.com/Home/Index/down.html";
+	    }
+	    
+	  }
+	})
+	$('.cover').on('click',function(){
+	  $('.cover').fadeOut(200);
+	})
+	function getQueryString(name) { 
+	  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	  var url=window.location.search;
+	  var r = url.substr(1).match(reg); 
+	  if (r != null) return decodeURI(r[2]); return null; 
+	}
+	</script>
+</body>
+</html>

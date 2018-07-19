@@ -1,0 +1,34 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="20%" data-field="td_out_trade_no">充值编号</th>
+			<th width="8%" data-field="td_money">充值金额</th>
+			<th width="8%" data-field="td_currency">聚蚁币</th>
+			<th width="8%" data-field="td_integral">积分</th>
+			<th width="8%" data-field="td_create_time">充值时间</th>
+			<th width="20%" data-field="td_markers">备注</th>
+			<th width="8%" data-field="td_pay_status">是否支付</th>
+			<th width="8%" data-field="td_recharge_type">购买方式</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_phone">{$vo.out_trade_no}</td>
+			<td class="td_nickname">{$vo.money}</td>
+			<td class="td_total_coin"><if condition="$vo.recharge_type eq 1">{$vo.currency}<else />后台充值</if></td>
+			<td class="td_current_coin">{$vo.integral}</td>
+			<td class="td_current_integral">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+			<td class="td_total_integral">{$vo.markers|default="---"}</td>
+			<td class="td_total_integral"><if condition="$vo.pay_status eq 1 and $vo.recharge_type eq 1"><span style="color:green;">充值成功</span><elseif condition="$vo.pay_status eq 0 and $vo.recharge_type eq 1"/><span style="color:red;">未支付</span><else />---</if></td>
+			<td class="td_recharge_type"><if condition="$vo.recharge_type eq 1"><span style="color:green;">线上购买</span><else /><span style="color:red;">线下充值</span></if></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

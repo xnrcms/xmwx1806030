@@ -1,0 +1,26 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="8%" data-field="td_name">参数名称</th>
+			<th width="40%" data-field="td_price">参数数值</th>
+			<th width="8%" data-field="td_create_time">添加时间</th>
+			<th width="10%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_name">{$vo.pname}</td>
+			<td class="td_price">{$vo.pvalue}</td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

@@ -1,0 +1,51 @@
+<extend name="Public/edit"/>
+<block name="editcontent">
+	<!-- 标签页导航 -->
+	<div class="tab-wrap">
+		<div class="tab-content">
+			<!-- 表单 -->
+			<form id="form" method="post" class="form-horizontal doc-modal-form">
+				<!-- 基础 -->
+				<div id="tab1" class="tab-pane in tab1">
+					<div class="form-item cf">
+						<label class="item-label">行为名称</label>
+						<div class="controls">
+							<span>{:get_action($info['action_id'], "title")}</span>
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">执行者</label>
+						<div class="controls">
+							<span>{:get_nickname($info['user_id'])}</span>
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">执 行IP</label>
+						<div class="controls">
+							<span>{:long2ip($info['action_ip'])}</span>
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">执行时间</label>
+						<div class="controls">
+							<span>{:date('Y-m-d H:i:s',$info['create_time'])}</span>
+						</div>
+					</div>
+					<div class="form-item cf">
+						<label class="item-label">备注</label>
+						<div class="controls">
+							<label class="textarea input-large">
+								<textarea readonly="readonly">{$info.remark}</textarea>
+							</label>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</block>
+<block name="editbutton">{/*操作按钮*/}
+   	<div class="controls" style="paddin:0;margin:0;position: fixed; bottom:10px;z-index:10000;">
+		<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+	</div>
+</block>

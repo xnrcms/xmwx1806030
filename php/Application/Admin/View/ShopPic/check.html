@@ -1,0 +1,60 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+{/*其值范围为1-12*/}
+<php>
+$col_sm1		= 2;
+$col_sm2		= 10;
+
+$col_xs1		= 4;
+$col_xs2		= 8;
+
+$col_xs3		= 2;
+$col_sm3		= 10;
+
+$col_xs_offset1	= 10;
+$col_sm_offset1	= 2;
+</php>
+<div class="page-container">
+	<form action="{:U()}" method="post" class="form form-horizontal" id="form-member-add">
+		<include file="Public/form" />
+		<div class="row cl">
+			<div class="col-xs-{$col_xs3} col-sm-{$col_sm3} col-xs-offset-{$col_xs_offset1} col-sm-offset-{$col_sm_offset1}">
+				<button class="btn btn-secondary radius" type="submit" ><i class="Hui-iconfont">&#xe632;</i>保存</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+</block>
+<block name="footjs">
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.status						= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.id							= $("input[name='id']").val();
+			if(CommonJs.SubmitData.status <= 0){
+				_inform('请选择审核状态',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	//上传插件
+	//CommonJs.StartUpload();
+
+});
+</script>
+</block>

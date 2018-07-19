@@ -1,0 +1,326 @@
+<extend name="Common:base" />
+
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Admin/js/kindeditor/themes/default/default.css" />
+    <style type="text/css">
+	.card{
+		margin: 0;
+	}
+	.card:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+
+	.card-item {
+		position: relative;
+		float: left;
+		width: 180px;
+		min-width: 150px;
+		padding: 10px;
+		margin: 5px;
+		border: 1px solid #e4e4e4;
+		background-color: #fff;
+		cursor: pointer;
+	}
+
+	.card-date {
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #f1f1f1;
+	}
+
+	.card-title {
+		margin-bottom: 10px;
+		line-height: 1.2;
+		min-height:38px;
+	}
+
+	.card-cover{
+		text-align: center;
+	}
+	.card-cover img {
+		max-width: 100%;
+		max-height:100px;
+	}
+
+	.card-mask {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url("__PUBLIC__/Common/createmenu/image/selected.png") no-repeat center rgba(0,0,0,.35);
+		display: none;
+	}
+
+	.card-item:hover .card-mask {
+		display: block;
+	}
+
+	.card-item-selected .card-mask {
+		display: block;
+	}
+
+	.page {
+		float: right;
+		margin: 10px;
+		border: 1px solid #e4e4e4;
+	}
+
+	.page-item {
+		float: left;
+		min-width: 20px;
+		padding: 5px;
+		text-align: center;
+		background-color: #fff;
+		cursor: pointer;
+	}
+
+	.page-item + .page-item {
+		border-left: 1px solid #e4e4e4;
+	}
+
+	.page-item:hover {
+		background-color: #f8f8f8;
+	}
+</style>
+</block>
+
+<block name="menu">
+    <include file="System:menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">关键词回复</h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+    <form class="stdform stdform2" action="{:U('System/weixinReplySave')}" method="post" id="JgoodsForm">
+
+
+        <div class="line-dete">
+            <label>回复类型</label>
+            <span class="field">
+                {$reply_type}
+            </span>
+        </div>
+        <div class="line-dete">
+            <label>规则名称</label>
+            <span class="field">
+                <input type="text" class="smallinput" name="rule_name" value="{$weixin_reply['rule_name']}"/>
+            </span>
+        </div>
+        <div class="line-dete">
+            <label>关键词</label>
+            <span class="field">
+                <input type="text" class="mediuminput" name="keywords" value="{$weixin_reply['keywords']}"/>
+                （多个关键词用“|”隔开，例如：   美妆|护肤）
+            </span>
+        </div>
+        <div class="line-dete">
+            <label>匹配类型</label>
+            <span class="field">
+                <input type="radio" name="match_type" value="0" <eq name="weixin_reply['match_type']" value="0">checked="checked"</eq> >模糊匹配
+                <input type="radio" name="match_type" value="1" <eq name="weixin_reply['match_type']" value="1">checked="checked"</eq> >全匹配
+            </span>
+        </div>
+        <div class="line-dete">
+            <label>接口状态</label>
+            <span class="field">
+                <input type="radio" name="status" value="1" <eq name="weixin_reply['status']" value="1">checked="checked"</eq> >启用
+                <input type="radio" name="status" value="0" <eq name="weixin_reply['status']" value="0">checked="checked"</eq> >关闭
+            </span>
+        </div>
+
+        <div class="line-dete">
+            <label>回复内容</label>
+            <span class="field">
+                <a style="color:#699eca;" href="javascript:;" title="选择素材" id="addtouch">[选择素材]</a>
+                <span id="touchnews" data="{$weixin_reply['reply_media_id']}">{$weixin_reply['reply_media_title']}</span>
+                <input type="hidden" id="reply_media_id" name="reply_media_id" value="{$weixin_reply['reply_media_id']}" />
+                
+            </span>
+        </div>
+        
+        <div class="line-dete">
+            <label></label>
+            <span class="field">
+                <input type="hidden" name="reply_type" value="{$type}" />
+                <input type="hidden" name="id" value="{$weixin_reply['id']}" />
+                <input type="submit" id="JgoodsSubmit" class="stdbtn" />
+                <!--<input type="button" id="previewSubmit" class="stdbtn" value="生成预览" />-->
+            </span>
+        </div>
+    </form>
+</div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/lang/zh_CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        
+        KindEditor.ready(function(K) {
+            K('#addtouch').click(function() {
+                    var _url=   "{:U('getWxNewsMaterial')}";
+                    var _param  =   new Object();
+                        _param.page =   0;
+                    var mdata  = '';
+//                    loading('数据采集中...');
+                    $.post(_url,_param,function(res){
+//                        loading(false);
+                    	mdata   +=   '<div style="margin:10px;">';
+                    	mdata 	+=	 '<div style="width: 655px;height: 400px;margin:0 auto;background-color: #f8f8f8;overflow: hidden;overflow-y: scroll;">';
+                        console.log(res);
+                        var news_list = res.result;
+                    	mdata 	+=	 '<ul class="card">';
+                        $.each(news_list,function(i,n){
+                        	mdata 	+=	'<li class="card-item" onclick="checeked(this)" data-media_id="'+n.media_id+'">';
+							mdata 	+=	'<div class="card-date">'+n.update_time+'</div>';
+							mdata 	+=	'<div class="card-title">'+n.title+'</div>';
+							mdata 	+=	'<div class="card-cover">';
+							mdata 	+=	'<img src="'+n.cover_image+'">';
+							mdata 	+=	'</div>';
+							mdata 	+=	'<div class="card-mask"></div>';
+							mdata 	+=	'</li>';
+                        });
+                    	mdata   +=      '</ul>';
+                        mdata   +=      '</div>';
+                        mdata   +=      '</div>';
+					var dialog = K.dialog({
+							width : 760,
+							height: 500,
+							title : '选择素材',
+							body : mdata,
+							scroll : true,
+							closeBtn : {
+								name : '关闭',
+								click : function(e) {
+									dialog.remove();
+								}
+							},
+							yesBtn : {
+								name : '确定',
+								click : function(e) {
+									if (!$(".card-item").hasClass('card-item-selected')) {
+										alert(this.value);
+									}else{
+										// alert($(".card").find(".card-item-selected").text());
+										dialog.remove();
+									}
+								}
+							},
+							noBtn : {
+								name : '取消',
+								click : function(e) {
+									dialog.remove();
+								}
+							}
+						});
+
+
+                    },'json');
+					
+                });
+        });
+        
+        function checeked(obj){
+                $(obj).addClass('card-item-selected').siblings().removeClass('card-item-selected');
+
+                $('#touchnews').text($(obj).find(".card-title").text());
+                $("#touchnews").attr('data',$(obj).attr("data-media_id"));
+                
+                $("#reply_media_id").val($(obj).attr("data-media_id"));
+        }
+                        
+        var firstUpload = true;
+
+        var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('#content', {
+                height: "500px",
+                allowFileManager: true,
+                uploadJson: '{:U("Article/descUploadPic")}',
+                items : ['source','preview','selectall','link','unlink'],
+                afterCreate : function() {
+                    this.loadPlugin('autoheight');
+                },
+                afterBlur: function(){this.sync();}
+            });
+        });
+        $('#JgoodsSubmit').click(function() {
+            var attrStr = '',
+                attrKey = $('.JattrName'),
+                attrVal = $('.JattrVal');
+
+            for (var i = 0, len = attrKey.length; i < len; i ++) {
+                if (attrKey[i].value) {
+                    attrStr += attrKey[i].value + ':' + attrVal[i].value + ';';
+                }
+            }
+            $('#attrList').val(attrStr.substring(0, attrStr.length - 1));
+
+            $('#JgoodsForm').submit();
+        });
+        
+        $('#previewSubmit').click(function() {
+            var _url    =   "{:U('Article/preview')}";
+            var _param  =   $("form").serialize();
+            $.post(_url,_param,function(res){
+                if(res.code == 1){
+                    window.open("/Agent/Article/preview/id/"+res.id);
+                }
+            },'json');
+//            $("#JgoodsForm").attr("action","{:U('Article/preview')}");
+//            $('#JgoodsForm').submit();
+        });
+
+        $(function(){
+                            //上传图片
+                $(document).on('change', '.f-upload', function() {
+                    var thisId  =   $(this).attr('id');
+                    // alert(thisId);return;
+                    ajaxFileUpload(thisId);
+                });
+                function ajaxFileUpload(thisId) {
+                    $.ajaxFileUpload({
+                        url: "{:U('Article/photoUpload')}",
+                        secureuri: false,
+                        fileElementId: thisId,
+                        dataType: 'json',
+                        success: function (data, status) {
+                            if(typeof(data.error) != 'undefined') {
+                                if(data.error != '') {
+                                    alert(data.error);
+                                } else {
+                                    var upId    =   $("#"+thisId).attr('data-id');
+                                    var html    =   '';
+                                        html    =   '<div class="pic-wrap"><i class="del-pic" data-id="'+upId+'"></i><img src="' + data.msg + '" class="s-cover"/></div>';
+                                    $("#upload_"+upId).append(html);
+                                    $('#JcoverPid_'+upId).val(data.msg);
+                                }
+                                $("#"+thisId).parent('.upload-wrap').remove();
+                            }
+                        },
+                        error: function (data, status, e) {
+                            var html='<div class="title">提示</div><div>' + e + '</div>';
+                            popbox(html);
+                        }
+                    })
+                    return false;
+                }
+
+                //删除图片
+                $(document).on('click','.del-pic', function() {
+                    var upId    =   $(this).attr('data-id');
+                    $(this).parent().remove();
+                    $('#JgoodsListWrap_'+upId).append('<div class="upload-wrap"> <input type="file" id="fileToUpload_'+upId+'" name="fileToUpload_'+upId+'" data-id="'+upId+'" class="f-upload" /> </div>');
+                });
+            });
+    </script>
+</block>

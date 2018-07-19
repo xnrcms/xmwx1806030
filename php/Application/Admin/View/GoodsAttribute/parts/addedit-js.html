@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    CommonJs.SearchData();
+    CommonJs.SetTableWidth();
+    CommonJs.SetColspan();
+    /*此处可扩展更多JS代码*/
+    CommonJs.FormCheck = function (FormObj) {
+        if (CommonJs.Loading) {
+            return false;
+        }
+        CommonJs.Loading = true;
+        CommonJs.SubmitData.avalue = $("input[name='avalue']").val();
+        CommonJs.SubmitData.price = $("input[name='price']").val();
+        //CommonJs.SubmitData.sprice = $("input[name='sprice']").val();
+        CommonJs.SubmitData.stock = $("input[name='stock']").val();
+        CommonJs.SubmitData.id = $("input[name='id']").val();
+        
+        if (!CheckJs.required(CommonJs.SubmitData.avalue)) {
+            _inform('请输入规格名称', function () {
+                CommonJs.Loading = false;
+            });
+            return false;
+        }
+        if (!CheckJs.required(CommonJs.SubmitData.price)) {
+            _inform('请输入属性价格', function () {
+                CommonJs.Loading = false;
+            });
+            return false;
+        }
+        if (!CheckJs.required(CommonJs.SubmitData.stock)) {
+            _inform('请输入属性库存', function () {
+                CommonJs.Loading = false;
+            });
+            return false;
+        }
+        CommonJs.Loading = false
+        return true;
+    };
+//数据提交
+    CommonJs.JsSave("#form-member-add");
+    /*此处可扩展更多JS代码*/
+</script>

@@ -1,0 +1,32 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" data-field="td_id" title="ID"><input type="checkbox" id="selectid_0"></th>
+			<th width="15%" data-field="td_title">消息标题</th>
+			<th width="30%" data-field="td_name">消息内容</th>
+			<th width="8%" data-field="td_status">状态</th>
+			<th width="10%" data-field="td_create_time">添加时间</th>
+			<th width="10%" data-field="td_update_time">修改时间</th>
+			<th width="10%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+            <td class="td_title">{$vo.title}</td>
+            <td class="td_name">{$vo.content|strip_tags|mb_substr=0,80,'utf-8'}...</td>
+			<td class="td_status">{$vo.status}</td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<td class="td_update_time">{$vo.update_time}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

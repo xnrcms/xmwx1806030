@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <script>!function(n){var e=n.document,t=e.documentElement,i=750,d=i/100,o="orientationchange" in n?"orientationchange":"resize",a=function(){var n=t.clientWidth||320;n>750&&(n=750),t.style.fontSize=n/d+"px"};e.addEventListener&&(n.addEventListener(o,a,!1),e.addEventListener("DOMContentLoaded",a,!1))}(window);</script>
+  <link rel="stylesheet" href="__CSS__/style.css">
+  <title>{$data.title}</title>
+  <style>
+  .article-contain{
+  	padding: 10px;
+  }
+  .article-contain img{
+ 	width: 100%;
+ 	display: block;
+ 	margin: 5px auto; 
+  }
+  </style>
+</head>
+<body>
+<div class="article-contain">
+  {$data.content}
+</div>
+</div>
+</body>
+</html>

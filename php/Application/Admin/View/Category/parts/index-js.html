@@ -1,0 +1,46 @@
+<script type="text/javascript">
+CommonJs.SearchData();
+CommonJs.SetTableWidth();
+/* 分类展开收起 */
+$(".category dd").prev().find(".fold i").addClass("icon-unfold").click(function(){
+	var self = $(this);
+		if(self.hasClass("icon-unfold")){
+			self.closest("dt").next().slideUp("fast", function(){
+				self.removeClass("icon-unfold").addClass("icon-fold");
+			});
+		} else {
+			self.closest("dt").next().slideDown("fast", function(){
+				self.removeClass("icon-fold").addClass("icon-unfold");
+			});
+		}
+});
+/* 三级分类删除新增按钮 */
+//$(".category dd dd .add-sub").remove();
+/* 实时更新分类信息 */
+$(".category").on("submit", "form", function(){
+	var self = $(this);
+    var that = this;
+	$.post(self.attr("action"),self.serialize(),function(data){
+		/* 提示信息 */
+		var ic	= data.status == 1 ? 6 : 2;
+		layer.msg(data.info,{icon: ic,time:1000},function(){
+			if(data.url != '') window.location.reload();
+		});
+	},"json");
+	return false;
+}).on("focus","input[name='name']",function(){
+   $(this).data('param',$(this).closest("form").serialize());
+}).on("blur", "input[name='name']", function(){
+   if($(this).data('param')!=$(this).closest("form").serialize()){
+       $(this).closest("form").submit();
+   }
+});
+$(".text").focus(function(){
+    $(this).addClass("focus");
+}).blur(function(){
+    $(this).removeClass('focus');
+});
+$(".category .hd .check input:checkbox").on("click" , function(){
+	$(this).closest(".category").find("dl>dt .check input:checkbox").prop("checked",$(".category .hd .check input:checkbox").prop("checked"));
+});
+</script>

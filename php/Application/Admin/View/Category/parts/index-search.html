@@ -1,0 +1,12 @@
+{/*搜索区域*=============================================================================start*/}
+<form name="searchForm">
+<div class="text-c search-form"> 
+日期筛选：
+	<input type="text" name="create_time_s" placeholder="请输入检索开始时间" value="{:I('create_time_s')}" onFocus="WdatePicker({maxDate:'#F{ $dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" class="input-text Wdate" style="width:186px;">
+	-
+	<input type="text" name="create_time_e" placeholder="请输入检索检索时间" value="{:I('create_time_e')}" onFocus="WdatePicker({minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:186px;">
+	<input type="text" name="find_keyword" placeholder="请输入关键词进行检索" value="{:I('find_keyword')}" style="width:250px" class="input-text search-input">
+	<button name="" id="search" url="{:U('index',$extends_param)}" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+</div>
+</form>
+{/*搜索区域=============================================================================end*/}

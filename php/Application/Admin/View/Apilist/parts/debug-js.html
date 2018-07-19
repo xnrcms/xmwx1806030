@@ -1,0 +1,21 @@
+<script type="text/javascript" src="__PUBLIC__/Package/json/jsl.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Package/json/jsoninit.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 			= true;
+			CommonJs.SubmitData			= $("#form-member-add").serialize();
+			CommonJs.Loading 			= false
+			return true;
+	};
+	CommonJs.JsSave("#form-member-add",function(data){
+		layer.msg('处理成功',{icon: 6,time:1000},function(){
+			$('#json_input').val(data.info);
+			jsl.interactions.init();
+			CommonJs.Loading 	= false;
+    	});
+	});
+});
+</script>

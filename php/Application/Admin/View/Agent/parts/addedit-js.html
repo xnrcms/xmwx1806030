@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.uid				= $("input[name='uid']").val();
+			CommonJs.SubmitData.id				= $("select[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.uid)){
+				_inform('请选择二级代理',function(){CommonJs.Loading = false;});return false;
+			}
+
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+
+});
+</script>

@@ -1,0 +1,40 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" data-field="td_id" title="ID"><input type="checkbox" id="selectid_0"></th>
+			<th width="6%" data-field="td_uid">付款用户</th>
+			<th width="8%" data-field="td_order_no">订单编号</th>
+			<th width="6%" data-field="td_total_money">总金额</th>
+			<th width="6%" data-field="td_xinlidou">鑫利豆</th>
+			<th width="6%" data-field="td_xianglidou">享利豆</th>
+			<th width="6%" data-field="td_pay_money">支付金额</th>
+			<th width="6%" data-field="td_pay_status">支付状态</th>
+			<th width="6%" data-field="td_status">订单状态</th>
+			<th width="8%" data-field="td_create_time">下单时间</th>
+			<th width="5%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+	<tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+			<td class="td_uid">{$vo.phone}</td>
+			<td class="td_order_no">{$vo.order_no}</td>
+			<td class="td_total_money">{$vo.total_money}</td>
+			<td class="td_xinlidou">{$vo.xinlidou}</td>
+			<td class="td_xianglidou">{$vo.xianglidou}</td>
+            <td class="td_pay_money">{$vo.pay_money}</td>
+			<td class="td_pay_status">{$vo.pay_status}</td>
+			<td class="td_status">{$vo.status}</td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="0" class="text-center colspanClass"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

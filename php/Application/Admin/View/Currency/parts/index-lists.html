@@ -1,0 +1,42 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="3%" data-field="td_i">序号</th>
+			<th width="10%" data-field="td_username">商家账号</th>
+			<th width="10%" data-field="td_nickname">商家名称</th>
+			<th width="10%" data-field="td_secondUsername">二级代理</th>
+			<th width="10%" data-field="td_firstUsername">一级代理</th>
+			<th width="10%" data-field="td_total_currency">聚蚁币购买总额</th>
+			<th width="10%" data-field="td_current_currency">聚蚁币余额</th>
+			<th width="10%" data-field="td_used_currency">聚蚁币赠送数量</th>
+			<th width="10%" data-field="td_user_total_used_currency">会员使用聚蚁币数量</th>
+			<th width="10%" data-field="td_user_total_current_currency">会员未使用聚蚁币数量</th>
+			<th width="10%" data-field="td_done">使用记录</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_i">{$vo.i}</td>
+			<td class="td_username">{$vo.username}</td>
+			<td class="td_nickname">{$vo.nickname}</td>
+			<td class="td_secondUsername">{$vo.secondUsername}</td>
+			<td class="td_firstUsername">{$vo.firstUsername}</td>
+			<td class="td_total_currency">{$vo.total_currency}</td>
+			<td class="td_current_currency">{$vo.current_currency}</td>
+			<td class="td_used_currency">{$vo.send_currency}</td>
+			<td class="td_user_total_used_currency">{$vo.used_currency}</td>
+			<td class="td_user_total_current_currency">{$vo.using_currency}</td>
+			<td class="td_done">
+				<a style="text-decoration:none" class="ml-5" href="{:U('Currency/user','id='.$vo[uid].$extends_param)}" title="查询">查询</a>
+			</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

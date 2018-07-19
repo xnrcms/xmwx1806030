@@ -1,0 +1,16 @@
+<div class="menu_dropdown bk_2">
+<notempty name="LeftMenu">
+	<volist name="LeftMenu" id="LM" key="key">
+	<dl id="menu-article">
+		<dt><i class="Hui-iconfont">&#xe616;</i>{$key}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<volist name="LM" id="menus">
+					<li><a _href="{:U($menus['url'],'menuid='.$menus['id'])}" href="javascript:void(0)" data-title="{$menus.title}">{$menus.title}</a></li>
+	 			</volist>
+			</ul>
+		</dd>
+	</dl>
+	</volist>
+</notempty>
+</div>

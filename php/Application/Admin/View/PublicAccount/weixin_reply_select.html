@@ -1,0 +1,97 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="System:menu" />
+</block>
+<block name="style">
+	<style type="text/css">
+		.itm-date-addgood{overflow:hidden;margin-top:20px}
+		.itm-date-addgood .itm{display:none;overflow:hidden;width:25%; float: left;}
+		.itm-date-addgood .itm .search{height:30px;border:1px solid #ddd; float: none; margin:0; }
+		.itm .search input{padding:0 10px;height:30px;border:0;border:0;line-height:30px; width: 210px;background: none; border:none; box-shadow: none;}
+		.itm .search .ser{float:right;width:30px;height:30px;border-left:1px solid #e7e7eb;text-align:center;line-height:30px; background: url(/Public/Admin/images/icoservice.png) no-repeat center center; background-size: 16px;}
+		.itm .search em{display:inline-block;overflow:hidden;margin-top:-0.2em;width:16px;height:16px;background-position:0 -4204px;vertical-align:middle;vertical-align:middle;line-height:100px}
+		.search-date{overflow-y:scroll;padding:5px 0;width:100%;border:1px solid #ddd}
+		.search-date a{display:block;overflow:hidden;padding:0 15px;height:27px;color:#222;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;line-height:27px}
+		.search-date li:hover ,.search-date li.list_on{background-color:#ff6699;text-decoration:none}
+		.itm-date-addgood .Jadd-date-one{display:block}
+		.btn-block-date{margin:20px 0;padding:20px 0;border-top:1px solid #ddd;text-align:center}
+		.js-box{color:#000}
+		.btn-com-link{display:inline-block;width:90px;height:36px;border-radius:2px;background:#3aa400;color:#fff;text-decoration:none;line-height:36px;zoom:1;*display:inline}
+		.btn-com-link:hover{background:#308900;color:#fff}
+		.commit-btn-b{ margin-top: 20px; border-top: 1px solid #ddd;}
+		.commit-btn-b input{ height: 36px; line-height: 36px; padding: 0 20px; background: #f4f4f4; border:1px solid #ddd; font-size: 14px;margin: 20px 0 40px 100px; border-radius: 2px; cursor: pointer;}
+	</style>
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">选择回复类型</h1>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<div class="category_select_wrp pre clearfix" id="js_cate_container">
+			<div class="category_txt">
+				你当前选择的是：
+				<span class="js-box js_catetxt1" style="">
+					<span>无</span>
+				</span>
+				<span class="js-box js_catetxt2" style="display: none;">
+					&nbsp;&gt;&nbsp;
+					<span></span>
+				</span>
+				<span class="js-box js_catetxt3" style="display: none;">
+					&nbsp;&gt;&nbsp;
+					<span></span>
+				</span>
+				<span class="js-box js_catetxt4" style="display: none;">
+					&nbsp;&gt;&nbsp;
+					<span></span>
+				</span>
+				<span class="desc">（回复类型添加后，不可修改回复类型，请谨慎选择）</span>
+			</div>
+			<div class="itm-date-addgood">
+				<div class="itm Jadd-date-one">
+					<ul class="search-date" id="search_one_data">
+						<volist name="index_reply_type" id="first">
+							<li>
+								<a href="javascript:;" data="{$key}">{$first}</a>
+							</li>
+						</volist>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="commit-btn-b">
+	        	<input type="submit" id="commit" class="big-btn stdbtn pay_btn" value="下一步" />
+		</div>
+	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		$(function() {
+			// 提交
+			$("#commit").click(function() {
+				var module_type = $(".list_on").find('a').attr('data');
+				if (module_type == 'undefined') {
+					alert('请选择回复类型');
+					return false;
+				};
+				if ( module_type ) {
+					window.location.href = "{:U('System/weixinReplyAdd')}?type=" + module_type;
+				} else {
+					alert('请选择回复类型');
+					return;
+				}
+			});
+
+
+			// 点击第一个列表
+			$(".Jadd-date-one li a").click(function() {
+                                $(".js_catetxt1").find("span").html($(this).html());
+				$(this).parent("li").addClass('list_on').siblings().removeClass('list_on');
+			});
+		});
+	</script>
+</block>

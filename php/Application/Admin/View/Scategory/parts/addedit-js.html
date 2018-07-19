@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 						= true;
+			CommonJs.SubmitData.pid					= $("select[name='pid']").val();
+			CommonJs.SubmitData.name				= $("input[name='name']").val();
+			//CommonJs.SubmitData.icon				= $("input[name='icon']").val();
+			CommonJs.SubmitData.sort				= $("input[name='sort']").val();
+			CommonJs.SubmitData.status				= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.isrecommend			= rcVal($("input[name='isrecommend']"),1);
+			CommonJs.SubmitData.id					= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.name)){
+				_inform('请输入分类名称',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	//CommonJs.GetEditor();
+	CommonJs.StartUpload();
+});
+</script>

@@ -1,0 +1,48 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" class="td_id">id</th>
+			<th width="5%" data-field="td_uid">发布用户</th>
+			<th width="5%" data-field="td_company">公司名称</th>
+			<th width="5%" data-field="td_company_logo">公司logo</th>
+			<th width="8%" data-field="td_county">区域</th>
+			<th width="6%" data-field="td_end_time">结束时间</th>
+			<th width="3%" data-field="td_position">招聘岗位</th>
+			<th width="3%" data-field="td_number">招聘人数</th>
+			<th width="3%" data-field="td_wages">待遇</th>
+			<th width="8%" data-field="td_address">地址</th>
+			<th width="8%" data-field="td_content">描述</th>
+			<th width="5%" data-field="td_status">审核状态</th>
+			<th width="6%" data-field="td_verify_time">审核时间</th>
+			<th width="6%" data-field="td_create_time">添加时间</th>
+			<th width="5%" data-field="td_done">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
+            <td class="td_uid">{$vo.phone}</td>
+			<td class="td_company">{$vo.company}</td>
+			<td class="td_company_logo"><notempty name="vo.company_logo"><img src="{$vo.company_logo}" width="80" height="80"><else />---</notempty></td>
+			<td class="td_county">{$vo.county}</td>
+			<td class="td_end_time">{$vo.end_time}</td>
+			<td class="td_position">{$vo.position}</td>
+			<td class="td_number">{$vo.number}</td>
+			<td class="td_wages">{$vo.wages}</td>
+			<td class="td_address">{$vo.address}</td>
+			<td class="td_content">{$vo.content}</td>
+			<td class="td_status"><if condition="$vo.status eq 1">审核中<elseif condition="$vo.status eq 2"/><font color="green">审核通过</font><elseif condition="$vo.status eq 3"/><font color="red">审核不通过</font></if></td>
+			<td class="td_verify_time">{$vo.verify_time}</td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<td class="td_done"><include file="Public/button-right" /></td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

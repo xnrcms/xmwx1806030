@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.type					= $("select[name='type']").val();
+			CommonJs.SubmitData.title				    = $("input[name='title']").val();
+			CommonJs.SubmitData.pic				        = $("input[name='pic']").val();
+			CommonJs.SubmitData.status					= rcVal($("input[name='status']"),1);
+			CommonJs.SubmitData.content					= $("textarea[name='content']").val();
+			CommonJs.SubmitData.id						= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.content)){
+				_inform('请输入消息内容',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+
+});
+</script>

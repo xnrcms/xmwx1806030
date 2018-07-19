@@ -1,0 +1,54 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="8%" data-field="td_uid">领取红包用户</th>
+			<th width="10%" data-field="td_shop_id">消费商家</th>
+			<th width="3%" data-field="td_type">红包类型</th>
+			<th width="3%" data-field="td_money">现金支付金额</th>
+			<th width="3%" data-field="td_proportion">红包比例</th>
+			<th width="3%" data-field="td_num">领取豆子</th>
+			<th width="5%" data-field="td_start_time">领取红包开始时间</th>
+			<th width="5%" data-field="td_end_time">领取红包结束时间</th>
+			<th width="5%" data-field="td_packet_num">当天红包次数</th>
+			<th width="3%" data-field="td_is_receive">是否已领取</th>
+			<th width="6%" data-field="td_receive_time">领取时间</th>
+			<th width="3%" data-field="td_is_expire">是否过期</th>
+			<th width="6%" data-field="td_create_time">产生时间</th>
+			<!-- 
+			<th width="9%" data-field="td_done">操作</th>
+			 -->
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_uid">编号(<font color="green"><b>{$vo.uid}</b></font>)-手机号(<font color="blue">{$vo.phone}</font>)</td>
+			<td class="td_shop_id">编号(<font color="green"><b>{$vo.shop_id}</b></font>)-商家名称(<font color="blue">{$vo.shop_name}</font>)</td>
+			<td class="td_type">{$vo.type_name}</td>
+			<td class="td_money">{$vo.money}</td>
+			<td class="td_proportion">{$vo.proportion}</td>
+			<td class="td_num">{$vo.num}</td>
+			<td class="td_start_time">{$vo.start_time}</td>
+			<td class="td_end_time">{$vo.end_time}</td>
+			<td class="td_packet_num">当日第<font color="red"><b>{$vo.packet_num}</b></font>个红包</td>
+			<td class="td_is_receive">
+			<if condition="$vo.is_receive eq 0"><font color="red">未领取</font><elseif condition="$vo.is_receive eq 1"/><font color="green">已领取</font></if>
+			</td>
+			<td class="td_receive_time">{$vo.receive_time}</td>
+			<td class="td_is_expire">
+			<if condition="$vo.is_expire eq 1"><font color="red">已过期</font><else />--</if>
+			</td>
+			<td class="td_create_time">{$vo.create_time}</td>
+			<!-- 
+			<td class="td_done"><include file="Public/button-right" /></td>
+			 -->
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="30" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

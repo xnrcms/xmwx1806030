@@ -1,0 +1,87 @@
+<script type="text/javascript"><!--
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+	/* if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1){  
+        var inputers = document.getElementsByTagName("input");  
+        console.log(inputers);
+        for(var i=0;i<inputers.length;i++){  
+            if((inputers[i].type !== "submit") && (inputers[i].type === "text")){  
+                var input = inputers[i];  
+                var inputName = inputers[i].name;  
+                console.log(inputName);
+                var inputid = inputers[i].id;
+                inputers[i].removeAttribute("name");  
+                inputers[i].removeAttribute("id");  
+                setTimeout(function(){  
+                    input.setAttribute("name",inputName);  
+                    input.setAttribute("id",inputid);  
+                },1)  
+            }  
+        }  
+    } */
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			//编辑的时候不能填写用户名
+			if(typeof($("input[name='username']").val()) != 'undefined'){
+				CommonJs.SubmitData.username	= $("input[name='username']").val();
+				if(!CheckJs.required(CommonJs.SubmitData.username)){
+					_inform('请输入登录账号',function(){CommonJs.Loading = false;});return false;
+				}
+			}
+			CommonJs.SubmitData.password			= $("input[name='password']").val();
+			CommonJs.SubmitData.repassword			= $("input[name='repassword']").val();
+			CommonJs.SubmitData.sex					= rcVal($("input[name='sex']"),1);
+			CommonJs.SubmitData.age					= $("input[name='age']").val();
+			CommonJs.SubmitData.occupation			= $("input[name='occupation']").val();
+			CommonJs.SubmitData.true_name			= $("input[name='true_name']").val();
+			CommonJs.SubmitData.nationality			= $("input[name='nationality']").val();
+			CommonJs.SubmitData.phone				= $("input[name='phone']").val();
+			CommonJs.SubmitData.email				= $("input[name='email']").val();
+			CommonJs.SubmitData.idcard				= $("input[name='idcard']").val();
+			CommonJs.SubmitData.address				= $("input[name='address']").val();
+			CommonJs.SubmitData.id					= $("input[name='id']").val();
+			
+			/* if(!CheckJs.required(CommonJs.SubmitData.password)){
+				_inform('请输入登录密码',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.repassword)){
+				_inform('请输入确认密码',function(){CommonJs.Loading = false;});return false;
+			}
+			if(CommonJs.SubmitData.password !== CommonJs.SubmitData.repassword){
+				_inform('两次密码输入不一致',function(){CommonJs.Loading = false;});return false;
+			} */
+			if(parseInt(CommonJs.SubmitData.sex)<1){
+				_inform('请选择性别',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.age)){
+				_inform('请输入年龄',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.occupation)){
+				_inform('请输入职业',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.true_name)){
+				_inform('请输入姓名',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.nationality)){
+				_inform('请输入国籍',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.phone)){
+				_inform('请输入手机号码',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.email)){
+				_inform('请输入邮箱',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.idcard)){
+				_inform('请输入身份证',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.address)){
+				_inform('请输入居住地址',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	CommonJs.JsSave("#form-member-add");
+	//CommonJs.StartUpload();
+});
+</script>

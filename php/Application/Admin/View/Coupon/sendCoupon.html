@@ -1,0 +1,55 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<php>
+$col_xs1		= 4;
+$col_sm1		= 2;
+
+$col_xs2		= 8;
+$col_sm2		= 6;
+
+$col_xs3		= 8;
+$col_sm3		= 9;
+
+$col_xs_offset1	= 4;
+$col_sm_offset1	= 2;
+</php>
+<include file="Coupon/parts/index-nav" />
+<div class="page-container">
+	<form action="{:U()}" method="post" class="form form-horizontal" id="form-member-add">
+		<include file="Coupon/parts/addedit-form" />
+	</form>
+</div>
+</block>
+<block name="footjs">
+<style>
+.check-box{
+	width: 280px;
+}
+#selectid_0,#selectid_1{
+	width: 16px;
+	height: 16px;
+	margin-top: 0;
+	background: #fff;
+	vertical-align: middle;
+}
+</style>
+<script>
+$(function(){
+	$("#selectid_0,#selectid_1").on("change",function(){
+		var box = $(this).parents(".row");
+		if($(this).is(":checked")){
+			box.find(".icheckbox-blue input").prop("checked",true);
+			box.find(".icheckbox-blue").addClass("checked");
+		}else{
+			box.find(".icheckbox-blue input").prop("checked",false);
+			box.find(".icheckbox-blue").removeClass("checked");
+		}	
+	})
+})
+</script>
+<include file="Coupon/parts/sendCoupon-js" />
+</block>

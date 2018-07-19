@@ -1,0 +1,34 @@
+{/*搜索区域*=============================================================================start*/}
+<form name="searchForm">
+<div class="text-c search-form"> 
+	<input type="text" name="find_keyword" placeholder="请输入关键词进行检索" value="{:I('find_keyword')}" style="width:250px" class="input-text search-input">
+账号余额排序：
+	<select class="select search-select" name="account_status" style="width:80px;height:30px;">
+		<option value="" >全部</option>
+		<option value="1" <if condition="$_REQUEST['account_status'] == 1">selected</if>>升序</option>
+		<option value="2" <if condition="$_REQUEST['account_status'] == 2">selected</if>>降序</option>
+	</select>
+总积分排序：
+	<select class="select search-select" name="points_status" style="width:80px;height:30px;">
+		<option value="" >全部</option>
+		<option value="1" <if condition="$_REQUEST['points_status'] == 1">selected</if>>升序</option>
+		<option value="2" <if condition="$_REQUEST['points_status'] == 2">selected</if>>降序</option>
+	</select>
+总聚蚁币排序：
+	<select class="select search-select" name="juyi_status" style="width:80px;height:30px;">
+		<option value="" >全部</option>
+		<option value="1" <if condition="$_REQUEST['juyi_status'] == 1">selected</if>>升序</option>
+		<option value="2" <if condition="$_REQUEST['juyi_status'] == 2">selected</if>>降序</option>
+	</select>
+	<button name="" id="search" url="{:U('index',$extends_param)}" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    <span class="btn btn-success" id="export" style="background-color: #428BCA;width:75px;">导出</span>
+</div>
+</form>
+<script type="text/javascript">
+    //点击导出按钮，执行相关操作
+    $("#export").click(function(){
+        window.location.href="{:U('Agent/index',array('type'=>$line_type,'export_type'=>$line_type))}";    
+    });
+
+</script>
+{/*搜索区域=============================================================================end*/}

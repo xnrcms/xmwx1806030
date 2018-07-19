@@ -1,0 +1,77 @@
+<extend name="Public/common"/>
+<block name="login">
+<div class="header"></div>
+<div class="loginWraper">
+  <div id="loginform" class="loginBox">
+    <form class="form form-horizontal" action="{:U('login')}" method="post" onSubmit="return PageJs.FormSubmit(this);" id="LoginForm">
+      <div class="row cl">
+        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
+        <div class="formControls col-xs-8">
+          <input id="username" name="username" type="text" placeholder="账户" class="input-text size-L">
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+        <div class="formControls col-xs-8">
+          <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+        </div>
+      </div>
+      <eq name="is_verify" value="1">
+      <div class="row cl">
+        <div class="formControls col-xs-8 col-xs-offset-3">
+          <input id="verify" class="input-text size-L" type="text" name="verify" placeholder="验证码" onBlur="if(this.value==''){this.value='验证码:'}" onClick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
+          <img src="{:U('Public/verify')}" class="verifyimg" onclick="return PageJs.Reloadverify();"> </div>
+      </div>
+      </eq>
+      <div class="row cl">
+        <div class="formControls col-xs-8 col-xs-offset-3">
+          <label for="online">
+            <input type="checkbox" name="remember" id="online" value="1">使我保持登录状态</label>
+        </div>
+      </div>
+      <div class="row cl">
+        <div class="formControls col-xs-8 col-xs-offset-3">
+          <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="footer">{:C('XNRCMS')} v{:C('XNRCMS_VAR')}</div>
+</block>
+<block name="footjs">
+<script type="text/javascript">
+var PageJs={
+		Verifyimg:$(".verifyimg").attr("src"),
+		IsiVerify:'{$is_verify}',
+		Reloadverify:function(){
+			if(PageJs.IsiVerify == 1){
+				if( PageJs.Verifyimg.indexOf('?')>0){
+	                $(".verifyimg").attr("src", PageJs.Verifyimg+'&random='+Math.random());
+	            }else{
+	                $(".verifyimg").attr("src", PageJs.Verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+	            }
+			}
+		},
+		FormSubmit:function(){
+			var ThisObj = $("#LoginForm");
+				if(CommonJs.Loading){
+					tusi('有操作在进行，请稍等...');return false;
+				}
+				CommonJs.Loading 	= true;
+	    		loading('登录中...');
+				$.post(ThisObj.attr("action"), ThisObj.serialize(), function(data){
+	    			//刷新验证码
+		    		if(data.status == false) PageJs.Reloadverify();
+		    		loading(false);
+		    		tusi(data.info,function(){
+		    			if(data.status == 1) location.href = data.url;
+		    			CommonJs.Loading 	= false;
+			    	});
+	    		}, "json");
+				return false;
+		},
+};
+</script>
+</block>

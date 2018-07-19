@@ -1,0 +1,18 @@
+{/*搜索区域*=============================================================================start*/}
+<form name="searchForm">
+<div class="text-c search-form"> 
+商品状态：
+	<select class="select search-select" name="find_status" style="width:80px;height:30px;">
+		<option value="" >全部</option>
+		<option value="1" <if condition="$_REQUEST['find_status'] == 1">selected</if>>上架</option>
+		<option value="2" <if condition="$_REQUEST['find_status'] == 2">selected</if>>下架</option>
+	</select>
+更新时间：
+	<input type="text" name="create_time_s" placeholder="请输开始时间" value="{:I('create_time_s')}" onFocus="WdatePicker({maxDate:'#F{ $dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" class="input-text Wdate" style="width:186px;">
+	-
+	<input type="text" name="create_time_e" placeholder="请输结束时间" value="{:I('create_time_e')}" onFocus="WdatePicker({minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:186px;">
+	<input type="text" name="find_keyword" placeholder="请输入商品名称进行检索" value="{:I('find_keyword')}" style="width:250px" class="input-text search-input">
+	<button name="" id="search" url="{:U('index',$extends_param)}" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+</div>
+</form>
+{/*搜索区域=============================================================================end*/}

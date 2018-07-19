@@ -1,0 +1,38 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="2%" class="td_id"><input type="checkbox" id="selectid_0"></th>
+			<th width="15%" data-field="td_uid">用户ID</th>
+			<th width="8%" data-field="td_nickname">昵称</th>
+			<th width="8%" data-field="td_snickname">上一级账号</th>
+			<th width="8%" data-field="td_xnickname">下一级账号</th>
+			<th width="5%" data-field="td_score">账号余额</th>
+			<th width="5%" data-field="td_login">登录次数</th>
+			<th width="12%" data-field="td_last_login_time">最后登录时间</th>
+			<th width="12%" data-field="td_last_login_ip">最后登录IP</th>
+			<th width="6%" data-field="td_status_text">账号状态</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td class="td_id"><input type="checkbox" value="{$vo.uid}-{$vo.uid|safely_id}" name="ids[]" id="selectid_{$vo.uid}"></td>
+			<td class="td_username">{$vo.uid}</td>
+			<td class="td_nickname">{$vo.username}</td>
+			<td class="td_snickname"><a href="javascript:;" onClick="return layer_show('用户组查看','{:U('user_edit','id='.$vo['uid'])}',800,300);" style="color:#06c;">{$vo.snickname}</a></td>
+			<td class="td_xnickname"><a href="javascript:;" onClick="return layer_show('用户组查看','{:U('user_list','id='.$vo['uid'])}',800,300);" style="color:#06c;">下一级列表</a></td>
+			<td class="td_score">{$vo.account}</td>
+			<td class="td_login">{$vo.login}</td>
+			<td class="td_last_login_time"><span><gt name="vo.last_login_time" value="0">{$vo.last_login_time|time_format}<else />未登陆过</gt></span></td>
+			<td class="td_last_login_ip"><span>{:long2ip($vo['last_login_ip'])}</span></td>
+			<td class="td_status_text">{$vo.status_text}</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

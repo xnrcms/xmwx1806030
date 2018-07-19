@@ -1,0 +1,30 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="1%" data-field="td_i">序号</th>
+			<th width="10%" data-field="td_phone">会员账号</th>
+			<th width="10%" data-field="td_nickname">会员昵称</th>
+			<th width="10%" data-field="td_total_used_currency">使用聚蚁币数量</th>
+			<th width="10%" data-field="td_total_current_currency">未使用聚蚁币数量</th>
+			<th width="10%" data-field="td_max_create_time">时间</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_i">{$vo.i}</td>
+			<td class="td_phone">{$vo.phone}</td>
+			<td class="td_nickname">{$vo.nickname}</td>
+			<td class="td_total_used_currency">{$vo.total_used_currency}</td>
+			<td class="td_total_current_currency">{$vo.total_current_currency}</td>
+			<td class="td_max_create_time">{$vo.max_create_time}</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

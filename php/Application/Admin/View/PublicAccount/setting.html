@@ -1,0 +1,30 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="System/menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">系统设置</h1>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+		<div class="contenttitle2">
+        	<h3>基本设置</h3>
+        </div>
+        
+		<form class="stdform stdform2" action="{:U(System/setting)}" method="post">
+			<volist name="configList" id="vo">
+				<div class="line-dete">
+					<label>{$vo['config_name']}</label>
+	                <span class="field">
+	                	<input type="text" name="{$vo['config_sign']}" id="{$vo['config_sign']}" class="smallinput" value="{$vo['config_value']}">
+	                	<small class="desc">{$vo['explain']}</small>
+	                </span>
+	            </div>
+        	</volist>
+        	<input type="submit" class="big-btn stdbtn" value="更新">
+		</form>
+	</div>
+</block>

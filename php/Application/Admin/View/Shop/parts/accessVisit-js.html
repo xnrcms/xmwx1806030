@@ -1,0 +1,41 @@
+<script type="text/javascript">
+var rules = [{$this_group.rules}];
+	$(function(){
+	    $('input[name="rules[]"]').each(function(){
+	        if( $.inArray( parseInt(this.value,10),rules )>-1 ){
+	            $(this).prop('checked',true);
+	        }
+	        if(this.value==''){
+	            $(this).closest('span').remove();
+	        }
+	    });
+		$(".permission-list dt input:checkbox").click(function(){
+			$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+		});
+		$(".permission-list2 dd input:checkbox").click(function(){
+			var l =$(this).parent().parent().find("input:checked").length;
+			var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+			if($(this).prop("checked")){
+				$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+			}
+			else{
+				if(l==0){
+					$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+				}
+				if(l2==0){
+					$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+				}
+			}
+		});
+		CommonJs.FormCheck	= function(FormObj){
+				if(CommonJs.Loading){ return false;}
+				CommonJs.Loading 						= true;
+				CommonJs.SubmitData.rules				= rcVal($("input[name='rules[]']"),0);
+				CommonJs.SubmitData.id					= $("input[name='id']").val();
+				CommonJs.Loading 						= false
+				return true;
+		};
+		CommonJs.JsSave("#form-member-add");
+	});
+</script>

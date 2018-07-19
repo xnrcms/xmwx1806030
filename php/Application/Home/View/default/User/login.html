@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <script>!function(n){var e=n.document,t=e.documentElement,i=750,d=i/100,o="orientationchange" in n?"orientationchange":"resize",a=function(){var n=t.clientWidth||320;n>750&&(n=750),t.style.fontSize=n/d+"px"};e.addEventListener&&(n.addEventListener(o,a,!1),e.addEventListener("DOMContentLoaded",a,!1))}(window);</script>
+  <link rel="stylesheet" href="__CSS__/style1.css">
+  <title>登陆</title>
+</head>
+<body class="white-bg">
+<header>
+  登陆
+</header>
+<div class="contain">
+  <div class="login-avatar">
+    <img src="__IMG__/h.png" alt="">
+  </div>
+  <div class="login-form">
+    <div class="label">
+      <div class="left">
+        <img src="__IMG__/dot1.png" alt="">
+      </div>
+      <div class="middle">
+        <input type="tel" name="reg_tel" placeholder="请输入您的手机号" class="name-input">
+      </div>
+    </div>
+    <div class="label">
+      <div class="left">
+        <img src="__IMG__/dot2.png" alt="">
+      </div>
+      <div class="middle">
+        <input type="tel" name="reg_code" placeholder="请输入您的验证码" class="code-input">
+      </div>
+      <div class="right">
+        <span class="send-code get-code-btn">发送验证码</span>
+      </div>
+    </div>
+    <!-- <div class="ag">
+      <div class="die">
+        <i></i>
+      </div>
+      <em>同意平台<b>服务协议</b></em>
+    </div> -->
+    <div class="login-btn reg-submit">登陆</div>
+    <a href="register.html" class="to-registe">新用户注册</a>
+  </div>
+</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/common.js"></script>
+
+<script>
+var TIMER = 30;
+var telReg = /^1([3-9][0-9])\d{8}$/;
+//获取验证码
+;(function(){
+	$('.get-code-btn').on('click',function(){
+    	var tel = $('input[name=reg_tel]').val();
+    	if(tel==""){
+      		webTip("请输入手机号");
+      		$('input[name=reg_tel]').focus();
+      		return false;
+    	}
+    	if(!telReg.test(tel)){
+      		webTip("手机号不正确");
+      		$('input[name=reg_tel]').focus();
+      		return false;
+    	}
+    	var num = TIMER;
+    	var that = $(this);
+    	getCode(tel); //发送请求
+    	that.attr("disabled",true);
+    	secLess();
+    	var time = setInterval(function(){
+      		secLess()
+    	},1000)
+    	function secLess(){
+      		if(num>0){
+        		that.text(num+"s");
+        		num--;
+      		}else{
+        		clearInterval(time);
+         		that.text('获取验证码');
+         		that.removeAttr('disabled');
+      		}
+    	}
+  	})
+})();
+
+ 
+// 请求验证码函数
+function getCode(mobile){
+  var URL = '/Home/User/sendCode';
+  $.ajax({
+    type: 'post',
+    url: URL,
+    data: {
+    	mobile: mobile,
+    	type: 3
+    },
+    success: function(e){
+		if(e.Code != 0){
+			webTip(e.Msg);
+		}else{
+			webTip(e.Msg);
+		}
+      	console.log(e)
+    },
+  })
+}
+
+$(".reg-submit").on("click",function(){
+	var telBox = $('input[name=reg_tel]');
+  	var codeBox = $('input[name=reg_code]');
+  	if(telBox.val() == ''){
+    	webTip("请输入手机号",function(){
+      		telBox.focus();
+    	});
+    	return false;
+  	}
+  	if(codeBox.val() == ''){
+    	webTip("请输入短信验证码",function(){
+      		codeBox.focus();
+    	});
+    	return false;
+  	}
+  	//提交注册
+  	$.ajax({
+    	type: 'post',
+    	url: '/Home/User/login',
+    	data: {
+    		mobile: telBox.val(),
+    		checkcode: codeBox.val(),
+    	},
+    	success: function(e){
+			console.log(e);
+	      	if(e.Code != 0){
+				webTip(e.Msg);
+			}else{
+				window.location.href="/Home/Order/index.html?shop_id={$Think.session.shop_id_string}"; 
+			}
+    	}
+  	})
+})
+</script>
+</body>
+</html>

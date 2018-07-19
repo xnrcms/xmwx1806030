@@ -1,0 +1,45 @@
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({ checkboxClass: 'icheckbox-blue',radioClass: 'iradio-blue',increaseArea: '20%'});
+
+	//数据组装
+	CommonJs.FormCheck	= function(FormObj){
+			if(CommonJs.Loading){ return false;}
+			CommonJs.Loading 	= true;
+			CommonJs.SubmitData.text				= $("input[name='text']").val();
+			CommonJs.SubmitData.password			= $("input[name='password']").val();
+			CommonJs.SubmitData.checkbox			= rcVal($("input[name='checkbox']"),0);
+			CommonJs.SubmitData.radio				= rcVal($("input[name='checkbox']"),1);
+			CommonJs.SubmitData.select				= $("select[name='select']").val();
+			CommonJs.SubmitData.textarea			= $("textarea[name='textarea']").val();
+			CommonJs.SubmitData.editor				= $("textarea[name='editor']").val();
+			CommonJs.SubmitData.image				= $("input[name='image']").val();
+			CommonJs.SubmitData.images				= $("input[name='images']").val();
+			CommonJs.SubmitData.id					= $("input[name='id']").val();
+			if(!CheckJs.required(CommonJs.SubmitData.text)){
+				_inform('请输入文本内容',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.password)){
+				_inform('请输入密码内容',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.checkbox)){
+				_inform('请选择复选框',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.image)){
+				_inform('请上传单图',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.images)){
+				_inform('请上传多图',function(){CommonJs.Loading = false;});return false;
+			}
+			CommonJs.Loading = false
+			return true;
+	};
+	//数据提交
+	CommonJs.JsSave("#form-member-add");
+	//编辑器配置
+	//window.UEDITOR_CONFIG.toolbars 				= [[ ]];
+	CommonJs.GetEditor();
+	//上传插件
+	CommonJs.StartUpload();
+});
+</script>

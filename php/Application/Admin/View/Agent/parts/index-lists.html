@@ -1,0 +1,36 @@
+<div class="mt-5">
+<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+    <thead>
+		<tr class="text-l">
+			<th width="10%" data-field="td_uid">用户ID</th>
+			<th width="8%" data-field="td_username">用户名</th>
+			<th width="8%" data-field="td_account">账号余额</th>
+			<th width="8%" data-field="td_tcommision">总积分</th>
+			<th width="8%" data-field="td_ycommision">已用积分</th>
+			<th width="8%" data-field="td_scommision">剩余积分</th>
+			<th width="8%" data-field="td_tcurrency">总聚蚁币</th>
+			<th width="8%" data-field="td_ycurrency">已用聚蚁币</th>
+			<th width="8%" data-field="td_scurrency">剩余聚蚁币</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td class="td_uid">{$vo.uid}</td>
+			<td class="td_username">{$vo.username}</td>
+			<td class="td_account">{$vo.account}</td>
+			<td class="td_tcommision">{$vo.total_integral}</td>
+			<td class="td_ycommision">{$vo.y_integral}</td>
+			<td class="td_scommision">{$vo.current_integral}</td>
+			<td class="td_tcurrency">{$vo.total_currency}</td>
+			<td class="td_ycurrency">{$vo.y_currency}</td>
+			<td class="td_scurrency">{$vo.current_currency}</td>
+		</tr>
+		</volist>
+		<else/>
+		<tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+		</notempty>
+	</tbody>
+</table>
+</div>

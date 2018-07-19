@@ -1,0 +1,27 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs"></block>
+<block name="login"></block>
+<block name="main">
+<include file="Currency/parts/user-nav" />
+<div class="page-container">
+	<include file="Currency/parts/user-search" />
+	<include file="Currency/parts/user-button" />
+	<div class="mt-5">
+		<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+		    <thead>
+				<tr class="text-l">
+					<th width="25%" style="line-height: 35px;">使用数量总计(<span style="color:red">{$total_used_currency}</span>)</th>
+					<th width="25%" style="line-height: 35px;">未使用数量总计(<span style="color:red">{$total_current_currency}</span>)</th>
+				</tr>
+		    </thead>
+		</table>
+	</div>
+	<include file="Currency/parts/user-lists" />
+	<include file="Currency/parts/user-button" />
+</div>
+</block>
+<block name="footjs">
+<include file="Currency/parts/user-js" />
+</block>
