@@ -1,0 +1,88 @@
+body{
+	background-color: #ffffff;
+}
+.left{
+	position: absolute;
+	top: 140px;
+	left: 20px;
+	width: 258px;
+	border-right: 1px solid #CCC;
+	overflow-y: auto;
+}
+.right{
+	position: absolute;
+	top: 140px;
+	left: 280px;
+	width: 600px;
+	overflow: auto;
+}
+.tree-menu{
+	float: right;
+}
+.tree-menu span{
+	margin-left: 6px;
+}
+.tree-menu span i{
+	cursor: pointer;
+}
+.icon-plus {
+	background-position: -408px -96px;
+}
+.icon-remove {
+	background-position: -312px 0;
+}
+.icon-edit {
+	background-position: -96px -72px;
+}
+
+#menu_tree{
+	margin-right: 20px;
+}
+.right iframe{
+	height: 100%;
+	width: 100%;
+	z-index: 20;
+	border: 0;
+	margin: 0 auto;
+	display: block;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+li{
+	line-height: 16px;
+}
+.om-tree-node a{
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width: 115px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#vip_tip{
+	text-align: center;
+}
+.actions{
+	position: absolute;
+	bottom: 20px;
+	left: 10px;
+	width: 268px;
+	border-right: 1px solid #CCC;
+	height: 60px;
+}
+.actions .btn{
+	position: relative;
+	top: 30px;
+}
+
+.szcjbt, #czselarea,.zizicd{
+	display: none;
+}
+
+.maincd{
+	cursor: pointer;
+}
+.zizicd{
+	width: 82px;height:38px;border: 1px solid gray; margin-bottom: -1px; line-height: 38px;text-align: center;cursor: pointer;position: relative;overflow:hidden;
+}

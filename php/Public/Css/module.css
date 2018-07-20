@@ -1,0 +1,208 @@
+/* 布局样式 */
+.cf:before, .cf:after {
+	display: table;
+	content: "";
+}
+.cf:after {
+	clear: both;
+}
+/* = 分类管理树形菜单（目前只支持3级）
+------------------------------------------ */
+.category {
+	border-bottom-width: 0;
+	background-color: #fff;
+}
+.category .hd {
+	font-weight: bold;
+	border: 1px solid #d4d4d4;
+	color:#333;
+	background-color: #f5fafe;
+}
+.category .cate-item dt {
+	border: 1px solid #E7E7E7;
+	border-top:none;
+}
+.category dl,
+.category dd,
+.category input {
+	margin: 0;
+}
+.category .check,
+.category .fold,
+.category .order,
+.category .name,
+.category .mydo,
+.category .status {
+	float: left;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+}
+.category .opt {
+	float: right;
+	width: 120px;
+	height: 35px;
+	line-height: 35px;
+}
+.opt-btn {
+	float: right;
+	margin: 5px 40px 0 0;
+}
+.category .fold i {
+	display: inline-block;
+	vertical-align: middle;
+	width: 17px;
+	height: 17px;
+	background-repeat: no-repeat;
+}
+.category .fold .icon-fold,
+.category .fold .icon-unfold {
+	cursor: pointer;
+	background: url(../Images/bg_icon.png) no-repeat;
+}
+.category .fold .icon-fold {
+	background-position: -100px -25px;
+}
+.category .fold .icon-unfold {
+	background-position: -125px -25px;
+}
+.category .order,
+.category .order input {
+	text-align: center;
+}
+.category .order {
+	width: 90px;
+}
+.category .order input {
+	margin-bottom: 2px;
+	width: 40px;
+}
+.category .name input {
+	margin-bottom: 2px;
+}
+.category .add-sub-cate {
+	margin-left: 10px;
+}
+.category .add-sub-cate:hover {
+	text-decoration: none;
+	border-bottom: 0 none;
+}
+.category .btn-mod {
+	margin-left: 15px;
+}
+.category .root {
+	font-weight: bold;
+}
+.category .tab-sign {
+	display: inline-block;
+	height: 21px;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+}
+.category .name .msg {
+	vertical-align: top;
+	font-weight: normal;
+}
+.category .name .error {
+	color: #B94A48;
+}
+.category .name .success {
+	color: #468847;
+}
+.category .check{ width:2%;text-align: center;}
+.category .fold { width:3%;text-align: center;border-right: 1px solid #E7E7E7}
+.category .order{ width:5%;text-align: center;border-right: 1px solid #E7E7E7}
+.category .name{ width:72%;text-align: left;border-right: 1px solid #E7E7E7}
+.category .status{ width:5%;text-align: center;border-right: 1px solid #E7E7E7}
+.category .mydo{ width:10%;text-align: center;}
+/* 顶级分类 */
+.category > dl > dt .tab-sign {
+	/*display: none; */
+}
+
+/* 二级分类 */
+.category > dl > dd > dl > dt .tab-sign {
+	width: 32px;
+	background-position: 0 0;
+}
+.category > dl > dd > dl:last-child > dt .tab-sign {
+	background-position: -55px 0;
+}
+
+/* 三级分类 */
+.category > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 66px;
+	background-position: 0 -30px;
+}
+/* 四级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 102px;
+}
+/* 五级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 141px;
+}
+/* 六级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 181px;
+}
+/* 七级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 185px;
+}
+/* 八级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 225px;
+}
+/* 九级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 265px;
+}
+/* 十级分类 */
+.category > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dd > dl > dt  .tab-sign {
+	width: 305px;
+}
+
+.category > dl > dd > dl:last-child > dd > dl > dt .tab-sign {
+	background-position: 0 -90px;
+}
+.category > dl > dd > dl:last-child > dd > dl:last-child > dt .tab-sign {
+	background-position: 0 -120px;
+}
+.category > dl > dd > dl:last-child > dd > dl:last-child > dt .add-sub-cate{
+    /*display: none;*/
+}
+.category input{
+	height: 16px;
+}
+.icon-add {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	background: url(../Images/bg_icon.png) no-repeat 0 0;
+}
+.add-on {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	position: relative;
+	top: 7px;
+	right: 25px;
+}
+/* 表单组件 */
+.text,.textarea {
+	padding: 4px;
+	border: 1px solid #eeeeee;
+	background-color: #fff;
+	transition: all .3s linear;
+}
+.text {
+	width: 220px;
+	height: 33px;
+	vertical-align: middle;
+}
+.focus {
+	border: 1px solid #a6e1f3;
+	box-shadow: 0 0 12px #baf7ff;
+}

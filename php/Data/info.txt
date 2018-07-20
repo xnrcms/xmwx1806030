@@ -1,0 +1,1 @@
+'Error Code:60, Error Message:SSL certificate problem: unable to get local issuer certificate''Error Code:60, Error Message:SSL certificate problem: unable to get local issuer certificate''Error Code:60, Error Message:SSL certificate problem: unable to get local issuer certificate''Error Code:60, Error Message:SSL certificate problem: unable to get local issuer certificate'
