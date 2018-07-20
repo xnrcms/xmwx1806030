@@ -190,6 +190,30 @@ class IndexHelper extends BaseHelper{
 	}
 	
 	/**
+	 * 授权
+	 */
+	private function auth($Parame){
+		//$openId = $Parame['openId'];
+		$backUrl = $Parame['backUrl'];
+		$code = $Parame['code'];
+		if(empty($code)){
+			$baseurl=urlencode($backUrl);
+			$authUrl='https://open.weixin.qq.com/connect/oauth2/authorize?appid='.C('GZH.APPID').'&redirect_uri='.$baseurl.'&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect';
+			return array('Code' =>'1','Msg'=>$this->Lang['100010'],'Data'=>array('authUrl'=>$authUrl));
+			//header("Location: ".$url);
+			exit;
+		}elseif($code){
+			$url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=".C('GZH.APPID')."&secret=".C('GZH.APPSECRET')."&code=".$code."&grant_type=authorization_code";
+			$result = CurlHttp($url);
+			$result =json_decode($result,true);
+			$url = "https://api.weixin.qq.com/sns/userinfo?access_token=".$result['access_token']."&openid=".$result['openid']."&lang=zh_CN";
+			$result = CurlHttp($url);
+			$result =json_decode($result,true);
+			return array('Code' =>'0','Msg'=>$this->Lang['100010'],'Data'=>$result);
+		}
+	}
+	
+	/**
 	 * 页面底部广告
 	 */
 	private function getCoordinate($Parame){
