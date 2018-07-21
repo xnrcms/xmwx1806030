@@ -83,13 +83,12 @@ class ShopController extends CommonController {
 				array('time','Int',1,$this->Lang['100001'],'100001'),
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				array('page','Int',1,$this->Lang['100709'],'100709'),
-				array('cid','Int', 0,$this->Lang['101213'],'101213'),
 				array('keyword','String', 0,$this->Lang['101216'],'101216'),
 				//array('create_time','Int', 0),			//时间排序 1降序 2升序
 				//array('score','Int', 0),		//评分排序 1降序 2升序
 				//array('distance','Int', 0),		//距离筛选  1 3 5 50
-				array('longitude','String', 1,$this->Lang['101214'],'101214'),	//经度
-				array('latitude','String', 1,$this->Lang['101215'],'101215'),	//纬度
+				array('longitude','String', 0,$this->Lang['101214'],'101214'),	//经度
+				array('latitude','String', 0,$this->Lang['101215'],'101215'),	//纬度
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);
 		//自定义接口参数区
