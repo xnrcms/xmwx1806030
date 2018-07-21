@@ -687,7 +687,6 @@ class CenterController extends CommonController {
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				array('hashid','String',1, $this->Lang['100041'],'100041'),
 				array('uid', 'Int', 1, $this->Lang['100005'], '100005'),
-				array('title', 'String', 1, $this->Lang['1009010'], '1009010'),
 				array('content', 'String', 1, $this->Lang['100901'], '100901'),
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);

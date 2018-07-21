@@ -22,9 +22,8 @@ class CenterHelper extends BaseHelper{
 	private function index($Parame){
 		$user = M('user')->where(array('id'=>$Parame['uid']))->find();
 		$data = array();
-		$data['complete'] 				= 0;
 		if(!empty($user)){
-			//头像
+			//id
 			$data['id'] 				= $user['id'];
 			//头像
 			$data['avatar'] 			= $user['avatar'];
@@ -32,16 +31,6 @@ class CenterHelper extends BaseHelper{
 			$data['nickname'] 			= $user['nickname'];
 			//手机号
 			$data['phone'] 				= $user['phone'];
-			//鑫利豆
-			$data['xinlidou'] 			= $user['current_xinlidou'];
-			//享利豆
-			$data['xianglidou'] 		= $user['current_xianglidou'];
-			//福利豆
-			$data['fulidou'] 			= $user['current_fulidou'];
-			//资料是否完整
-			if(!empty($user['sex']) && !empty($user['age']) && !empty($user['phone']) && !empty($user['id_card'])){
-				$data['complete'] 		= 1;
-			}
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
@@ -1084,7 +1073,6 @@ class CenterHelper extends BaseHelper{
 	private function addFeedback($Parame){
 		$data 					= array();
 		$data['uid'] 			= $Parame['uid'];
-		$data['title'] 			= $Parame['title'];
 		$data['content'] 		= $Parame['content'];
 		$data['create_time'] 	= NOW_TIME;
 	
