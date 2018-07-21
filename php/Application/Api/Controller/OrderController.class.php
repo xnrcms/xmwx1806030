@@ -41,13 +41,11 @@ class OrderController extends CommonController {
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				array('hashid','String',1, $this->Lang['100041'],'100041'),
 				array('uid', 'Int', 1, $this->Lang['100005'], '100005'),
-				array('addressId', 'Int', 1, $this->Lang['101712'], '101712'),
+				array('shopId', 'Int', 1, $this->Lang['101712'], '101712'),
 				array('type', 'Int', 1, $this->Lang['101703'], '101703'),
 				array('info', 'String', 1, $this->Lang['101707'], '101707'),
-				//array('remarks', 'String', 0, $this->Lang['101711'], '101711'),
-				array('xinlidou', 'String', 0, $this->Lang['101725'], '101725'),
-				array('xianglidou', 'String', 0, $this->Lang['101726'], '101726'),
-				array('fulidou', 'String', 0, $this->Lang['101727'], '101727'),
+				array('rname', 'String', 1, $this->Lang['101733'], '101733'),
+				array('phone', 'String', 1, $this->Lang['101734'], '101734'),
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);
 		//自定义接口参数区

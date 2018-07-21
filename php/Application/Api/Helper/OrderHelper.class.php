@@ -19,23 +19,8 @@ class OrderHelper extends BaseHelper{
 	}
 	
 	private function order($Parame){
-		
 		$uid 			= intval($Parame['uid']);
-		//用户信息
-		$userInfo = M('user')->field('id,current_xinlidou,current_xianglidou,current_fulidou')->where(array('id'=>$uid))->find();
-		//地址
-		$shipping_fee 	= '0';
-		$address 		= M('address')->field('id,name,phone,province,city,county,address')->where(array('uid'=>$uid, 'is_selected'=>1))->find();
-		if(empty($address)){
-			$address	= array();
-		}
-		
-		$addressT 		= M('address')->field('id,name,phone,province,city,county,address')->where(array('uid'=>$uid, 'is_selected'=>1))->find();
-		if(empty($addressT)){
-			$addressT	= (object)array();
-		}
-		 
-		//购买类型 立即购买 购物车
+		//购买类型 1立即购买 2购物车
 		$buyType 		= intval($Parame['type']);
 		if($buyType == 1){
 			$info = json_decode($Parame['info'],true);
@@ -44,19 +29,12 @@ class OrderHelper extends BaseHelper{
 			if(empty($gid)){
 				return array('Code' =>'101704','Msg'=>$this->Lang['101704']);
 			}
-			
-			//规格属性id
-			$aid = intval($info['aid']);
-			
 			//商品数量
 			$num = intval($info['num']);
 			if($num < 1){
 				return array('Code' =>'101706','Msg'=>$this->Lang['101706']);
 			}
-			$param = array($aid=>$num);
-			//$goodsType = '';
-			//$attridArr = array($aid);
-	
+			$param = array($gid=>$num);
 		}elseif($buyType == 2){
 			//购物车id([1,2,3])
 			$cartId = trim($Parame['cartId']);
@@ -67,61 +45,40 @@ class OrderHelper extends BaseHelper{
 			if(empty($cartIdArr)){
 				return array('Code' =>'101708','Msg'=>$this->Lang['101708']);
 			}
-			$cart = M('cart')->field('id,attrid,gnum')->where(array('id'=>array('in',$cartIdArr), 'uid'=>$uid))->select();
+			$cart = M('cart')->field('id,gid,gnum')->where(array('id'=>array('in',$cartIdArr), 'uid'=>$uid))->select();
 			if(empty($cart)){
 				return array('Code' =>'101710','Msg'=>$this->Lang['101710']);
 			}
 			$attridArr = $cartByAttrid = array();
 			foreach ($cart as $key=>$value){
-				$param[$value['attrid']] = $value['gnum'];
+				$param[$value['gid']] = $value['gnum'];
 			}
 		}
 		
 		//商品数据
-		$goods = M('goods')->alias('g')
-		->field('g.id gid, g.goodsname, g.goodsimg, g.percentage, g.express_fee, ga.id attrid, ga.avalue, ga.price')
-		->join(array(' LEFT JOIN __GOODS_ATTRIBUTE__ ga ON g.id = ga.gid'))
-		->where(array('ga.id'=>array('in',array_keys($param))))
-		->select();
+		$goods = M('goods')->field('id, goodsname, goodsimg, goodsprice, stock')->where(array('id'=>array('in',array_keys($param))))->select();
 		
 		if(empty($goods)){
 			return array('Code' =>'101709','Msg'=>$this->Lang['101709']);
 		}
 		$info = $goodsInfo = $totalPrice = $totalPoints = $totalNum = '';
 		foreach($goods as $key=>$value){
-			$goodsInfo[$key]['goodsId'] 	= $value['gid'];
-			$goodsInfo[$key]['attrid'] 		= $value['attrid'];
+			$goodsInfo[$key]['goodsId'] 	= $value['id'];
 			$goodsInfo[$key]['goodsImg'] 	= $value['goodsimg'];
 			$goodsInfo[$key]['goodsName'] 	= $value['goodsname'];
-			$goodsInfo[$key]['orderNum'] 	= $param[$value['attrid']];
-			$goodsInfo[$key]['avalue'] 		= $value['avalue'];
-			$goodsInfo[$key]['price'] 		= $value['price'];
-			//快递费
-			$goodsInfo[$key]['express_fee'] = $value['express_fee'];
-			//折扣率
-			$goodsInfo[$key]['percentage'] 	= $value['percentage'];
+			$goodsInfo[$key]['orderNum'] 	= $param[$value['id']];
+			$goodsInfo[$key]['price'] 		= $value['goodsprice'];
 			//总价格
-			$totalPrice += $goodsInfo[$key]['price']*$goodsInfo[$key]['orderNum']+$goodsInfo[$key]['express_fee'];
+			$totalPrice += $goodsInfo[$key]['price']*$goodsInfo[$key]['orderNum'];
 			//总数量
 			$totalNum += $goodsInfo[$key]['orderNum'];
 		}
 		//商品信息
-		$info['address'] 				= $address;
-		$info['addressT'] 				= $addressT;
 		$info['goodsInfo'] 				= $goodsInfo;
-		//用户信息
-		//$info['userInfo'] 				= $userInfo;
-		//鑫利豆
-		$info['xinlidou'] 				= $userInfo['current_xinlidou'];
-		//享利豆
-		$info['xianglidou'] 			= $userInfo['current_xianglidou'];
-		//福利豆
-		$info['fulidou'] 				= $userInfo['current_fulidou'];
 		//总金额
 		$info['totalPrice'] 			= $totalPrice;	
 		//总数量
 		$info['totalNum'] 				= $totalNum;	
-		
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$info);
 	}
 	
@@ -133,8 +90,9 @@ class OrderHelper extends BaseHelper{
 	public function orderSubmit($Parame){
 		//用户id
 		$uid 			= intval($Parame['uid']);
-		//用户信息
-		$userInfo = M('user')->field('id,current_xinlidou,current_xianglidou,current_fulidou')->where(array('id'=>$uid))->find();
+		$shopId			= intval($Parame['shopId']);
+		//地址
+		$shop 			= M('shop')->field('id,province,area,county,address')->where(array('uid'=>$uid, 'is_selected'=>1))->find();
 		
 		//商品信息
 		$info = json_decode($Parame['info'],true);
@@ -142,30 +100,20 @@ class OrderHelper extends BaseHelper{
 			return array('Code' =>'101707','Msg'=>$this->Lang['101707']);
 		}
 		foreach ($info as $key=>$value){
-			$param[$value['aid']] 	= $value['num'];
-			$param2[$value['aid']] 	= $value['remarks'];
+			$param[$value['gid']] 	= $value['num'];
 		}
 		//商品数据
-		$goods = M('goods')->alias('g')
-		->field('g.id gid, g.goodsname, g.goodsimg, g.express_fee, ga.id attrid, ga.avalue, ga.price')
-		->join(array(' LEFT JOIN __GOODS_ATTRIBUTE__ ga ON g.id = ga.gid'))
-		->where(array('ga.id'=>array('in',array_keys($param))))
-		->select();
+		$goods = M('goods')->field('id, goodsname, goodsimg, goodsprice')->where(array('id'=>array('in',array_keys($param))))->select();
 		if(empty($goods)){
 			return array('Code' =>'101709','Msg'=>$this->Lang['101709']);
 		}
-		$info = $goodsInfo = $totalPrice = $totalNum = $expressFee = '';
+		$info = $goodsInfo = $totalPrice = $totalNum = '';
 		foreach($goods as $key=>$value){
-			$goodsInfo[$key]['goodsId'] 	= $value['gid'];
-			$goodsInfo[$key]['attrid'] 		= $value['attrid'];
+			$goodsInfo[$key]['goodsId'] 	= $value['id'];
 			$goodsInfo[$key]['goodsImg'] 	= $value['goodsimg'];
 			$goodsInfo[$key]['goodsName'] 	= $value['goodsname'];
-			$goodsInfo[$key]['orderNum'] 	= $param[$value['attrid']];
-			$goodsInfo[$key]['remarks'] 	= $param2[$value['attrid']];
-			$goodsInfo[$key]['avalue'] 		= $value['avalue'];
-			$goodsInfo[$key]['price'] 		= $value['price'];
-			//快递费
-			$expressFee 					+= $value['express_fee'];
+			$goodsInfo[$key]['orderNum'] 	= $param[$value['id']];
+			$goodsInfo[$key]['price'] 		= $value['goodsprice'];
 			//总价格
 			$totalPrice 					+= $goodsInfo[$key]['price']*$goodsInfo[$key]['orderNum'];
 			//总数量
@@ -173,7 +121,7 @@ class OrderHelper extends BaseHelper{
 		}
 		//判断库存
 		foreach ($goodsInfo as $key=>$value) {
-			$stock = M('goodsAttribute')->where(array('id'=>$value['attrid']))->getField('stock');
+			$stock = M('goods')->where(array('id'=>$value['goodsId']))->getField('stock');
 			if($value['orderNum']<1){
 				return array('Code' =>'101706','Msg'=>$this->Lang['101706']);
 			}
@@ -188,76 +136,18 @@ class OrderHelper extends BaseHelper{
 		$data['out_trade_no'] 			= 'REWORD'.date('YmdHis',NOW_TIME).randomString('6',0);
 		$data['goods_total_money'] 		= $totalPrice;
 		$data['gnum'] 					= $totalNum;
-		//备注
-		//$data['remarks']				= trim($Parame['remarks']);
 		$data['create_time']			= NOW_TIME;
-		//配送方式
-		$data['shipping_style'] 		= 0;
 		//地址
-		$addressId 						= intval($Parame['addressId']);
-		$address 						= M('address')->where(array('id'=>$addressId))->find();
-		$data['province']				= empty($address['province'])?'':$address['province'];
-		$data['city']					= empty($address['city'])?'':$address['city'];
-		$data['county']					= empty($address['county'])?'':$address['county'];
-		$data['address']				= empty($address['address'])?'':$address['address'];
-		$data['rname']					= empty($address['name'])?'':$address['name'];
-		$data['phone']					= empty($address['phone'])?'':$address['phone'];
-		//运费
-		$data['shipping_fee']			= $expressFee;
-		
-		//鑫豆抵扣百分比
-		//$data['percentage']				= 50;
-		//鑫利豆
-		$xinlidou						= intval($Parame['xinlidou']);
-		if($xinlidou != ''){
-			if(!judge_decimal($xinlidou, 0)){
-				return array('Code' =>'1','Msg'=>'鑫利豆格式错误');
-			}
-			if($xinlidou > $userInfo['current_xinlidou']){
-				return array('Code' =>'1','Msg'=>'鑫利豆不能大于你现有的鑫利豆');
-			}
-		}else{
-			$xinlidou					= 0;
-		}
-		$data['xinlidou']				= $xinlidou;
-		
-		//享利豆
-		$xianglidou						= intval($Parame['xianglidou']);
-		if($xianglidou != ''){
-			if(!judge_decimal($xianglidou, 0)){
-				return array('Code' =>'1','Msg'=>'享利豆格式错误');
-			}
-			if($xianglidou > $userInfo['current_xianglidou']){
-				return array('Code' =>'1','Msg'=>'享利豆不能大于你现有的享利豆');
-			}
-		}else{
-			$xianglidou					= 0;
-		}
-		$data['xianglidou']				= $xianglidou;
-		
-		//福利豆
-		$fulidou						= intval($Parame['fulidou']);
-		if($fulidou != ''){
-			if(!judge_decimal($fulidou, 0)){
-				return array('Code' =>'1','Msg'=>'福利豆格式错误');
-			}
-			if($fulidou > $userInfo['current_fulidou']){
-				return array('Code' =>'1','Msg'=>'福利豆不能大于你现有的福利豆');
-			}
-		}else{
-			$fulidou					= 0;
-		}
-		$data['fulidou']				= $fulidou;
-		
-		if(($xinlidou+$xianglidou+$fulidou) >= $data['goods_total_money']){
-			return array('Code' =>'1','Msg'=>'你使用的豆子不能超过订单的总金额');
-		}
-		
-		//鑫豆抵扣金额
-		$data['discount_money']			= $xinlidou+$xianglidou+$fulidou;
+		$shop 							= M('shop')->where(array('id'=>$shopId))->find();
+		$data['province']				= empty($shop['province'])?'':$shop['province'];
+		$data['city']					= empty($shop['city'])?'':$shop['city'];
+		$data['county']					= empty($shop['county'])?'':$shop['county'];
+		$data['address']				= empty($shop['address'])?'':$shop['address'];
+		$data['rname']					= $Parame['rname'];
+		$data['phone']					= $Parame['phone'];
 		
 		//应付金额
-		$data['total_money']			= $data['goods_total_money']+$data['shipping_fee']-$data['discount_money'];
+		$data['total_money']			= $data['goods_total_money'];
 		$data['pay_status']				= 0;
 		$data['status']					= 1;
 		//添加到订单表
@@ -275,12 +165,9 @@ class OrderHelper extends BaseHelper{
 				}else{
 					$dataDesc[$key]['num']		= $value['orderNum'];
 				}
-				$dataDesc[$key]['attrid']		= $value['attrid'];
-				$dataDesc[$key]['avalue']		= $value['avalue'];
 				$dataDesc[$key]['price']		= $value['price'];
-				$dataDesc[$key]['remarks']		= $value['remarks'];
 				//减库存
-				M('goodsAttribute')->where(array('id'=>$value['attrid']))->setDec('stock', $value['orderNum']);
+				M('goods')->where(array('id'=>$value['goodsId']))->setDec('stock', $value['orderNum']);
 				//加销量
 				M('goods')->where(array('id'=>$value['goodsId']))->setInc('salenum', $value['orderNum']);
 			}
@@ -289,19 +176,12 @@ class OrderHelper extends BaseHelper{
 			 
 			//判断商品类型用什么支付
 			if($result){
-				
-				//扣除豆子
-				M('user')->where(array('id'=>$uid))->save(array(
-						'current_xinlidou'=>array("exp","current_xinlidou-{$xinlidou}"),
-						'current_xianglidou'=>array("exp","current_xianglidou-{$xianglidou}"),
-						'current_fulidou'=>array("exp","current_fulidou-{$fulidou}"),
-				));
-				
 				//删除购物车
+				
 				//购买类型 1立即购买 2购物车
 				$buyType 		= intval($Parame['type']);
 				//操作
-				return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('oid'=>$res,'money'=>$data['total_money'],'table'=>'order'));
+				return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('oid'=>$res,'money'=>$data['total_money']));
 			}
 		}
 		return array('Code' =>'101211','Msg'=>$this->Lang['101211']);
