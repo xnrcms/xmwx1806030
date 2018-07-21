@@ -37,19 +37,12 @@ class CartHelper extends BaseHelper{
 	}
 	
 	private function addCart($Parame){
-		
 		$uid 			= intval($Parame['uid']);
-		
 		$info 			= json_decode($Parame['info'],true);
 		//商品id
 		$gid 			= intval($info['gid']);
 		if(empty($gid)){
 			return array('Code' =>'101704','Msg'=>$this->Lang['101704']);
-		}
-		//规格属性id
-		$attrid 			= intval($info['aid']);
-		if(empty($attrid)){
-			return array('Code' =>'101705','Msg'=>$this->Lang['101705']);
 		}
 		//商品数量
 		$gnum 			= intval($info['num']);
@@ -57,12 +50,11 @@ class CartHelper extends BaseHelper{
 			return array('Code' =>'101706','Msg'=>$this->Lang['101706']);
 		}
 		
-		$list   	= M('goods_attribute')->field('id,price,stock')->where(array('id' => $attrid))->find();
-		$cartnum	= M('cart')->where(array('gid'=>$gid,'attrid'=>$attrid,'uid'=>$uid))->count();
-		$cartlist 	= M('cart')->where(array('gid' => $gid, 'uid' => $uid, 'attrid' => $attrid, 'status' => 1))->find();
-		$goodsinfo 	= M('goods')->field('id,goodsimg,goodsname')->where(array('id' => $gid))->find();
+		/* $list   	= M('goods_attribute')->field('id,price,stock')->where(array('id' => $attrid))->find();*/
+		$cartlist 	= M('cart')->where(array('gid' => $gid, 'uid' => $uid,'status' => 1))->find(); 
 		
-		if ($list['stock'] < 1) {
+		$goodsinfo 	= M('goods')->field('id,goodsimg,goodsname,goodsprice,stock')->where(array('id' => $gid))->find();
+		if ($goodsinfo['stock'] < 1) {
 			return array('Code' =>'101713','Msg'=>$this->Lang['101713']);
 		}
 		if (!empty($cartlist)) {
@@ -71,7 +63,7 @@ class CartHelper extends BaseHelper{
 					'gnum' => $gnum,
 					'update_time' => NOW_TIME,
 			);
-			$info = M('cart')->data($data)->where(array('gid' => $gid, 'uid' => $uid,'attrid'=>$attrid))->save();
+			$info = M('cart')->data($data)->where(array('gid' => $gid, 'uid' => $uid))->save();
 			if ($info !== false) {
 				return array('Code' => '0', 'Msg' =>$this->Lang['101714']);
 			} else {
@@ -82,14 +74,11 @@ class CartHelper extends BaseHelper{
 					'gid'           => $gid,
 					'uid'           => $uid,
 					'gnum'          => $gnum,
-					'attrid'        => $attrid,
 					'goodsimg'      => $goodsinfo['goodsimg'],
-					'goodsprice'    => $list['price'],
+					'goodsprice'    => $goodsinfo['goodsprice'],
 					'goodsname'     => $goodsinfo['goodsname'],
-					'goodstype'     => $goodsinfo['goodstype'],
 					'create_time'   => NOW_TIME,
 			);
-		
 			$info = M('cart')->data($data)->add();
 			if ($info > 0) {
 				return array('Code' => '0', 'Msg' =>$this->Lang['101714']);

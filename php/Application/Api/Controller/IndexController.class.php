@@ -160,8 +160,8 @@ class IndexController extends CommonController {
 				array('time','Int',1,$this->Lang['100001'],'100001'),
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				//array('openId','String',1,$this->Lang['1'],'1'),
-				array('backUrl','String',1,$this->Lang['1'],'1'),
-				array('code','String',1,$this->Lang['1'],'1'),
+				array('backUrl','String',0,$this->Lang['1'],'1'),
+				array('code','String',0,$this->Lang['1'],'1'),
 				
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);

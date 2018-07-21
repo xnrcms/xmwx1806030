@@ -319,25 +319,8 @@ class ShopHelper extends BaseHelper{
 	 */
 	private function goodsDetail($Parame){
 		
-		//加入浏览历史
-		//用户id
-		$uid 			= intval($Parame['uid']);
 		//商品id
 		$gid 			= intval($Parame['goods_id']);
-		//浏览历史
-		$info 			= M('collection')->where(array('gid' => $gid, 'uid' => $uid, 'type' => 2))->find();
-		if (!empty($info)) {
-			$qcollection = M('collection')->where(array('gid' => $gid, 'uid' => $uid, 'type' => 2))->save(array('create_time'=>NOW_TIME));
-		}else {
-			$data = array(
-					'type' => 2,
-					'gid' => $gid,
-					'uid' => $uid,
-					'status' => 1,
-					'create_time' => NOW_TIME
-			);
-			$cinfo = M('collection')->data($data)->add();
-		}
 		
 		$goods = M('goods')->where(array('id'=>$Parame['goods_id'], 'status'=>1))->find();
 		$data = array();
@@ -346,21 +329,13 @@ class ShopHelper extends BaseHelper{
 			M('goods')->where(array('id'=>$goods['id']))->setInc('hit');
 			//数据
 			$data['pics'] 				= explode(',', $goods['goodsimgs']);
-			$data['originalprice'] 		= $goods['originalprice'];
 			$data['goodsname'] 			= $goods['goodsname'];
 			$data['goodsprice'] 		= $goods['goodsprice'];
-			$data['percentage'] 		= $goods['percentage'];
-			$data['express_fee'] 		= $goods['express_fee'];
-			//$data['info'] 				= $goods['info'];
+			$data['originalprice'] 		= $goods['originalprice'];
 			$data['content'] 			= $goods['content'];
-			$data['url'] 				= 'http://'.WEB_DOMAIN.'/Home/Index/detail/goods_id/'.$goods['id'].'.html';
 			$data['goodsimg'] 			= $goods['goodsimg'];
-			$data['attrinfo']			= M('GoodsAttribute')->field('id,avalue,price,stock')->where(array('gid'=>$goods['id']))->select();
-			
-			$data['hx_username']		= 'c06c9b0939376e46fd9cdde12f07e029';
-			$data['hx_password']		= '87a3578f7fd143f2f448a075218ce85c';
-			
-			
+			$data['stock'] 				= $goods['stock'];
+			//$data['attrinfo']			= M('GoodsAttribute')->field('id,avalue,price,stock')->where(array('gid'=>$goods['id']))->select();
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
