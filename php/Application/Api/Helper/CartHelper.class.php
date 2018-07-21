@@ -24,9 +24,8 @@ class CartHelper extends BaseHelper{
 		$Page       = new \Think\Page($count,10);
 		
 		$cart = M('cart')
-		->field('duoduo_cart.goodsimg,duoduo_cart.goodsname,duoduo_cart.gnum,duoduo_cart.goodsprice,duoduo_cart.id,duoduo_cart.gid,duoduo_goods_attribute.avalue')
-		->join('left join duoduo_goods on duoduo_goods.id=duoduo_cart.gid')
-		->join('left join duoduo_goods_attribute on duoduo_goods_attribute.id=duoduo_cart.attrid')
+		->field('duoduo_cart.goodsimg,duoduo_cart.goodsname,duoduo_cart.gnum,duoduo_cart.goodsprice,duoduo_cart.id,duoduo_cart.gid')
+		->join('left join duoduo_goods on duoduo_goods.id = duoduo_cart.gid')
 		->where(array('duoduo_cart.uid' => $uid,'duoduo_cart.status'=>1))
 		->order('duoduo_cart.id desc')
 		->limit($Page->firstRow.','.$Page->listRows)
@@ -101,9 +100,9 @@ class CartHelper extends BaseHelper{
 			if($num < 1){
 				return array('Code' => '101717', 'Msg' =>$this->Lang['101717']);
 			}
-			$attrid 				= M('cart')->where(array('id'=>$cartId))->getField('attrid');
-			$goodsAttribute 		= M('goods_attribute')->field('id,stock,price')->where(array('id'=>$attrid))->find();
-			if ($goodsAttribute['stock'] < 1 || $num > $goodsAttribute['stock']) {
+			$gid 					= M('cart')->where(array('id'=>$cartId))->getField('gid');
+			$goods 					= M('goods')->field('id,goodsprice,stock')->where(array('id' => $gid))->find();
+			if ($goods['stock'] < 1 || $num > $goods['stock']) {
 				return array('Code' => '101713', 'Msg' =>$this->Lang['101713']);
 			}
 			$data = array(
