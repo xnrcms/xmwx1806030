@@ -314,20 +314,18 @@ class CenterHelper extends BaseHelper{
 	private function addressList($Parame){
 		$uid 			= intval($Parame['uid']);
 		//总数
-		$count      	= M('address')->where(array('uid'=>$uid))->count();
+		$count      	= M('shop')->where(array('status'=>1))->count();
 		$Page       	= new \Think\Page($count,10);
-		$message 		= M('address')->where(array('uid'=>$uid))->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+		$message 		= M('address')->where(array('status'=>1))->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 		$data = $row = array();
 		if(!empty($message)){
 			foreach ($message as $key=>$value){
 				$row[$key]['id'] 			= $value['id'];
-				$row[$key]['name'] 			= $value['name'];
-				$row[$key]['phone'] 		= $value['phone'];
-				$row[$key]['province'] 		= $value['province'];
+				$row[$key]['shop_name'] 		= $value['name'];
+				/* $row[$key]['province'] 		= $value['province'];
 				$row[$key]['city'] 			= $value['city'];
-				$row[$key]['county'] 		= $value['county'];
+				$row[$key]['county'] 		= $value['county']; */
 				$row[$key]['address'] 		= $value['address'];
-				$row[$key]['is_selected'] 	= $value['is_selected'];
 			}
 		}
 		$data['list']			= $row;

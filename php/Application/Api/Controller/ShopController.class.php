@@ -126,7 +126,12 @@ class ShopController extends CommonController {
 		$BackData 	= $this->CheckData(I('request.'),$CheckParam);
 		$list 		= M('category')->field('id,name,pid')->where(array('status'=>1))->order('sort desc,id asc')->select();
 		$list 		= list_to_tree($list, $pk = 'id', $pid = 'pid', $child = 'list', $root = 0);
-		$Res = array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$list);
+		$data		= array();
+		foreach ($list as $key=>$value){
+			$data[$key]['id'] 	= $value['id'];
+			$data[$key]['name'] = $value['name'];
+		}
+		$Res = array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 		$this->ReturnJson($Res);
 	}
 	

@@ -10,11 +10,6 @@
 					<input type="hidden" name="id" value="{$vo.id}">
 					<input type="hidden" name="ac" value="ajaxEditTitle">
 					<input type="text" name="name" class="text" value="{$vo.name}">
-					<a class="add-sub-cate" title="添加子分类" onclick="return layer_show('新增','{:U('Category/add','pid='.$vo['id'].$extends_param)}',800,500);">
-						<if condition="$vo.pid eq 0">
-						<i class="icon-add"></i>
-						</if>
-					</a>
 					<span class="help-inline msg"></span>
 				</div>
 				<div class="order"><input type="text" name="sort" class="text input-mini" value="{$vo.sort}"></div>

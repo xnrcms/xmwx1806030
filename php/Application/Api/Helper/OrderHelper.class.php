@@ -225,12 +225,12 @@ class OrderHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'order';
 		$MainAlias					= 'main';
-		$MainField					= array('id,order_no,status,is_notice,total_money');
+		$MainField					= array('id,order_no,status,total_money');
 		
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
 		
-		$RelationTab				= array('order_desc'=>array('Ralias'=>'o_d','Ron'=>'o_d ON o_d.oid=main.id','Rfield'=>array('gname,gImg,avalue,num,price')));
+		$RelationTab				= array('order_desc'=>array('Ralias'=>'o_d','Ron'=>'o_d ON o_d.oid=main.id','Rfield'=>array('gname,gImg,num,price')));
 		$RelationTab				= $this->getRelationTab($RelationTab);
 		$tables	  					= $RelationTab['tables'];
 		$RelationFields				= $RelationTab['fields'];
@@ -248,8 +248,6 @@ class OrderHelper extends BaseHelper{
 			$map['main.status']		= 2;
 		}elseif($type == 3){
 			$map['main.status']		= 3;
-		}elseif($type == 4){
-			$map['main.status']		= array('in',array(4,5,6,7));
 		}
 		
 		//排序
@@ -265,10 +263,8 @@ class OrderHelper extends BaseHelper{
 				$arr[$v['id']]['id']			= $v['id'];
 				$arr[$v['id']]['order_no']		= $v['order_no'];
 				$arr[$v['id']]['status']		= $v['status'];
-				$arr[$v['id']]['is_notice']		= $v['is_notice'];
 				$arr[$v['id']]['total_money']	= $v['total_money'];
 				$arr[$v['id']]['sublist'][] 	= $v;
-				
 			}
 		}
 		$data['list']			= empty($list) ? array() : array_values($arr);

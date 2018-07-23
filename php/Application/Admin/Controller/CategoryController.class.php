@@ -185,7 +185,7 @@ class CategoryController extends AdminController {
 		
 		$FormData[0] = array(
 		array('fieldName'=>'分类名称','fieldValue'=>'name','fieldType'=>'text','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="用于后台显示的菜单名称"'),
-		array('fieldName'=>'上级分类','fieldValue'=>'pid','fieldType'=>'select','isMust'=>0,'fieldData'=>$pidData,'attrExtend'=>'placeholder=""'),
+		//array('fieldName'=>'上级分类','fieldValue'=>'pid','fieldType'=>'select','isMust'=>0,'fieldData'=>$pidData,'attrExtend'=>'placeholder=""'),
 		//array('fieldName'=>'分类LOGO','fieldValue'=>'icon','fieldType'=>'image','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'data-table="category" data-field="icon" data-size=""'),
 		array('fieldName'=>'排序','fieldValue'=>'sort','fieldType'=>'text','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'placeholder="用于分组显示的顺序"'),
 		array('fieldName'=>'状态','fieldValue'=>'status','fieldType'=>'radio','isMust'=>0,'fieldData'=>array(1=>'启用',2=>'禁用'),'attrExtend'=>'placeholder=""'),
