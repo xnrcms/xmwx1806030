@@ -155,7 +155,6 @@ class CenterHelper extends BaseHelper{
 		return array('Code' =>'100011','Msg'=>$this->Lang['100011']);
 	}
 	
-	
 	/**
 	 * 我的收藏列表
 	 */
