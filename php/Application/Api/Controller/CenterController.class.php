@@ -88,7 +88,8 @@ class CenterController extends CommonController {
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				array('hashid','String',1, $this->Lang['100041'],'100041'),
 				array('uid', 'Int', 1, $this->Lang['100005'], '100005'),
-				array('info', 'String', 1, $this->Lang['101724'], '101724'),
+				array('nickname', 'String', 0, $this->Lang['101800'], '101800'),
+				array('phone', 'String', 0, $this->Lang['101801'], '101801'),
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);
 		//自定义接口参数区

@@ -31,6 +31,8 @@ class CenterHelper extends BaseHelper{
 			$data['nickname'] 			= $user['nickname'];
 			//手机号
 			$data['phone'] 				= $user['phone'];
+			//客服电话
+			$data['telephone'] 			= M('platform_config')->where(array('name'=>'MOBILE'))->getField('value');
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
@@ -134,10 +136,7 @@ class CenterHelper extends BaseHelper{
 		if(!empty($user)){
 			$data['avatar'] 		= (string)$user['avatar'];
 			$data['nickname'] 		= (string)$user['nickname'];
-			$data['sex'] 			= (string)$user['sex'];
-			$data['age'] 			= (string)$user['age'];
 			$data['phone'] 			= (string)$user['phone'];
-			$data['id_card'] 		= (string)$user['id_card'];
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
@@ -146,10 +145,9 @@ class CenterHelper extends BaseHelper{
 	 * 个人信息修改
 	 */
 	private function managerSubmit($Parame){
-		$data 			= json_decode($Parame['info'],true);
-		if(empty($data)){
-			return array('Code' =>'101724','Msg'=>$this->Lang['101724']);
-		}
+		$data 				= array();
+		$data['nickname'] 	= $Parame['nickname'];
+		$data['phone'] 		= $Parame['phone'];
 		$res = M('user')->where(array('id'=>$Parame['uid']))->save($data);
 		if($res !== false){
 			return array('Code' =>'0','Msg'=>$this->Lang['100010']);
