@@ -45,21 +45,12 @@ class ShopHelper extends BaseHelper{
 	 * 商家搜索列表
 	 */
 	private function searchShopList($Parame){
-		//type 1商家 2商品
-		if(empty($Parame['type'])){
-			$Parame['type'] = 1;
-		}
 		$page						= 1;
-		$limit						= 1000;
+		$limit						= 5000;
 		//获取数据
-		$MainTab					= ($Parame['type'] == 1)?'shop':'goods';
+		$MainTab					= 'shop';
 		$MainAlias					= 'main';
-		if($Parame['type'] == 1){
-			$MainField					= array('id,shop_name,sales_num,score,face,longitude,latitude');
-		}else{
-			$MainField					= array('id,goodsname,goodsimg,goodsprice');
-		}
-			
+		$MainField					= array('id,shop_name,face,longitude,latitude');
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
 		$RelationTab				= array();
@@ -67,43 +58,40 @@ class ShopHelper extends BaseHelper{
 		$tables	  					= $RelationTab['tables'];
 		$RelationFields				= $RelationTab['fields'];
 		$model						= !empty($tables) ? $MainModel->join ( $tables ,'LEFT'): $MainModel;
-			
 		//检索条件
 		$map 						= array();
 		$map['main.status']			= 1;
-		if($Parame['keyword'] == ''){
-			return array('Code' =>'1','Msg'=>$this->Lang['100111']);
-		}else{
-			if($Parame['type'] == 1){
-				$map['main.shop_name']		= array('like', '%' . $Parame['keyword'] . '%');
-			}else{
-				$map['main.goodsname']		= array('like', '%' . $Parame['keyword'] . '%');
-			}
-			M('search')->add(array('uid'=>$Parame['uid'], 'name'=>$Parame['keyword'], 'create_time'=>NOW_TIME));
-		}
 		//排序
-		$order						= $MainAlias.'.id desc';
+		$order 						= $MainAlias.'.create_time asc';
 		//检索字段
 		$fields						= (empty($MainField) ? get_fields_string($MainModel->getDbFields(),$MainAlias).',' : get_fields_string($MainField,$MainAlias).',') . $RelationFields;
 		$fields						= trim($fields,',');
-			
+	
 		//列表数据
 		$list 						= $this->getLists($model,$map,$order,$fields,$page,$limit,false);
-			
 		if (!empty($list)){
+			$row = array();
 			foreach ($list as $k=>$v){
-				if($Parame['type'] == 1){
-					//数据格式化
-					$distance = getDistanceBetweenPointsNew($Parame['latitude'], $Parame['longitude'], $v['latitude'], $v['longitude']);
-					$list[$k]['distance'] = $distance['meters']>1000?round($distance['meters']/1000,2).'km':round($distance['meters'],2).'m';
+				//数据格式化
+				$distance = getDistanceBetweenPointsNew($Parame['latitude'], $Parame['longitude'], $v['latitude'], $v['longitude']);
+				$list[$k]['meters'] = $distance['meters'];
+				$list[$k]['distance'] = $distance['meters']>1000?round($distance['meters']/1000,2).'km':round($distance['meters'],2).'m';
+				//筛选范围
+				if(empty($Parame['distance'])) $Parame['distance'] = 50;
+				if($list[$k]['meters'] > $Parame['distance']*1000){
+					unset($list[$k]);
+					continue;
 				}
-				if($Parame['type'] == 2){
-					$list[$k]['url'] = 'http://'.WEB_DOMAIN.'/Home/Index/detail/goods_id/'.$v['id'].'.html';
-				}
-				
+				$row[$k] = $distance['meters'];
 			}
+			//if(in_array($Parame['distance'], array(1,3,5))){
+				array_multisort($row, SORT_ASC, $list);
+			//}
+			$list = array_chunk($list, 10);
+			$list = $list[$Parame['page']-1];
 		}
 		$data['list']			= empty($list) ? array() : $list;
+		$data['page']			= $Parame['page'];
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
 	
@@ -139,7 +127,7 @@ class ShopHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'shop';
 		$MainAlias					= 'main';
-		$MainField					= array('id,shop_name,face,address,mobile,grade as star,longitude,latitude');
+		$MainField					= array('id,shop_name,face,longitude,latitude');
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
 		$RelationTab				= array();
@@ -149,28 +137,7 @@ class ShopHelper extends BaseHelper{
 		$model						= !empty($tables) ? $MainModel->join ( $tables ,'LEFT'): $MainModel;
 		//检索条件
 		$map 						= array();
-		$map['main.check_status']	= 2;
-		//搜索
-		if(!empty($Parame['keyword'])){
-			$map['main.shop_name']	= array('like', '%' . $Parame['keyword'] . '%');
-		}
-		//分类
-		$category_id                = $Parame['cid'];
-		if ($category_id >0){
-			$pid = M('scategory')->where(array('id'=>$category_id))->getField('pid');
-			if($pid == 0){
-				$cidArr = array($category_id);
-				$scategory = M('scategory')->field('id')->where(array('pid'=>$category_id, 'status'=>1))->select();
-				if(!empty($scategory)){
-					foreach ($scategory as $key=>$value){
-						$cidArr[] = $value['id'];
-					}
-				}
-				$map['category_id']		= array('in', $cidArr);
-			}else{
-				$map['category_id']		= $category_id;
-			}
-		}
+		$map['main.status']			= 1;
 		//排序
 		$order 						= $MainAlias.'.create_time asc';
 		
@@ -180,6 +147,7 @@ class ShopHelper extends BaseHelper{
 	
 		//列表数据
 		$list 						= $this->getLists($model,$map,$order,$fields,$page,$limit,false);
+		
 		if (!empty($list)){
 			$row = array();
 			foreach ($list as $k=>$v){
