@@ -190,29 +190,26 @@ class OrderHelper extends BaseHelper{
 	
 	
 	private function orderDetail($Parame){
-		$order = M('order')->where(array('order_no'=>$Parame['trade_no']))->find();
+		$order = M('order')->where(array('id'=>$Parame['id']))->find();
 		$data = array();
 		if(!empty($order)){
-			//商家信息
-			$shopInfo = M('shop')->field('shop_name,create_time')->where(array('id'=>$order['shop_id']))->find();
-			//商家名称
-			$data['shop_name'] 			= $shopInfo['shop_name'];
-			//商家创建时间
-			$data['shop_time'] 			= date('Y/m/d H:i:s', $shopInfo['create_time']);
-			//订单金额
+			//收货人
+			$data['rname'] 				= $order['rname'];
+			//电话
+			$data['phone'] 				= $order['phone'];
+			//提货地址
+			$data['address'] 			= $order['address'];
+			//订单商品信息
+			$goodsInfo 					= M('order_desc')->field('gname,gImg,num,price')->where(array('oid'=>$order['id']))->select();
+			$data['goods_info']			= $goodsInfo;
+			//订单总金额
 			$data['total_money'] 		= $order['total_money'];
-			//支付折扣
-			$data['discount'] 			= $order['discount'];
-			//折扣金额
-			$data['discount_money'] 	= $order['total_money']-$order['money'];
-			//实付金额
-			$data['money'] 				= $order['money'];
 			//订单号
-			$data['trade_no'] 			= $order['trade_no'];
-			//支付方式	1支付宝 2微信
-			$data['pay_type'] 			= $order['pay_type'];
+			$data['order_no'] 			= $order['order_no'];
 			//下单时间
 			$data['create_time'] 		= date('Y/m/d H:i:s', $order['create_time']);
+			//付款时间
+			$data['pay_time'] 			= date('Y/m/d H:i:s', $order['pay_time']);
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
@@ -297,7 +294,7 @@ class OrderHelper extends BaseHelper{
 		if($id <= 0){
 			return array('Code' =>'101729','Msg'=>$this->Lang['101729']);
 		}
-		$res = M('order')->where(array('uid'=>$uid, 'id'=>$id))->save(array('status'=>4, 'receipt_time'=>NOW_TIME));
+		$res = M('order')->where(array('uid'=>$uid, 'id'=>$id))->save(array('status'=>3, 'receipt_time'=>NOW_TIME));
 		if($res != false){
 			return array('Code' =>'0','Msg'=>$this->Lang['100018']);
 		}
