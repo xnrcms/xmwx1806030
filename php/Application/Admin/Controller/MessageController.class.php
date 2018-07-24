@@ -221,7 +221,7 @@ class MessageController extends AdminController {
 
     protected function CustomerForm($index = 0) {
         $FormData[0] = array(
-        	array('fieldName' => '分类','fieldValue'=>'type','fieldType'=>'select','isMust'=>1,'fieldData'=>array(1=>'系统消息', 2=>'公告'),'attrExtend'=>'placeholder=""'),
+        	array('fieldName' => '分类','fieldValue'=>'type','fieldType'=>'select','isMust'=>1,'fieldData'=>array(1=>'系统消息'),'attrExtend'=>'placeholder=""'),
             array('fieldName' => '标题', 'fieldValue' => 'title', 'fieldType' => 'text', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入消息标题"'),
         	array('fieldName' => '内容','fieldValue'=>'description','fieldType'=>'textarea','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入消息内容" rows="5" style="height:100%;"'),
             array('fieldName' => '隐藏域', 'fieldValue' => array('id'), 'fieldType' => 'hidden', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder=""'),

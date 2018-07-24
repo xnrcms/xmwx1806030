@@ -204,7 +204,7 @@ class BannerController extends AdminController {
 	 * */
 	protected function CustomerForm($index=0){
 		$FormData[0] = array(
-			array('fieldName'=>'分类','fieldValue'=>'type','fieldType'=>'select','isMust'=>1,'fieldData'=>array(1=>'首页轮播', 3=>'商城轮播', 4=>'页面底部广告'),'attrExtend'=>'placeholder=""'),
+			array('fieldName'=>'分类','fieldValue'=>'type','fieldType'=>'select','isMust'=>1,'fieldData'=>array(1=>'首页轮播'),'attrExtend'=>'placeholder=""'),
 			array('fieldName'=>'链接','fieldValue'=>'link','fieldType'=>'text','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入链接"'),	
 			array('fieldName'=>'显示状态','fieldValue'=>'status','fieldType'=>'radio','isMust'=>1,'fieldData'=>array(1=>'启用',0=>'禁用'),'attrExtend'=>'placeholder=""'),
 			array('fieldName'=>'单图上传','fieldValue'=>'picture','fieldType'=>'image','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'data-table="demo" data-field="image" data-size=""'),

@@ -26,7 +26,7 @@ class FeedBackController extends AdminController {
 		 * Rfield	关联查询字段，
 		 * */
 		$RelationTab				= array(
-			'user'=>array('Ralias'=>'u','Ron'=>'u ON u.id=main.uid','Rfield'=>array('phone')),
+			'user'=>array('Ralias'=>'u','Ron'=>'u ON u.id=main.uid','Rfield'=>array('phone,nickname')),
 		);
 		$RelationTab				= $this->getRelationTab($RelationTab);
 		$tables	  					= $RelationTab['tables'];
