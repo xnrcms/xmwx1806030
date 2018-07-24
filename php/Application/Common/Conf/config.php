@@ -55,11 +55,11 @@ return array(
 		
 	//有关OSS
 	'OSSCONFIG'=>array(
-		'ACCESSKEYID' => 'LTAI7KCzBth0NKlP',
-		'ACCESSKEYSECRET'=>'Zx7b8lODKzCI9eandaBdK3eNZsL9UY',
-		'ENDPOINT' =>'oss-cn-hangzhou.aliyuncs.com',
-		'BUCKET' => 'sxpic',
-		'HOST' => 'sxpic.oss-cn-hangzhou.aliyuncs.com'
+		'ACCESSKEYID' => 'LTAIyHy4RQxliMbW',
+		'ACCESSKEYSECRET'=>'Xr6PC1dlnmS45oHT7HeAxag1JcEJcO',
+		'ENDPOINT' =>'oss-cn-beijing.aliyuncs.com',
+		'BUCKET' => 'lkgw',
+		'HOST' => 'lkgw.oss-cn-beijing.aliyuncs.com'
 	),
 		
 	//聚合银行卡key
