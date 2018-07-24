@@ -94,14 +94,8 @@ class OrderController extends AdminController {
         $status = array(
             0 => '',
             1 => '待付款',
-            2 => '待发货',
-            3 => '待收货',
-            4 => '已完成',
-            5 => '待退款',
-            6 => '拒绝退款',
-            7 => '已退款',
-            8 => '已评价',
-        	9 => '已取消'
+            2 => '待取货',
+            3 => '已完成',
         );
         $pay_status = array(
             0 => '未支付',
@@ -193,13 +187,8 @@ class OrderController extends AdminController {
         $status = array(
             0 => '',
             1 => '待付款',
-            2 => '待发货',
-            3 => '待收货',
-            4 => '已完成',
-            5 => '待退款',
-            6 => '拒绝退款',
-            7 => '已退款',
-            8 => '已取消'
+            2 => '待取货',
+            3 => '已完成',
         );
         $pay_status = array(
             0 => '未支付',
@@ -346,14 +335,9 @@ class OrderController extends AdminController {
             //列表数据
             $status = array(
                 0 => '',
-                1 => '待付款',
-                2 => '待发货',
-                3 => '待收货',
-                4 => '已完成',
-                5 => '待退款',
-                6 => '拒绝退款',
-                7 => '已退款',
-                8 => '已取消'
+            	1 => '待付款',
+            	2 => '待取货',
+            	3 => '已完成',
             );
             $pay_status = array(
                 0 => '未支付',

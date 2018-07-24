@@ -33,7 +33,7 @@ class ShopController extends AdminController {
          * */
 
         $RelationTab = array(
-            'scategory' => array('Ralias' => 'cate', 'Ron' => 'cate ON cate.id=main.category_id', 'Rfield' => array('name as categoryname')),
+            //'scategory' => array('Ralias' => 'cate', 'Ron' => 'cate ON cate.id=main.category_id', 'Rfield' => array('name as categoryname')),
         );
         $RelationTab = $this->getRelationTab($RelationTab);
         $tables = $RelationTab['tables'];
@@ -116,9 +116,6 @@ class ShopController extends AdminController {
      * 新增数据
      */
     public function add() {
-    	if(!IS_ROOT && $this->group_id != 1){
-    		$this->error('你没权限添加商家！');
-    	}
         //数据提交
         if (IS_POST)
             $this->update();
@@ -232,35 +229,12 @@ class ShopController extends AdminController {
 
         if (IS_POST) {
         	$id = I('post.id', 0, 'intval');
-        	if(empty($id)){
-        		$uid = $this->addMember();
-        		if(is_numeric($uid)){
-        			$_POST['uid'] = $uid;
-        		}
-        		
-        	}
-        	
             $Models = D('Shop');
             //数据整理
             //.......
             //数据整理
             $res = $Models->update();
             if (false !== $res) {
-            	
-            	if($res['ac'] > 0){
-            	  	//更改密码
-	            	$password 	= I('post.password', '');
-	            	$repassword = I('post.repassword', '');
-	            	/* 检测密码 */
-	            	if ($password != $repassword) $this->error('密码和重复密码不一致！');
-	            	if($password != ''){
-	            		import('User.Conf.config', APP_PATH, '.php');
-	            		$pass_key = md5(sha1($password) . UC_AUTH_KEY);
-	            		$updata['password'] = $pass_key;
-	            		$uid = $Models->where(array('id'=>$res['id']))->getField('uid');
-	            		$res = M('ucenter_member')->where(array('id' => $uid))->save($updata);
-	            	}
-            	}	 
                 //记录行为
                 action_log('config', $res['id'], UID);
                 //数据返回
@@ -272,69 +246,6 @@ class ShopController extends AdminController {
         }
         $this->error('非法提交！');
     }
-    
-	/**
-	 * 	审核
-	 */
-	public function check($id = 0) {
-		//数据提交
-		if (IS_POST){
-			$Models = M('shop');
-			//数据整理
-			//.......
-			$id 			= I('post.id',0,'intval');
-			$uid 			= I('post.uid',0,'intval');
-			$proportion 	= I('post.proportion','','trim');
-			$check_status 	= I('post.check_status',0,'intval');
-			//数据整理
-			$user 			= $Models->where(array('id'=>$id,'uid'=>$uid))->find();
-			if($user['check_status'] == 2){
-				$this->error('已审核,请不要重复审核！');
-			}
-			$row 							= array();
-			$row['grade'] 					= $proportion;
-			$_proportion 					= M('shop_proportion')->where(array('grade'=>$proportion))->getField('proportion');
-			$row['proportion'] 				= $_proportion*100;
-			$row['check_status'] 			= $check_status;
-			$row['verify_time'] 			= NOW_TIME;
-			$res = $Models->where(array('id'=>$id,'uid'=>$uid))->save($row);
-			if (false !== $res) {
-				//数据返回
-				$this->success('审核成功', Cookie('__forward__'));
-			} else {
-				$error = $Models->getError();
-				$this->error(empty($error) ? '未知错误！' : $error);
-			}
-		}else{
-			//页面数据
-			 $info = M('Shop')->field(true)->find($id);
-	        if (false === $info) {
-	            $this->error('获取配置信息错误');
-	        }
-	        $info['phone'] = M('user')->where(array('id'=>$info['uid']))->getField('phone');
-	        
-	        $shopPic = M('shop_pic')->where(array('shop_id'=>$id))->select();
-	        $shopPicStr = '';
-	        if(!empty($shopPic)){
-	        	foreach ($shopPic as $key=>$value) {
-	        		$shopPicStr .= $value['shop_pic'].',';
-	        	}
-	        	$shopPicStr = rtrim($shopPicStr,',');
-	        }
-	        $info['shop_pic'] = $shopPicStr;
-	        
-	        $info['category_id'] = M('scategory')->where(array('id'=>$info['category_id']))->getField('name');
-	        
-	        $this->assign('info', $info);
-			 
-			//表单数据
-			$FormData = $this->CustomerForm(0);
-			$this->assign('FormData', $FormData);
-			 
-			$this->NavTitle = '审核';
-			$this->display('check');
-		}
-	}
     
     //推荐首页
     public function recommend() {
@@ -416,31 +327,14 @@ class ShopController extends AdminController {
 
     protected function CustomerForm($index = 0) {
 
-		//商家分类
-        $pidData = $this->getClassify();
-        $pidData = array_merge(array(0=>array('id'=>0,'name'=>'-请选择-')), $pidData);
-        
-        //店铺升值比
-        $shop_proportion = M('shop_proportion')->select();
-        foreach ($shop_proportion as $key=>$value){
-        	$proportion[$value['grade']] = '('.$value['grade'].'鑫店)'.($value['proportion']*100).'%';
-        }
-
         $FormData[0] = array(
-        	array('fieldName' => '商家账号', 'fieldValue' => 'phone', 'fieldType' => 'show', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => ''),
-        	array('fieldName' => '负责人', 'fieldValue' => 'name', 'fieldType' => 'show', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入负责人"'),
-        	array('fieldName' => '营业电话', 'fieldValue' => 'mobile', 'fieldType' => 'show', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入营业电话"'),
-        	//array('fieldName' => '商家类型', 'fieldValue' => 'category_id', 'fieldType' => 'select2', 'isMust' => 1, 'fieldData' =>$pidData, 'attrExtend' => 'placeholder="请选择商家类型"'),
-        	array('fieldName' => '商家类型', 'fieldValue' => 'category_id', 'fieldType' => 'show', 'isMust' => 1, 'fieldData' =>$pidData, 'attrExtend' => 'placeholder="请选择商家类型"'),
-        	array('fieldName' => '门店名称', 'fieldValue' => 'shop_name', 'fieldType' => 'show', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入门店名称"'),
-        	array('fieldName' => '店家详情介绍','fieldValue'=>'desc','fieldType'=>'show','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入店家详情介绍" rows="5" style="height:100%;"'),
-        	array('fieldName' => '店头照片', 'fieldValue' => 'face', 'fieldType' => 'images_show', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'data-table="avatar" data-field="pic" data-size=""'),
-        	array('fieldName' => '店家照片', 'fieldValue' => 'shop_pic', 'fieldType' => 'images_show', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'data-table="avatar" data-field="pic" data-size=""'),
-        	//array('fieldName' => '提拨比例(%)', 'fieldValue' => 'proportion', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入提拨比例"'),
-        	array('fieldName' => '提拨比例(%)','fieldValue'=>'proportion','fieldType'=>'select','isMust'=>1,'fieldData'=>$proportion,'attrExtend'=>'placeholder=""'),
-        	array('fieldName' => '审核','fieldValue'=>'check_status','fieldType'=>'radio','isMust'=>0,'fieldData'=>array('2'=>'通过','3'=>'不通过'),'attrExtend'=>''),
-        	array('fieldName' => '隐藏域', 'fieldValue' => array('uid'), 'fieldType' => 'hidden', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder=""'),
-            array('fieldName' => '隐藏域', 'fieldValue' => array('id'), 'fieldType' => 'hidden', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder=""'),
+        	array('fieldName' => '商家名称', 'fieldValue' => 'shop_name', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商家名称"'),
+        	array('fieldName' => '联系方式', 'fieldValue' => 'mobile', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入联系方式"'),
+        	array('fieldName' => '商家封面', 'fieldValue' => 'face', 'fieldType' => 'image', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'data-table="avatar" data-field="pic" data-size=""'),
+        	array('fieldName' => '地图定位', 'fieldValue' => 'position', 'fieldType' => 'position', 'isMust' => 1, 'fieldData' => array('type' => 3), 'attrExtend' => ''),
+        	array('fieldName' => '排序', 'fieldValue'=>'sort', 'fieldType'=>'text','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'placeholder="用于显示的顺序"'),
+        	array('fieldName' => '状态', 'fieldValue'=>'status', 'fieldType'=>'radio','isMust'=>0,'fieldData'=>array('1'=>'启用','2'=>'禁用'),'attrExtend'=>''),
+        	array('fieldName' => '隐藏域', 'fieldValue' => array('id'), 'fieldType' => 'hidden', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder=""'),
         );
         return $FormData[$index];
     }

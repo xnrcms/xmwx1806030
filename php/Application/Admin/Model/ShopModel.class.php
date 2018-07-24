@@ -35,17 +35,15 @@ class ShopModel extends Model{
 	 * 				self::MODEL_BOTH或者3	:全部情况下验证(默认)
 	 * */
 	protected $_validate = array(
-		array('uid', 'require', '请输入商家id', self::MUST_VALIDATE, 'regex', self::MODEL_INSERT),
-		array('shop_name', 'require', '请输入门店名称', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('name', 'require', '请输入联系人', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('mobile', 'require', '请输入联系电话', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('shop_name', 'require', '请输入商家名称', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('mobile', 'require', '请输入联系方式', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 		array('face', 'require', '请上传商家封面', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('pics', 'require', '请上传轮播图', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('share_pic', 'require', '请上传分享图片', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('share_icon', 'require', '请上传分享图标', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('province', 'require', '请选择省', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('area', 'require', '请选择市', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('county', 'require', '请选择区', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 		array('address', 'require', '请输入详细地址', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('longitude', 'require', '请选择定位地址', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-		array('latitude', 'require', '请选择定位地址', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('longitude', 'require', '请选择定位经度', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('latitude', 'require', '请选择定位纬度', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 	);
 	/*
 	 * ===========自动完成定义说明==============
@@ -66,7 +64,6 @@ class ShopModel extends Model{
 		array('create_time', NOW_TIME, self::MODEL_INSERT),
 		array('update_time', NOW_TIME, self::MODEL_UPDATE),
 		array('status', '1', self::MODEL_INSERT, 'string'),
-		//array('uid', 'is_login', self::MODEL_INSERT, 'function'),
 	);
 	/**
 	 * 获取详细信息
@@ -86,10 +83,6 @@ class ShopModel extends Model{
 		/* $bd09togcj02 = bd09togcj02($this->data['longitude'], $this->data['latitude']);
 		$this->data['longitude'] 	= $bd09togcj02['longitude'];
 		$this->data['latitude'] 	= $bd09togcj02['latitude']; */
-		
-		if($data['category_id']<1){
-			$this->error = '请选择分类！';return false;
-		}
 		/* 添加或更新数据 */
 		if(empty($data['id'])){
 			$res = $this->add();

@@ -7,55 +7,19 @@ $(function(){
 			if(CommonJs.Loading){ return false;}
 			CommonJs.Loading 	= true;
 			CommonJs.SubmitData							= {};
-			CommonJs.SubmitData.password				= $("input[name='password']").val();
-			CommonJs.SubmitData.repassword				= $("input[name='repassword']").val();
 			CommonJs.SubmitData.shop_name				= $("input[name='shop_name']").val();
-			CommonJs.SubmitData.category_id				= $("select[name='category_id']").val();
-			CommonJs.SubmitData.name					= $("input[name='name']").val();
 			CommonJs.SubmitData.mobile					= $("input[name='mobile']").val();
 			CommonJs.SubmitData.face 					= $("input[name='face']").val();
-			CommonJs.SubmitData.pics					= $("input[name='pics']").val();
-			CommonJs.SubmitData.share_pic				= $("input[name='share_pic']").val();
-			CommonJs.SubmitData.share_icon				= $("input[name='share_icon']").val();
+			CommonJs.SubmitData.province				= $("select[name='province']").val();
+			CommonJs.SubmitData.area					= $("select[name='area']").val();
+			CommonJs.SubmitData.county					= $("select[name='county']").val();
 			CommonJs.SubmitData.address				    = $("input[name='address']").val();
 			CommonJs.SubmitData.longitude				= $("input[name='longitude']").val();
 			CommonJs.SubmitData.latitude				= $("input[name='latitude']").val();
 			CommonJs.SubmitData.sort					= $("input[name='sort']").val();
 			
-			//编辑的时候不能填写用户名
-			if(typeof($("input[name='username']").val()) != 'undefined'){
-				CommonJs.SubmitData.username	= $("input[name='username']").val();
-				if(!CheckJs.required(CommonJs.SubmitData.username)){
-					_inform('请输入用户登录手机号',function(){CommonJs.Loading = false;});return false;
-				}
-				if(!CheckJs.mobile(CommonJs.SubmitData.username)){
-					_inform('请输入正确的手机号用户名',function(){CommonJs.Loading = false;});return false;
-				}
-				if(!CheckJs.required(CommonJs.SubmitData.password)){
-					_inform('请输入登录密码',function(){CommonJs.Loading = false;});return false;
-				}
-				if(!CheckJs.rangelength(CommonJs.SubmitData.password,[6,20])){
-					_inform('登录密码必须6-20个字符以内',function(){CommonJs.Loading = false;});return false;
-				}
-				if(!CheckJs.required(CommonJs.SubmitData.repassword)){
-					_inform('请输入确认密码',function(){CommonJs.Loading = false;});return false;
-				}
-				if(CommonJs.SubmitData.password !== CommonJs.SubmitData.repassword){
-					_inform('两次密码输入不一致',function(){CommonJs.Loading = false;});return false;
-				}
-			}else{
-				if(CommonJs.SubmitData.password !== CommonJs.SubmitData.repassword){
-					_inform('两次密码输入不一致',function(){CommonJs.Loading = false;});return false;
-				}
-			}
 			if(!CheckJs.required(CommonJs.SubmitData.shop_name)){
 				_inform('请输入门店名称',function(){CommonJs.Loading = false;});return false;
-			}
-			if(parseInt(CommonJs.SubmitData.category_id)<1){
-				_inform('请选择商家分类',function(){CommonJs.Loading = false;});return false;
-			}
-			if(!CheckJs.required(CommonJs.SubmitData.name)){
-				_inform('请输入联系人',function(){CommonJs.Loading = false;});return false;
 			}
 			if(!CheckJs.required(CommonJs.SubmitData.mobile)){
 				_inform('请输入联系电话',function(){CommonJs.Loading = false;});return false;
@@ -63,23 +27,23 @@ $(function(){
 			if(!CheckJs.required(CommonJs.SubmitData.face)){
 				_inform('请上传商家封面',function(){CommonJs.Loading = false;});return false;
 			}
-			if(!CheckJs.required(CommonJs.SubmitData.pics)){
-				_inform('请上传轮播图',function(){CommonJs.Loading = false;});return false;
+			if(!CheckJs.required(CommonJs.SubmitData.province)){
+				_inform('请选择省',function(){CommonJs.Loading = false;});return false;
 			}
-			if(!CheckJs.required(CommonJs.SubmitData.share_pic)){
-				_inform('请上传分享图片',function(){CommonJs.Loading = false;});return false;
+			if(!CheckJs.required(CommonJs.SubmitData.area)){
+				_inform('请选择市',function(){CommonJs.Loading = false;});return false;
 			}
-			if(!CheckJs.required(CommonJs.SubmitData.share_icon)){
-				_inform('请上传分享图标',function(){CommonJs.Loading = false;});return false;
+			if(!CheckJs.required(CommonJs.SubmitData.county)){
+				_inform('请选择区',function(){CommonJs.Loading = false;});return false;
 			}
 			if(!CheckJs.required(CommonJs.SubmitData.address)){
 				_inform('请输入详细地址',function(){CommonJs.Loading = false;});return false;
 			}
 			if(!CheckJs.required(CommonJs.SubmitData.longitude)){
-				_inform('请选择定位地址',function(){CommonJs.Loading = false;});return false;
+				_inform('请选择定位经度',function(){CommonJs.Loading = false;});return false;
 			}
 			if(!CheckJs.required(CommonJs.SubmitData.latitude)){
-				_inform('请选择定位地址',function(){CommonJs.Loading = false;});return false;
+				_inform('请选择定位纬度',function(){CommonJs.Loading = false;});return false;
 			}
 			CommonJs.Loading = false
 			return true;

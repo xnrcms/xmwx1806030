@@ -1,14 +1,6 @@
 {/*搜索区域*=============================================================================start*/}
 <form name="searchForm">
 <div class="text-c search-form"> 
-城市筛选：
-	<select name="province" id="idprovince" class="new-select" style="width:150px;height:40px;">
-	</select>
-	<select name="area" id="idcity" class="new-select" style="width:150px;height:40px;">
-	</select>
-	<select name="county" class="new-select" id="idcounty" style="width:150px;height:40px;">
-	</select>
-	<input value="0-{$Think.get.province}-{$Think.get.area}-{$Think.get.county}" type="hidden" class="text input-large" id='paths'>
 添加时间：
 	<input type="text" name="create_time_s" placeholder="请输开始时间" value="{:I('create_time_s')}" onFocus="WdatePicker({maxDate:'#F{ $dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" class="input-text Wdate" style="width:186px;">
 	-
@@ -18,48 +10,3 @@
 </div>
 </form>
 {/*搜索区域=============================================================================end*/}
-<script type="text/javascript">
-var type = '{$type}';
-$(function(){
-	//初始化
-	var paths 		= $("#paths").val();
-	var pathsArr 	= paths.split('-');
-	var pathsCode 	= 'idprovince-idcity-idcounty'.split('-');
-	for(var i=0;i<pathsArr.length-1;i++){
-		GetArea(pathsArr[i],pathsCode[i],pathsArr[i+1]);
-	}
-	$('#idprovince').change(function(){
-		if(this.value==''){ return;}
-		GetArea(this.value,'idcity','',1);
-	});
-	$('#idcity').change(function(){
-		if(this.value==''){ return; }
-		GetArea(this.value,'idcounty');
-	});
-	$('#idcounty').change(function(){
-		if(this.value==''){ return;}
-		GetArea(this.value);
-	});
-	function GetArea(pid,selectid,sid,c){	
-		$('#area').val(pid);
-		//if(selectid){
-			$.post('{:U("Area/change")}',{pid:pid},function(data,textStatus){
-				if(data){
-					$('#'+selectid).empty();//清空原有的数据
-					$.each(data, function(i,n){
-						var selected = sid == n.id ? 'selected' : '';
-						$("<option "+selected+" value='"+n.id+"'>"+n.area+"</option>").appendTo("#"+selectid);
-					});
-					if(c == 1){
-						var firstId		= $('#'+selectid+' option').eq(0).val();
-						GetArea(firstId,'idcounty');
-					}
-				}else{
-					alert('没有子级了!');
-				}
-			},'json');
-		//}
-	}
-});
-/* 初始化上传插件 */
-</script>
