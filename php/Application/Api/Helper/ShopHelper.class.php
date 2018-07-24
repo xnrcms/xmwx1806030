@@ -246,19 +246,6 @@ class ShopHelper extends BaseHelper{
 		//分类
 		$category_id                = $Parame['cid'];
 		if ($category_id >0){
-			/* $pid = M('category')->where(array('id'=>$category_id))->getField('pid');
-			if($pid == 0){
-				$cidArr = array($category_id);
-				$scategory = M('category')->field('id')->where(array('pid'=>$category_id, 'status'=>1))->select();
-				if(!empty($scategory)){
-					foreach ($scategory as $key=>$value){
-						$cidArr[] = $value['id'];
-					}
-				}
-				$map['category_id']		= array('in', $cidArr);
-			}else{
-				$map['category_id']		= $category_id;
-			} */
 			$map['category_id']		= $category_id;
 		}
 	
@@ -273,7 +260,6 @@ class ShopHelper extends BaseHelper{
 		$list 						= $this->getLists($model,$map,$order,$fields,$page,$limit,false);
 		if (!empty($list)){
 			foreach ($list as $k=>$v){
-				//$list[$k]['url'] = 'http://'.WEB_DOMAIN.'/Home/Index/detail/goods_id/'.$v['id'].'.html';
 				//数据格式化
 			}
 		}
@@ -296,14 +282,15 @@ class ShopHelper extends BaseHelper{
 			//热门加1
 			M('goods')->where(array('id'=>$goods['id']))->setInc('hit');
 			//数据
-			$data['pics'] 				= explode(',', $goods['goodsimgs']);
-			$data['goodsname'] 			= $goods['goodsname'];
-			$data['goodsprice'] 		= $goods['goodsprice'];
-			$data['originalprice'] 		= $goods['originalprice'];
-			$data['content'] 			= $goods['content'];
-			$data['goodsimg'] 			= $goods['goodsimg'];
-			$data['stock'] 				= $goods['stock'];
-			//$data['attrinfo']			= M('GoodsAttribute')->field('id,avalue,price,stock')->where(array('gid'=>$goods['id']))->select();
+			$data['pics'] 					= explode(',', $goods['goodsimgs']);
+			$data['goodsname'] 				= $goods['goodsname'];
+			$data['goodsprice'] 			= $goods['goodsprice'];
+			$data['originalprice'] 			= $goods['originalprice'];
+			$data['content'] 				= $goods['content'];
+			$data['goodsimg'] 				= $goods['goodsimg'];
+			$data['stock'] 					= $goods['stock'];
+			$goodsParameters 				= M('goods_parameters')->field('pname,pvalue')->where(array('gid'=>$goods['id']))->order('sort desc')->select();
+			$data['goods_parameters'] 		= $goodsParameters;
 		}
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
