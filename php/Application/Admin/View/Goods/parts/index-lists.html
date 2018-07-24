@@ -7,11 +7,12 @@
 			<th width="8%" data-field="td_category">商品分类</th>
 			<th width="10%" data-field="td_img">商品封面</th>
 			<th width="10%" data-field="td_status">状态</th>
-			<th width="10%" data-field="td_percentage">鑫豆抵扣百分比</th>
-			<th width="10%" data-field="td_express_fee">快递费</th>
+			<th width="10%" data-field="td_originalprice">原价</th>
+			<th width="10%" data-field="td_goodsprice">现价</th>
+			<th width="10%" data-field="td_stock">库存</th>
 			<th width="10%" data-field="td_create_time">添加时间</th>
 			<th width="10%" data-field="td_update_time">修改时间</th>
-			<th width="20%" data-field="td_done">操作</th>
+			<th width="10%" data-field="td_done">操作</th>
 		</tr>
     </thead>
 	<tbody>
@@ -23,8 +24,9 @@
 			<td class="td_category">{$vo.categoryname}</td>			
 			<td class="td_img"><img src="{$vo.goodsimg}" style="width:80px"/></td>
 			<td class="td_status">{$vo.status}</td>
-			<td class="td_percentage">{$vo.percentage}%</td>
-			<td class="td_express_fee">{$vo.express_fee}</td>
+			<td class="td_originalprice">{$vo.originalprice}</td>
+			<td class="td_goodsprice">{$vo.goodsprice}</td>
+			<td class="td_stock">{$vo.stock}</td>
 			<td class="td_create_time">{$vo.create_time}</td>
 			<td class="td_update_time">{$vo.update_time}</td>
 			<td class="td_done"><include file="Public/button-right" /></td>

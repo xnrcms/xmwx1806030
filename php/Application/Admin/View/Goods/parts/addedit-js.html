@@ -10,8 +10,7 @@ $(function(){
 			CommonJs.SubmitData.category_id				= $("select[name='category_id']").val();
 			CommonJs.SubmitData.originalprice			= $("input[name='originalprice']").val();
 			CommonJs.SubmitData.goodsprice				= $("input[name='goodsprice']").val();
-			CommonJs.SubmitData.percentage				= $("input[name='percentage']").val();
-			CommonJs.SubmitData.express_fee				= $("input[name='express_fee']").val();
+			CommonJs.SubmitData.stock					= $("input[name='stock']").val();
 			CommonJs.SubmitData.goodsimg				= $("input[name='goodsimg']").val();
 			CommonJs.SubmitData.goodsimgs				= $("input[name='goodsimgs']").val();
 			CommonJs.SubmitData.goodssorts				= $("input[name='goodssorts']").val();
@@ -19,6 +18,7 @@ $(function(){
 			CommonJs.SubmitData.is_recommend			= rcVal($("input[name='is_recommend']"),1);
 			CommonJs.SubmitData.content					= $("textarea[name='content']").val();
 			CommonJs.SubmitData.id						= $("input[name='id']").val();
+			
 			if(!CheckJs.required(CommonJs.SubmitData.goodsname)){
 				_inform('请输入商品名称',function(){CommonJs.Loading = false;});return false;
 			}
@@ -31,11 +31,8 @@ $(function(){
 			if(!CheckJs.required(CommonJs.SubmitData.goodsprice)){
 				_inform('请输入商品价格',function(){CommonJs.Loading = false;});return false;
 			}
-			if(!CheckJs.required(CommonJs.SubmitData.percentage)){
-				_inform('请输入鑫豆抵扣',function(){CommonJs.Loading = false;});return false;
-			}
-			if(!CheckJs.required(CommonJs.SubmitData.express_fee)){
-				_inform('请输入快递费',function(){CommonJs.Loading = false;});return false;
+			if(!CheckJs.required(CommonJs.SubmitData.stock)){
+				_inform('请输入商品库存',function(){CommonJs.Loading = false;});return false;
 			}
 			if(!CheckJs.required(CommonJs.SubmitData.goodsimg)){
 				_inform('请上传商品封面',function(){CommonJs.Loading = false;});return false;

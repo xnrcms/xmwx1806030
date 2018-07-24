@@ -100,12 +100,10 @@ class GoodsController extends AdminController {
 
         //列表数据
         $status = array('删除', '上架', '下架');
-        $attr   = array('','积分专区','现金专区','折扣专区');
         $list = $this->getLists($model, $map, $order, $fields, 1, $limit, true);
         if (!empty($list)) {
             foreach ($list as $k => $v) {
                 //数据格式化
-                $list[$k]['goodstype'] = $attr[$v['goodstype']];
                 $list[$k]['status'] = $status[$v['status']];
                 $list[$k]['create_time'] = $v['create_time'] > 0 ? date('Y-m-d H:i:s', $v['create_time']) : '--';
                 $list[$k]['update_time'] = $v['update_time'] > 0 ? date('Y-m-d H:i:s', $v['update_time']) : '--';
@@ -312,9 +310,7 @@ class GoodsController extends AdminController {
             array('fieldName' => '商品分类', 'fieldValue' => 'category_id', 'fieldType' => 'select2', 'isMust' => 1, 'fieldData' => $pidData, 'attrExtend' => 'placeholder=""'),
             array('fieldName' => '商品原价', 'fieldValue' => 'originalprice', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商品原价"'),
             array('fieldName' => '商品价格', 'fieldValue' => 'goodsprice', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商品价格"'),
-            array('fieldName' => '鑫豆抵扣(%)', 'fieldValue' => 'percentage', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入鑫豆抵扣百分比"'),
-        	array('fieldName' => '快递费', 'fieldValue' => 'express_fee', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入快递费"'),
-            //array('fieldName' => '销量', 'fieldValue' => 'salenum', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入销量"'),
+            array('fieldName' => '商品库存', 'fieldValue' => 'stock', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商品库存"'),
             array('fieldName' => '商品封面', 'fieldValue' => 'goodsimg', 'fieldType' => 'image', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'data-table="goods" data-field="goodsimg" data-size=""'),
             array('fieldName' => '商品相册','fieldValue'=>'goodsimgs','fieldType'=>'images','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'data-table="goods" data-field="images" data-size=""'),
             array('fieldName' => '商品排序', 'fieldValue' => 'goodssorts', 'fieldType' => 'text', 'isMust' => 0, 'fieldData' => array(), 'attrExtend' => 'placeholder="默认为0,数字越大越靠前"'),

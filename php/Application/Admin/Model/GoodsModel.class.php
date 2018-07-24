@@ -35,12 +35,10 @@ class GoodsModel extends Model{
 	 * 				self::MODEL_BOTH或者3	:全部情况下验证(默认)
 	 * */
 	protected $_validate = array(
-	//array('Field','Rule','ErrorMsg',CheckTime,Rule2,DoneTime),
 			array('goodsname', 'require', '商品名称不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
 			array('originalprice', 'require', '商品原价不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
 			array('goodsprice', 'require', '商品价格不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
-			array('percentage', 'require', '鑫豆抵扣不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
-			array('express_fee', 'require', '快递费不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
+			array('stock', 'require', '商品库存不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
 	);
 	/*
 	 * ===========自动完成定义说明==============
