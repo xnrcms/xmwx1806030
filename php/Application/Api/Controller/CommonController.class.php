@@ -8,6 +8,7 @@ use Think\Controller;
 class CommonController extends Controller {
 	protected $ApiParam = array();
 	protected function _initialize(){
+		header('Access-Control-Allow-Origin:*');
 		/* 读取数据库中的配置 */
 		$config 	= S('DB_CONFIG_DATA');
 		if(!$config){
