@@ -4,13 +4,9 @@
 		<tr class="text-l">
 			<th width="2%" class="td_id">id</th>
 			<th width="6%" data-field="td_phone">账号</th>
-			<th width="6%" data-field="td_code">邀请码</th>
+			<th width="6%" data-field="td_openid">openid</th>
 			<th width="5%" data-field="td_avatar">头像</th>
 			<th width="8%" data-field="td_nickname">昵称</th>
-			<th width="5%" data-field="td_sex">性别</th>
-			<th width="5%" data-field="td_age">年龄</th>
-			<th width="10%" data-field="td_ID_card">身份证</th>
-			<th width="5%" data-field="td_check_status">审核状态</th>
 			<th width="8%" data-field="td_create_time">添加时间</th>
 			<th width="6%" data-field="td_done">操作</th>
 		</tr>
@@ -21,13 +17,9 @@
 		<tr>
             <td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
 			<td class="td_username">{$vo.phone}</td>
-			<td class="td_code">{$vo.code}</td>
+			<td class="td_openid">{$vo.openid}</td>
 			<td class="td_avatar"><notempty name="vo.avatar"><img src="{$vo.avatar}" width="80" height="80"><else />---</notempty></td>
 			<td class="td_nickname">{$vo.nickname}</td>
-			<td class="td_sex">{$vo.sex}</td>
-			<td class="td_age">{$vo.age}</td>
-			<td class="td_ID_card">{$vo.id_card}</td>
-			<td class="td_status"><if condition="$vo.check_status eq 1">审核中<elseif condition="$vo.check_status eq 2"/><font color="green">审核通过</font><elseif condition="$vo.check_status eq 3"/><font color="red">审核不通过</font></if></td>
 			<td class="td_create_time">{$vo.create_time}</td>
 			<td class="td_done"><include file="Public/button-right" /></td>
 		</tr>
