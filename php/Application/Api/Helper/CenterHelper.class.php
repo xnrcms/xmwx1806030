@@ -313,7 +313,7 @@ class CenterHelper extends BaseHelper{
 		//总数
 		$count      	= M('shop')->where(array('status'=>1))->count();
 		$Page       	= new \Think\Page($count,10);
-		$message 		= M('address')->where(array('status'=>1))->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+		$message 		= M('shop')->where(array('status'=>1))->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 		$data = $row = array();
 		if(!empty($message)){
 			foreach ($message as $key=>$value){
