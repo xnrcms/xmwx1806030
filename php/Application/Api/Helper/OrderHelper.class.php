@@ -206,6 +206,8 @@ class OrderHelper extends BaseHelper{
 			$data['total_money'] 		= $order['total_money'];
 			//订单号
 			$data['order_no'] 			= $order['order_no'];
+			//订单状态
+			$data['status'] 			= $order['status'];
 			//下单时间
 			$data['create_time'] 		= date('Y/m/d H:i:s', $order['create_time']);
 			//付款时间
