@@ -16,7 +16,8 @@
             },
             success: function(res){
               console.log(res);
-              if(res.Code == '1'){
+              res = JSON.parse(res);
+              if(res.Code == 1){
                 window.location.href= res.Data.authUrl;
               }else{
                 var data = res.Data;
