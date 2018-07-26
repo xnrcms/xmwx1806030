@@ -16,8 +16,8 @@
             },
             success: function(res){
               console.log(res);
-              if(res.Code == 1){
-                window.location.href= res.data.Data.authUrl;
+              if(res.Code == '1'){
+                window.location.href= res.Data.authUrl;
               }else{
                 var data = res.Data;
                 var op = data.openid;
