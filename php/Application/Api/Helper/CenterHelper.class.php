@@ -318,7 +318,7 @@ class CenterHelper extends BaseHelper{
 		if(!empty($message)){
 			foreach ($message as $key=>$value){
 				$row[$key]['id'] 			= $value['id'];
-				$row[$key]['shop_name'] 		= $value['name'];
+				$row[$key]['shop_name'] 	= $value['shop_name'];
 				/* $row[$key]['province'] 		= $value['province'];
 				$row[$key]['city'] 			= $value['city'];
 				$row[$key]['county'] 		= $value['county']; */
