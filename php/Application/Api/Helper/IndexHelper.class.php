@@ -204,6 +204,8 @@ class IndexHelper extends BaseHelper{
 			$result = CurlHttp($url);
 			$result =json_decode($result,true);
 			
+			echo $url;
+			
 			$url = "https://api.weixin.qq.com/sns/userinfo?access_token=".$result['access_token']."&openid=".$result['openid']."&lang=zh_CN";
 			$result = CurlHttp($url);
 			$result =json_decode($result,true);
