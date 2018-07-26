@@ -207,7 +207,7 @@ class IndexHelper extends BaseHelper{
 			$result = CurlHttp($url);
 			$result =json_decode($result,true);
 			
-			M('user');
+			//M('user');
 			
 			return array('Code' =>'0','Msg'=>$this->Lang['100010'],'Data'=>$result);
 		}
