@@ -138,6 +138,18 @@ class ShopHelper extends BaseHelper{
 		//检索条件
 		$map 						= array();
 		$map['main.status']			= 1;
+		//定位所在的市
+		if($Parame['area_string']){
+			$area 					= M('area')->where(array('area'=>$Parame['area_string']))->getField('id');
+			if($area){
+				$map['area']		= $area;
+			}
+		}
+		//筛选市所在的区
+		if($Parame['county']){
+			$map['county']			= $Parame['county'];
+		}
+		
 		//排序
 		$order 						= $MainAlias.'.create_time asc';
 		
@@ -156,17 +168,18 @@ class ShopHelper extends BaseHelper{
 				$list[$k]['meters'] = $distance['meters'];
 				$list[$k]['distance'] = $distance['meters']>1000?round($distance['meters']/1000,2).'km':round($distance['meters'],2).'m';
 				//筛选范围
-				if(empty($Parame['distance'])) $Parame['distance'] = 50;
+				/* if(empty($Parame['distance'])) $Parame['distance'] = 50;
 				if($list[$k]['meters'] > $Parame['distance']*1000){
 					unset($list[$k]);
 					continue;
-				}
+				} */
 				$row[$k] = $distance['meters'];
 			}
-			/* if(in_array($Parame['distance'], array(1,3,5))){
+			if($Parame['distance'] == 2){
+				array_multisort($row, SORT_DESC, $list);
+			}else{
 				array_multisort($row, SORT_ASC, $list);
-			} */
-			array_multisort($row, SORT_ASC, $list);
+			}
 			$list = array_chunk($list, 10);
 			$list = $list[$Parame['page']-1];
 		}
