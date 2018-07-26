@@ -85,7 +85,7 @@ class ShopController extends CommonController {
 				array('page','Int',1,$this->Lang['100709'],'100709'),
 				array('area_string','String', 1, $this->Lang['100090'],'100090'),		//市
 				array('county','Int', 0, $this->Lang['100091'],'100091'),				//区
-				array('distance','Int', 1, $this->Lang['101631'],'101631'),				//距离排序
+				array('distance','Int', 0, $this->Lang['101631'],'101631'),				//距离排序
 				array('longitude','String', 0,$this->Lang['101214'],'101214'),			//经度
 				array('latitude','String', 0,$this->Lang['101215'],'101215'),			//纬度
 		);
