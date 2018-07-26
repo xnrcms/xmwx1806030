@@ -16,10 +16,10 @@
             },
             success: function(res){
               console.log(res);
-              if(res.data.Code == 1){
+              if(res.Code == 1){
                 window.location.href= res.data.Data.authUrl;
               }else{
-                var data = res.data.Data;
+                var data = res.Data;
                 var op = data.openid;
                 localStorage.setItem('liOpenId',op);
                 loginInfor = data;
