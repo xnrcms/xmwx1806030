@@ -222,7 +222,7 @@ class OrderHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'order';
 		$MainAlias					= 'main';
-		$MainField					= array('id,order_no,status,total_money');
+		$MainField					= array('id,order_no,status,total_money,create_time');
 		
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
@@ -261,6 +261,7 @@ class OrderHelper extends BaseHelper{
 				$arr[$v['id']]['order_no']		= $v['order_no'];
 				$arr[$v['id']]['status']		= $v['status'];
 				$arr[$v['id']]['total_money']	= $v['total_money'];
+				$arr[$v['id']]['create_time']	= date('Y-m-d', $v['create_time']);
 				$arr[$v['id']]['sublist'][] 	= $v;
 			}
 		}
