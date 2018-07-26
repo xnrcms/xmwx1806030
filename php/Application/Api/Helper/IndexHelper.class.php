@@ -217,6 +217,7 @@ class IndexHelper extends BaseHelper{
 					$user['id'] = M('user')->add($data);
 				}
 				$data['uid'] 	= $user['id'];
+				$data['hashid']	= $this->create_hashid($user['id']);
 				return array('Code' =>'0','Msg'=>'成功','Data'=>$data);
 			}else{
 				return array('Code' =>'1','Msg'=>'未知错误');
