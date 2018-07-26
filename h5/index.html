@@ -4,9 +4,10 @@
         var thisUrl = window.location.href;
         var openId = localStorage.getItem('liOpenId');
         if(!openId){
-          var code = getQueryString('code')
+          var code = getQueryString('code');
+          console.log(code);
           $.ajax({
-            url: 'http://xmwx1806030.php.hzxmnet.com/Api/User/Auth',
+            url: 'http://xmwx1806030.php.hzxmnet.com/Api/Index/auth',
             data: {
               time: this_time,
               backUrl: thisUrl,
