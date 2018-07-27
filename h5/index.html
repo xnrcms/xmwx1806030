@@ -4,7 +4,6 @@
         var this_time = parseInt(new Date().getTime()/1000);
         var thisUrl = window.location.href;
         var openId = localStorage.getItem('liOpenId');
-        loginInfor = localStorage.getItem('loginInfor');
         if(!openId){
           var code = getQueryString('code');
           console.log(code);
@@ -26,7 +25,7 @@
                 var op = data.openid;
                 localStorage.setItem('liOpenId',op);
                 loginInfor = data;
-                localStorage.setItem('loginInfor',data);
+                localStorage.setItem('loginInfor',JSON.stringify(data));
                 window.location.href= thisUrl;
               }
             }
@@ -39,4 +38,4 @@
           var r = url.substr(1).match(reg); 
           if (r != null) return decodeURI(r[2]); return null; 
         }
-      })</script><script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script><script type=text/javascript src=/static/js/vendor.2d2fefdf27dbab2032f8.js></script><script type=text/javascript src=/static/js/app.e675a61070e83188a032.js></script></body></html>
+      })</script><script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script><script type=text/javascript src=/static/js/vendor.2d2fefdf27dbab2032f8.js></script><script type=text/javascript src=/static/js/app.6fe19a25ccddc8e28379.js></script></body></html>
