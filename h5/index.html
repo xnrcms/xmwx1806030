@@ -26,12 +26,12 @@
                 localStorage.setItem('liOpenId',op);
                 loginInfor = data;
                 localStorage.setItem('loginInfor',JSON.stringify(data));
-                if(thisurl.indexOf('code')>0){
-                  let a = thisurl.indexOf('/?');
-                  let b = thisurl.indexOf('#/');
-                  let l = thisurl.length;
-                  let str1 = thisurl.slice(0, a)
-                  let str2 = thisurl.slice(b, l)
+                if(thisUrl.indexOf('code')>0){
+                  let a = thisUrl.indexOf('/?');
+                  let b = thisUrl.indexOf('#/');
+                  let l = thisUrl.length;
+                  let str1 = thisUrl.slice(0, a)
+                  let str2 = thisUrl.slice(b, l)
                   let str = str1 + '/' + str2;
                   window.location.href = str;
                 }
