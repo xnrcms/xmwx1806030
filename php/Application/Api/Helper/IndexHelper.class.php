@@ -52,7 +52,7 @@ class IndexHelper extends BaseHelper{
 	 * 首页轮播图
 	 */
 	private function getCarousel($Parame){
-		$carousel = M('banner')->where(array('type'=>1, 'status'=>1))->limit('0,3')->select();
+		$carousel = M('banner')->where(array('type'=>1, 'status'=>1))->limit('0,10')->order('id desc')->select();
 		return $carousel = empty($carousel) ? '' : $carousel;
 	}
 	/**
