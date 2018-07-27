@@ -7,7 +7,7 @@ class WxPayConf_pub
 //	const APPSECRET 		= 'b967525f4d166228ea8fe31314147e4a';
 	const APPID 			= 'wx343f4eb64cc0b950';
 	const MCHID 			= '1394710702';
-	const KEY 				= 'd11a430d042141406574ac2801f50f12';
+	const KEY 				= '9bd66329d71756955f28aa40b72ac15b';
 	const APPSECRET 		= '235fa02b4c3d4993ba8980f0facbd04a';
 	const JS_API_CALL_URL 	= '';
 	const SSLCERT_PATH 		= '';
