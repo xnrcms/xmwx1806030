@@ -135,7 +135,7 @@ class IndexHelper extends BaseHelper{
 		
 		
 		
-		$ch = curl_init();
+		/* $ch = curl_init();
 		//设置选项，包括URL
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -149,10 +149,10 @@ class IndexHelper extends BaseHelper{
 		
 		//$a = file_get_contents($url);
 		
-		p($a);die;
+		p($a);die; */
 		
 		
-		$access_token_info = CurlHttp($url);
+		$access_token_info = CurlHttp($url,'','');
 		$access_token_arr = json_decode($access_token_info, true);
 		$access_token = $access_token_arr['access_token'];
 		
