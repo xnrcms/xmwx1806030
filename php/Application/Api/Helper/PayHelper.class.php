@@ -38,6 +38,7 @@ class PayHelper extends BaseHelper{
 		$unifiedOrder->setParameter("total_fee",$fee);
 		$unifiedOrder->setParameter("notify_url",$notify_url);
 		$unifiedOrder->setParameter("trade_type","JSAPI");
+		$unifiedOrder->setParameter("sign_type","MD5");
 		$openid = M('user')->where(array('id'=>$order['uid']))->getField('openid');
 		$unifiedOrder->setParameter("openid",$openid);
 		$info 					= $unifiedOrder->getPrepayId();
