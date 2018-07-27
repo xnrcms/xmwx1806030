@@ -26,21 +26,18 @@
                 localStorage.setItem('liOpenId',op);
                 loginInfor = data;
                 localStorage.setItem('loginInfor',JSON.stringify(data));
-                window.location.href= thisUrl;
+                if(thisurl.indexOf('code')>0){
+                  let a = thisurl.indexOf('/?');
+                  let b = thisurl.indexOf('#/');
+                  let l = thisurl.length;
+                  let str1 = thisurl.slice(0, a)
+                  let str2 = thisurl.slice(b, l)
+                  let str = str1 + '/' + str2;
+                  window.location.href = str;
+                }
               }
             }
           });
-        }else{
-          let thisurl = window.location.href;
-          if(thisurl.indexOf('code')>0){
-            let a = thisurl.indexOf('/?');
-            let b = thisurl.indexOf('#/');
-            let l = thisurl.length;
-            let str1 = thisurl.slice(0, a)
-            let str2 = thisurl.slice(b, l)
-            let str = str1 + '/' + str2;
-            window.location.href = str;
-          }
         }
         
         function getQueryString(name) { 
