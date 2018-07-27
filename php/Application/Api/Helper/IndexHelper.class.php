@@ -120,7 +120,16 @@ class IndexHelper extends BaseHelper{
 	/**
 	 * 获取地理位置
 	 */
-	public function getLocation(){
+	public function getLocation($Parame){
+		$data = array();
+		//appId
+		$data['appId'] 			= C('GZH.APPID');
+		//timestamp
+		$timestamp 				= NOW_TIME;
+		$data['timestamp'] 		= $timestamp;
+		//nonceStr
+		$noncestr 				= randomString(16,7);
+		$data['noncestr'] 		= $noncestr;
 		//获取access_token
 		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".C('GZH.APPID')."&secret=".C('GZH.KEY');
 		$access_token_info = CurlHttp($url);
@@ -131,21 +140,11 @@ class IndexHelper extends BaseHelper{
 		$ticket_info = CurlHttp($url);
 		$ticket_arr = json_decode($ticket_info, true);
 		$ticket = $ticket_arr['ticket'];
-		$noncestr = randomString(16,7);
-		$this->assign('noncestr',$noncestr);
-		$timestamp = NOW_TIME;
-		$this->assign('timestamp',$timestamp);
-		
-		
-		
-		
-		
-		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		$params = array();
-		$params['jsapi_ticket'] = $ticket;
-		$params['noncestr'] = $noncestr;
-		$params['timestamp'] = $timestamp;
-		$params['url'] = $url;
+		$params['jsapi_ticket'] 	= $ticket;
+		$params['noncestr'] 		= $noncestr;
+		$params['timestamp'] 		= $timestamp;
+		$params['url'] 				= $Parame['url'];
 		ksort($params);
 		$stringToBeSigned = "";
 		$i = 0;
@@ -158,9 +157,9 @@ class IndexHelper extends BaseHelper{
 			$i++;
 		}
 		$signature = sha1($stringToBeSigned);
-		$this->assign('signature',$signature);
-		
-		$this->display();
+		//signature
+		$data['signature'] 		= $signature;
+		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
 	
 	/**
