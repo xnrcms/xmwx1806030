@@ -23,107 +23,44 @@ class PayHelper extends BaseHelper{
 		$alipayInfo							= '';
 		$wxpayInfo							= (object)array();
 		
-		$payType 							= $Parame['pay_type'];
 		$orderId 							= $Parame['order_id'];
-		$table 								= $Parame['table'];
-		if(!in_array($table, array('order', 'advertisement', 'video'))){
-			return array('Code' =>'100008','Msg'=>$this->Lang['100008']);
-		}
+		$order = M('order')->where(array('id'=>$orderId))->find();
 		
-		switch ($payType){
-			case 1:
-				Vendor('Alipay.AopClient');
-				$aop 						= new \AopClient();
-				$aop->gatewayUrl 			= "https://openapi.alipay.com/gateway.do";
-				$aop->appId 				= C('APPID');
-				$aop->rsaPrivateKey 		= C('RSAPRIVATEKEY');
-				$aop->format 				= "json";
-				$aop->charset 				= "UTF-8";
-				$aop->signType 				= "RSA2";
-				$aop->alipayrsaPublicKey 	= C('RSAPUBLICKEY');
-				//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
-				Vendor('Alipay.request.AlipayTradeAppPayRequest');
-				$request = new \AlipayTradeAppPayRequest();
-				//SDK已经封装掉了公共参数，这里只需要传入业务参数
-				if($table == 'order'){
-					$subject 				= '福利商城';
-					$order 					= M('order')->where(array('id'=>$orderId))->find();
-					$total_amount			= $order['total_money'];
-				}elseif($table 		== 'advertisement'){
-					$subject 				= '消费让利推广';
-					$order 					= M('advertisement')->where(array('id'=>$orderId))->find();
-					$total_amount 			= $order['pay_money'];
-				}elseif($table 		== 'video'){
-					$subject 				= '商家视频';
-					$order 					= M('video')->where(array('id'=>$orderId))->find();
-					$total_amount 			= $order['pay_money'];
-				}
-				$bizcontent 				= "{\"subject\": \"".$subject."\","
-												. "\"out_trade_no\": \"".$order['order_no']."\","
-												. "\"total_amount\":\"".$total_amount."\""
-												. "}";
-				$notify_url					= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/type/1/table/'.$table;
-				$request->setNotifyUrl($notify_url);
-				$request->setBizContent($bizcontent);
-				//这里和普通的接口调用不同，使用的是sdkExecute
-				$alipayInfo 				= $aop->sdkExecute($request);
-				//htmlspecialchars是为了输出到页面时防止被浏览器将关键参数html转义，实际打印到日志以及http传输不会有这个问题
-				//$alipayInfo					= $response;//就是orderString 可以直接给客户端请求，无需再做处理。
-				//$alipayInfo					= htmlspecialchars($response);//就是orderString 可以直接给客户端请求，无需再做处理。 
-				return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => $alipayInfo, 'wxpayInfo' => $wxpayInfo)) ;
-				break;
-			case 2:
-				
-				vendor('Wxpay.WxPayPubHelper');
-				$unifiedOrder = new \UnifiedOrder_pub();
-				if($table == 'order'){
-					$subject 				= '福利商城';
-					$order 					= M('order')->where(array('id'=>$orderId))->find();
-					$total_amount			= $order['total_money'];
-				}elseif($table 		== 'advertisement'){
-					$subject 				= '消费让利推广';
-					$order 					= M('advertisement')->where(array('id'=>$orderId))->find();
-					$total_amount 			= $order['pay_money'];
-				}elseif($table 		== 'video'){
-					$subject 				= '商家视频';
-					$order 					= M('video')->where(array('id'=>$orderId))->find();
-					$total_amount 			= $order['pay_money'];
-				}
-				$fee			= $total_amount*100;
-				$notify_url		= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/type/2/table/'.$table;
-				$unifiedOrder->setParameter("attach",$subject);
-				$unifiedOrder->setParameter("body",$subject);
-				$unifiedOrder->setParameter("out_trade_no",$order['order_no']);
-				$unifiedOrder->setParameter("total_fee",$fee);
-				$unifiedOrder->setParameter("notify_url",$notify_url);
-				$unifiedOrder->setParameter("trade_type","APP");
-				$order 		= $unifiedOrder->getPrepayId();
-				
-				$prepay_id 	= $order['prepay_id'];
-				$temp = array(
-						'appid'=>$order['appid'],
-						'noncestr'=>$order['nonce_str'],
-						'package'=>'Sign=WXPay',
-						'partnerid'=>$order['mch_id'],
-						'prepayid'=>$order['prepay_id'],
-						'timestamp'=>(string)NOW_TIME
-				);
-				ksort($temp);
-				$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ;
-				
-				return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => '','wxpayInfo' => $temp)) ;
-				
-				//return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => $alipayInfo,'wxpayInfo' => $wxpayInfo)) ;
-				
-				//return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('payInfo'=>$temp, 'trade_no'=>$trade_no));
-				
-				
-				//$res			= $this->wechat_app($trade_no,$body,$attach,$fee,$notify_url);
-				break;
-			default:
-				return array('Code' =>'100704','Msg'=>$this->Lang['100704']);break;
-		}
-		return $res;
+		vendor('Wxpay.WxPayPubHelper');
+		$unifiedOrder = new \UnifiedOrder_pub();
+		$subject 				= '商品付款';
+		$order 					= M('advertisement')->where(array('id'=>$orderId))->find();
+		$total_amount 			= $order['pay_money'];
+		$fee			= $total_amount*100;
+		$notify_url		= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/type/2/table/'.$table;
+		$unifiedOrder->setParameter("attach",$subject);
+		$unifiedOrder->setParameter("body",$subject);
+		$unifiedOrder->setParameter("out_trade_no",$order['order_no']);
+		$unifiedOrder->setParameter("total_fee",$fee);
+		$unifiedOrder->setParameter("notify_url",$notify_url);
+		$unifiedOrder->setParameter("trade_type","APP");
+		$order 		= $unifiedOrder->getPrepayId();
+		
+		$prepay_id 	= $order['prepay_id'];
+		$temp = array(
+				'appid'=>$order['appid'],
+				'noncestr'=>$order['nonce_str'],
+				'package'=>'Sign=WXPay',
+				'partnerid'=>$order['mch_id'],
+				'prepayid'=>$order['prepay_id'],
+				'timestamp'=>(string)NOW_TIME
+		);
+		ksort($temp);
+		$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ;
+		
+		return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => '','wxpayInfo' => $temp)) ;
+		
+		//return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => $alipayInfo,'wxpayInfo' => $wxpayInfo)) ;
+		
+		//return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('payInfo'=>$temp, 'trade_no'=>$trade_no));
+		
+		
+		//$res			= $this->wechat_app($trade_no,$body,$attach,$fee,$notify_url);
 	}
 
 

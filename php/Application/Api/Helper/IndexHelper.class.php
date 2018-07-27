@@ -131,10 +131,15 @@ class IndexHelper extends BaseHelper{
 		$noncestr 				= randomString(16,7);
 		$data['noncestr'] 		= $noncestr;
 		//获取access_token
-		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".C('GZH.APPID')."&secret=".C('GZH.KEY');
+		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".C('GZH.APPID')."&secret=".C('GZH.APPSECRET');
 		$access_token_info = CurlHttp($url);
 		$access_token_arr = json_decode($access_token_info, true);
 		$access_token = $access_token_arr['access_token'];
+		
+		
+		p($access_token);die;
+		
+		
 		//获取ticket
 		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=".$access_token."&type=jsapi";
 		$ticket_info = CurlHttp($url);
@@ -159,6 +164,7 @@ class IndexHelper extends BaseHelper{
 		$signature = sha1($stringToBeSigned);
 		//signature
 		$data['signature'] 		= $signature;
+		$data['ticket'] 		= $ticket;
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
 	

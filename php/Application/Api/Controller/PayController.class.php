@@ -31,9 +31,7 @@ class PayController extends CommonController {
 			array('hash','String',1,$this->Lang['100002'],'100002'),
 			array('hashid','String',1, $this->Lang['100041'],'100041'),
 			array('uid', 'Int', 1, $this->Lang['100005'], '100005'),
-			array('pay_type','Int',1,$this->Lang['100706'],'100706'),
 			array('order_id','Int',1,$this->Lang['1017290'],'1017290'),
-			array('table','String',1,$this->Lang['101831'],'101831'),
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);
 		//自定义接口参数区
