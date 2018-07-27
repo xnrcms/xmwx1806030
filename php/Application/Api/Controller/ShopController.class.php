@@ -157,7 +157,7 @@ class ShopController extends CommonController {
 				array('hash','String',1,$this->Lang['100002'],'100002'),
 				array('page','Int',1,$this->Lang['100708'],'100708'),
 				array('cid','Int',0,$this->Lang['101701'],'101701'),
-				//array('keyword','String', 0,$this->Lang['101216'],'101216'),
+				array('keyword','String', 0,$this->Lang['101216'],'101216'),
 				
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);

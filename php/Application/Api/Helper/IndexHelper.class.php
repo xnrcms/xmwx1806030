@@ -118,75 +118,49 @@ class IndexHelper extends BaseHelper{
 	}
 	
 	/**
-	 * 签到
+	 * 获取地理位置
 	 */
-	private function sign($Parame){
+	public function getLocation(){
+		//获取access_token
+		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".C('GZH.APPID')."&secret=".C('GZH.KEY');
+		$access_token_info = CurlHttp($url);
+		$access_token_arr = json_decode($access_token_info, true);
+		$access_token = $access_token_arr['access_token'];
+		//获取ticket
+		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=".$access_token."&type=jsapi";
+		$ticket_info = CurlHttp($url);
+		$ticket_arr = json_decode($ticket_info, true);
+		$ticket = $ticket_arr['ticket'];
+		$noncestr = randomString(16,7);
+		$this->assign('noncestr',$noncestr);
+		$timestamp = NOW_TIME;
+		$this->assign('timestamp',$timestamp);
 		
-		//return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('status'=>1,'day'=>1));
 		
 		
-		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('status'=>0,'day'=>1));
-	}
-	
-	/**
-	 * 兑领红包
-	 */
-	private function redPacket($Parame){
 		
-		$data 			= array();
-		//用户id
-		$uid 			= intval($Parame['uid']);
-		$user = M('user')->field('current_xinlidou,current_xianglidou,current_fulidou')->where(array('id'=>$Parame['uid']))->find();
-		$info = array();
 		
-		$info['xinlidou']['current_xinlidou'] 			= $user['current_xinlidou'];
-		$info['xinlidou']['red_packet'] 				= 0;
-		$info['xinlidou']['url'] 						= '';
-		
-		$t = mktime(23,59,59,date('m',NOW_TIME),date('d',NOW_TIME),date('Y',NOW_TIME));
-		
-		$count = M('red_packet')->where(array('uid'=>$uid,'type'=>1,'is_receive'=>0,'end_time'=>array('egt',$t)))->count();
-		$info['xianglidou']['current_xianglidou'] 		= $user['current_xianglidou'];
-		$info['xianglidou']['red_packet'] 				= $count;
-		$info['xianglidou']['url'] 						= 'http://'.WEB_DOMAIN.'/Home/Index/redPacket/type/1/uid/'.$uid.'.html';
-		
-		$count = M('red_packet')->where(array('uid'=>$uid,'type'=>2,'is_receive'=>0,'end_time'=>array('egt',$t)))->count();
-		$info['fulidou']['current_fulidou'] 			= $user['current_fulidou'];
-		$info['fulidou']['red_packet'] 					= $count;
-		$info['fulidou']['url'] 						= 'http://'.WEB_DOMAIN.'/Home/Index/redPacket/type/2/uid/'.$uid.'.html';
-		
-		$data['info']									= $info;
-		
-		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
-	}
-	
-	/**
-	 * 业务项目
-	 */
-	private function ywxm($Parame){
-		$ywxm = M('article')->where(array('type'=>array('in','5,6,7')))->order('type asc')->limit(3)->select();
-		$row = array();
-		if(!empty($ywxm)){
-			foreach ($ywxm as $key=>$value){
-				$row[$key]['id'] 				= (string)$value['id'];
-				$row[$key]['pic'] 				= (string)$value['pic'];
-				$row[$key]['name'] 				= (string)$value['title'];
-				$row[$key]['url'] 				= 'http://'.WEB_DOMAIN.'/Home/Index/article/type/'.$value['type'].'.html';
+		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$params = array();
+		$params['jsapi_ticket'] = $ticket;
+		$params['noncestr'] = $noncestr;
+		$params['timestamp'] = $timestamp;
+		$params['url'] = $url;
+		ksort($params);
+		$stringToBeSigned = "";
+		$i = 0;
+		foreach ($params as $k => $v) {
+			if ($i == 0) {
+				$stringToBeSigned .= "$k" . "=" . "$v";
+			} else {
+				$stringToBeSigned .= "&" . "$k" . "=" . "$v";
 			}
+			$i++;
 		}
-		$data['list']							= $row;
-		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
-	}
-	
-	/**
-	 * 页面底部广告
-	 */
-	private function bottomAd($Parame){
-		$banner = M('banner')->where(array('type'=>4, 'status'=>1))->order('create_time DESC')->find();
-		$data 				= array();
-		$data['picture'] 	= (string)$banner['picture'];
-		$data['link'] 		= (string)$banner['link'];
-		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
+		$signature = sha1($stringToBeSigned);
+		$this->assign('signature',$signature);
+		
+		$this->display();
 	}
 	
 	/**
@@ -223,20 +197,6 @@ class IndexHelper extends BaseHelper{
 				return array('Code' =>'1','Msg'=>'未知错误');
 			}
 		}
-	}
-	
-	/**
-	 * 页面底部广告
-	 */
-	private function getCoordinate($Parame){
-		$uid 						= $Parame['uid'];
-		$longitude 					= $Parame['longitude'];
-		$latitude 					= $Parame['latitude'];
-		$user = M('user')->field('longitude,latitude')->where(array('id'=>$uid))->find();
-		if(empty($user['longitude']) || empty($user['latitude'])){
-			M('user')->where(array('id'=>$uid))->save(array('longitude'=>$longitude, 'latitude'=>$latitude));
-		}
-		return array('Code' =>'0','Msg'=>$this->Lang['100010']);
 	}
 }
 ?>

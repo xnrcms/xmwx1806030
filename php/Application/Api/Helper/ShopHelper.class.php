@@ -238,7 +238,7 @@ class ShopHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'goods';
 		$MainAlias					= 'main';
-		$MainField					= array('id,goodsname,goodsimg');
+		$MainField					= array('id,goodsname,goodsimg,goodsprice');
 	
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
