@@ -152,7 +152,7 @@ class IndexHelper extends BaseHelper{
 		p($a);die; */
 		
 		
-		$access_token_info = CurlHttp($url,'','');
+		$access_token_info = CurlHttp($url,'');
 		$access_token_arr = json_decode($access_token_info, true);
 		$access_token = $access_token_arr['access_token'];
 		
