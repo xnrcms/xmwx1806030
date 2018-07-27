@@ -159,7 +159,6 @@ class IndexHelper extends BaseHelper{
 		$signature = sha1($stringToBeSigned);
 		//signature
 		$data['signature'] 		= $signature;
-		$data['ticket'] 		= $ticket;
 		return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>$data);
 	}
 	
