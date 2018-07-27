@@ -5,10 +5,10 @@ class WxPayConf_pub
 //	const MCHID 			= '1274263501';
 //	const KEY 				= 'E6316E634E1A57F36B468402195F2F5A';
 //	const APPSECRET 		= 'b967525f4d166228ea8fe31314147e4a';
-	const APPID 			= 'wxcd52bc915783f902';
-	const MCHID 			= '1504375091';
+	const APPID 			= 'wx343f4eb64cc0b950';
+	const MCHID 			= '1394710702';
 	const KEY 				= 'd11a430d042141406574ac2801f50f12';
-	const APPSECRET 		= 'f84708ed5680caf07c9aa6741eb669d8';
+	const APPSECRET 		= '235fa02b4c3d4993ba8980f0facbd04a';
 	const JS_API_CALL_URL 	= '';
 	const SSLCERT_PATH 		= '';
 	const SSLKEY_PATH 		= '';

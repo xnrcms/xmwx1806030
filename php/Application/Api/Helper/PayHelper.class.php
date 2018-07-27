@@ -29,31 +29,33 @@ class PayHelper extends BaseHelper{
 		vendor('Wxpay.WxPayPubHelper');
 		$unifiedOrder = new \UnifiedOrder_pub();
 		$subject 				= '商品付款';
-		$order 					= M('advertisement')->where(array('id'=>$orderId))->find();
-		$total_amount 			= $order['pay_money'];
-		$fee			= $total_amount*100;
-		$notify_url		= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/type/2/table/'.$table;
-		$unifiedOrder->setParameter("attach",$subject);
+		$total_amount 			= $order['total_money'];
+		$fee					= $total_amount*100;
+		$notify_url				= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/';
+		//$unifiedOrder->setParameter("attach",$subject);
 		$unifiedOrder->setParameter("body",$subject);
 		$unifiedOrder->setParameter("out_trade_no",$order['order_no']);
 		$unifiedOrder->setParameter("total_fee",$fee);
 		$unifiedOrder->setParameter("notify_url",$notify_url);
-		$unifiedOrder->setParameter("trade_type","APP");
-		$order 		= $unifiedOrder->getPrepayId();
+		$unifiedOrder->setParameter("trade_type","JSAPI");
+		$openid = M('user')->where(array('id'=>$order['uid']))->getField('openid');
+		$unifiedOrder->setParameter("openid",$openid);
+		$info 					= $unifiedOrder->getPrepayId();
 		
-		$prepay_id 	= $order['prepay_id'];
+		
+		/* $prepay_id 	= $order['prepay_id'];
 		$temp = array(
-				'appid'=>$order['appid'],
-				'noncestr'=>$order['nonce_str'],
+				'appid'=>$info['appid'],
+				'noncestr'=>$info['nonce_str'],
 				'package'=>'Sign=WXPay',
-				'partnerid'=>$order['mch_id'],
-				'prepayid'=>$order['prepay_id'],
+				'partnerid'=>$info['mch_id'],
+				'prepayid'=>$info['prepay_id'],
 				'timestamp'=>(string)NOW_TIME
 		);
 		ksort($temp);
-		$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ;
+		$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ; */
 		
-		return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => '','wxpayInfo' => $temp)) ;
+		return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => $info) ;
 		
 		//return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => $alipayInfo,'wxpayInfo' => $wxpayInfo)) ;
 		
