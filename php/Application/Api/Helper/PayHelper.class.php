@@ -26,7 +26,36 @@ class PayHelper extends BaseHelper{
 		$orderId 							= $Parame['order_id'];
 		$order = M('order')->where(array('id'=>$orderId))->find();
 		
-		vendor('Wxpay.WxPayPubHelper');
+		vendor('Wxpay.lib.WxPay#Api');
+		//vendor('Wxpay.example.WxPay#JsApiPay');echo 1;die;
+		vendor('Wxpay.example.WxPay#Config');
+		//vendor('Wxpay.lib.log');
+		
+		//②、统一下单
+		$input = new \WxPayUnifiedOrder();
+		$input->SetBody("111");
+		$input->SetAttach("222");
+		$input->SetOut_trade_no($order['order_no']);
+		$input->SetTotal_fee("1");
+		$input->SetNotify_url("http://paysdk.weixin.qq.com/notify.php");
+		$input->SetTrade_type("JSAPI");
+		$openId = M('user')->where(array('id'=>$order['uid']))->getField('openid');
+		$input->SetOpenid($openId);
+		$config = new \WxPayConfig();
+		$order = \WxPayApi::unifiedOrder($config, $input);
+		echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
+		
+		p($order);die;
+		
+		//printf_info($order);
+		//$jsApiParameters = $tools->GetJsApiParameters($order);
+		
+		
+		
+		
+		
+		
+		/* vendor('Wxpay.WxPayPubHelper');
 		$unifiedOrder = new \UnifiedOrder_pub();
 		$subject 				= '商品付款';
 		$total_amount 			= $order['total_money'];
@@ -41,7 +70,7 @@ class PayHelper extends BaseHelper{
 		$unifiedOrder->setParameter("sign_type","MD5");
 		$openid = M('user')->where(array('id'=>$order['uid']))->getField('openid');
 		$unifiedOrder->setParameter("openid",$openid);
-		$info 					= $unifiedOrder->getPrepayId();
+		$info 					= $unifiedOrder->getPrepayId(); */
 		
 		
 		/* $prepay_id 	= $order['prepay_id'];
