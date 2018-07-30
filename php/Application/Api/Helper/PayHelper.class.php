@@ -20,7 +20,7 @@ class PayHelper extends BaseHelper{
 		
 	//统一支付
 	private function pay($Parame){	
-		$orderId 							= $Parame['order_id'];
+		$orderId = $Parame['order_id'];
 		$order = M('order')->where(array('id'=>$orderId))->find();
 		vendor('Wxpay.lib.WxPay#Api');
 		vendor('Wxpay.example.WxPay#Config');
@@ -29,7 +29,7 @@ class PayHelper extends BaseHelper{
 		$input->SetBody("商品支付");
 		$input->SetOut_trade_no($order['order_no']);
 		$input->SetTotal_fee($order['total_money']*100);
-		$input->SetNotify_url("http://paysdk.weixin.qq.com/notify.php");
+		$input->SetNotify_url('http://'.WEB_DOMAIN.'/api/pay/paySuccess/');
 		$input->SetTrade_type("JSAPI");
 		$openId = M('user')->where(array('id'=>$order['uid']))->getField('openid');
 		$input->SetOpenid($openId);
@@ -48,7 +48,7 @@ class PayHelper extends BaseHelper{
 		$data['package'] 	= $package;
 		$data['signType'] 	= $signType;
 		ksort($data);
-		$stringToBeSigned = "";
+		$stringToBeSigned 	= "";
 		$i = 0;
 		foreach ($data as $k => $v) {
 			if ($i == 0) {
@@ -71,23 +71,14 @@ class PayHelper extends BaseHelper{
 		);
 		return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => $info) ;
 	}
-
-
 	
 	//支付成功回调地址
-	private function paySuccess($Parame){
-		//表
-		$table = $Parame['table'];
-		
-		switch ($Parame['type']){
-			case 1: $this->alipay_success($table);break;
-			case 2: $this->wechat_success($table);break;
-		}
-		exit();
+	private function paySuccess(){
+		wechat_success();
 	}
 
 	//微信通知.v2
-	private function wechat_success($table){
+	private function wechat_success(){
 		vendor('Wxpay.WxPayPubHelper');
 		$notify = new \Notify_pub();
 		$xml 	= $GLOBALS['HTTP_RAW_POST_DATA'];
