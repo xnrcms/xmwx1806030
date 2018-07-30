@@ -74,7 +74,7 @@ return array(
 		
 	//公众号
 	'GZH'=>array(
-			'APPID' 		=> 'wx343f4eb64cc0b950',
-			'APPSECRET'		=> 'ad55cd59a85ec8752a0b7fe389adf281',
+			'APPID' 		=> 'wx72b4e89421b13340',
+			'APPSECRET'		=> 'dfbb26ca885383ec407e4255ca6ecc98',
 	),
 );
