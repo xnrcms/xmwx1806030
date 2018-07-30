@@ -20,17 +20,10 @@ class PayHelper extends BaseHelper{
 		
 	//统一支付
 	private function pay($Parame){	
-		$alipayInfo							= '';
-		$wxpayInfo							= (object)array();
-		
 		$orderId 							= $Parame['order_id'];
 		$order = M('order')->where(array('id'=>$orderId))->find();
-		
 		vendor('Wxpay.lib.WxPay#Api');
-		//vendor('Wxpay.example.WxPay#JsApiPay');echo 1;die;
 		vendor('Wxpay.example.WxPay#Config');
-		//vendor('Wxpay.lib.log');
-		
 		//②、统一下单
 		$input = new \WxPayUnifiedOrder();
 		$input->SetBody("111");
@@ -43,56 +36,41 @@ class PayHelper extends BaseHelper{
 		$input->SetOpenid($openId);
 		$config = new \WxPayConfig();
 		$order = \WxPayApi::unifiedOrder($config, $input);
-		echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
 		
-		p($order);die;
-		
-		//printf_info($order);
-		//$jsApiParameters = $tools->GetJsApiParameters($order);
-		
-		
-		
-		
-		
-		
-		/* vendor('Wxpay.WxPayPubHelper');
-		$unifiedOrder = new \UnifiedOrder_pub();
-		$subject 				= '商品付款';
-		$total_amount 			= $order['total_money'];
-		$fee					= $total_amount*100;
-		$notify_url				= 'http://'.WEB_DOMAIN.'/api/pay/paySuccess/';
-		//$unifiedOrder->setParameter("attach",$subject);
-		$unifiedOrder->setParameter("body",$subject);
-		$unifiedOrder->setParameter("out_trade_no",$order['order_no']);
-		$unifiedOrder->setParameter("total_fee",$fee);
-		$unifiedOrder->setParameter("notify_url",$notify_url);
-		$unifiedOrder->setParameter("trade_type","JSAPI");
-		$unifiedOrder->setParameter("sign_type","MD5");
-		$openid = M('user')->where(array('id'=>$order['uid']))->getField('openid');
-		$unifiedOrder->setParameter("openid",$openid);
-		$info 					= $unifiedOrder->getPrepayId(); */
-		
-		
-		/* $prepay_id 	= $order['prepay_id'];
-		$temp = array(
-				'appid'=>$info['appid'],
-				'noncestr'=>$info['nonce_str'],
-				'package'=>'Sign=WXPay',
-				'partnerid'=>$info['mch_id'],
-				'prepayid'=>$info['prepay_id'],
-				'timestamp'=>(string)NOW_TIME
+		$appId 				= C('GZH.APPID');
+		$timeStamp			= NOW_TIME;
+		$nonceStr			= randomString(32,7);
+		$package			= 'prepay_id='.$order['prepay_id'];
+		$signType			= 'MD5';
+		$data 				= array();
+		$data['appId'] 		= $appId;
+		$data['timeStamp'] 	= $timeStamp;
+		$data['nonceStr'] 	= $nonceStr;
+		$data['package'] 	= $package;
+		$data['signType'] 	= $signType;
+		ksort($data);
+		$stringToBeSigned = "";
+		$i = 0;
+		foreach ($data as $k => $v) {
+			if ($i == 0) {
+				$stringToBeSigned .= "$k" . "=" . "$v";
+			} else {
+				$stringToBeSigned .= "&" . "$k" . "=" . "$v";
+			}
+			$i++;
+		}
+		$string 			= $stringToBeSigned."&key=".$config->GetKey();
+		$sign 				= strtoupper(md5($string));
+		$paySign 			= $sign;
+		$info = array(
+			'appId' 			=> $appId,
+			'timeStamp'			=> $timeStamp,
+			'nonceStr'			=> $nonceStr,
+			'package'			=> $package,
+			'signType'			=> $signType,
+			'paySign'			=> $paySign,
 		);
-		ksort($temp);
-		$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ; */
-		
 		return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => $info) ;
-		
-		//return array('Code' => 0 , 'Msg' => '获取成功' ,'Data' => array('alipayInfo' => $alipayInfo,'wxpayInfo' => $wxpayInfo)) ;
-		
-		//return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('payInfo'=>$temp, 'trade_no'=>$trade_no));
-		
-		
-		//$res			= $this->wechat_app($trade_no,$body,$attach,$fee,$notify_url);
 	}
 
 
