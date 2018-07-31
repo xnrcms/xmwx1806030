@@ -81,13 +81,13 @@ class PayHelper extends BaseHelper{
 	//微信通知.v2
 	private function wechat_success(){
 		
-		file_put_contents('Runtime/1.txt',var_export($xml, TRUE));
+		
 		
 		vendor('Wxpay.WxPayPubHelper');
 		$notify = new \Notify_pub();
 		$xml 	= $GLOBALS['HTTP_RAW_POST_DATA'];
 		
-		
+		file_put_contents('Runtime/1.txt',var_export($xml, TRUE));
 		
 		
 		$notify->saveData($xml);
