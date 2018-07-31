@@ -17,6 +17,7 @@ class MenuController extends AdminController {
 		$keyword    = trim(I('get.find_keyword'));
 		$all_menu   = M('Menu')->getField('id,title');
 		$map['pid'] = $pid;
+		$map['status'] = 1;
 		if(!empty($keyword)) $map['title'] = array('like',"%{$keyword}%");
 
 		$list 		= M("Menu")->where($map)->field(true)->order('sort asc,id asc')->select();
