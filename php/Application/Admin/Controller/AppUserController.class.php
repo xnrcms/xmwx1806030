@@ -58,7 +58,20 @@ public function index(){
 
 		$map						= array_merge($map,$search_time);
 		//排序
-		$order						= $MainAlias.'.id desc';
+		$_order = I('get.order', '', 'trim');
+		$sort	= I('get.sort', '', 'trim');
+		$sort 	= empty($sort) ? 'desc' : $sort;
+		switch ($_order) {
+			case 'reg_time':
+				$order = $MainAlias.'.create_time '.$sort;
+				break;
+			case 'consumption_money':
+				$order = $MainAlias.'.consumption_money '.$sort;
+				break;
+			default:
+				$order = $MainAlias.'.id desc';
+				break;
+		}
 
 		//检索字段
 		$fields						= (empty($MainField) ? $this->get_fields_string($MainModel->getDbFields(),$MainAlias).',' : $this->get_fields_string($MainField,$MainAlias).',') . $RelationFields;

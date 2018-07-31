@@ -6,6 +6,18 @@
 	<input type="text" name="create_time_e" placeholder="请输入结束时间" value="{:I('create_time_e')}" onFocus="WdatePicker({minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:186px;">
 	<input type="text" name="nickname" value="{:I('nickname')}" id="" placeholder="请输入用户昵称进行检索" style="width:250px" class="input-text search-input">
 	<input type="text" name="phone" value="{:I('phone')}" id="" placeholder="请输入手机号码进行检索" style="width:250px" class="input-text search-input">
+	排序条件：
+	<select class="select search-select" name="order" style="width:120px;height:30px;">
+		<option value="" >请选择</option>
+		<option value="reg_time" <if condition="$_REQUEST['order'] == 'reg_time'">selected</if>>注册时间</option>
+		<option value="consumption_money" <if condition="$_REQUEST['order'] == 'consumption_money'">selected</if>>消费金额</option>
+	</select>
+排序规则：
+	<select class="select search-select" name="sort" style="width:80px;height:30px;">
+		<option value="" >请选择</option>
+		<option value="desc" <if condition="$_REQUEST['sort'] == desc">selected</if>>降序</option>
+		<option value="asc" <if condition="$_REQUEST['sort'] == asc">selected</if>>升序</option>
+	</select>
 	<button name="" id="search" url="{:U('',$extends_param)}" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 </div>
 </form>
