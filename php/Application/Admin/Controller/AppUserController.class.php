@@ -40,15 +40,16 @@ public function index(){
 		$map['type'] 				= 1;
 		//时间区间检索
 		$search_time				= time_between('create_time',$MainAlias);
-		//关键词检索
-		$keyword 					= I('find_keyword','');
-		if(!empty($keyword)){
-			$map['_complex'] 		= array(
-				'username' => array('like', '%'.$keyword.'%'),
-				'_logic' 	=> 'OR',
-			);
+		//用户昵称检索
+		$nickname 					= I('nickname','');
+		if(!empty($nickname)){
+			$map['nickname'] 		= array('like', '%'.$nickname.'%');
 		}
-
+		//手机号码检索
+		$phone 						= I('phone','');
+		if(!empty($phone)){
+			$map['phone'] 			= array('like', '%'.$phone.'%');
+		}
 		//状态检索
 		$status 				= intval(I('get.find_status',0));
 		if(!empty($status) && $status > 0){
