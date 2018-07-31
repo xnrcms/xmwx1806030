@@ -102,7 +102,7 @@ class GoodsController extends AdminController {
             foreach ($list as $k => $v) {
                 //数据格式化
                 $list[$k]['status'] = $status[$v['status']];
-                $list[$k]['url'] = 'http://'.WEB_DOMAIN.'/#/detail?id='.$v['id'];
+                $list[$k]['url'] = 'http://'.H5_WEB_DOMAIN.'/#/detail?id='.$v['id'];
                 $list[$k]['create_time'] = $v['create_time'] > 0 ? date('Y-m-d H:i:s', $v['create_time']) : '--';
                 $list[$k]['update_time'] = $v['update_time'] > 0 ? date('Y-m-d H:i:s', $v['update_time']) : '--';
             }
