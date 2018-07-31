@@ -80,16 +80,9 @@ class PayHelper extends BaseHelper{
 
 	//微信通知.v2
 	private function wechat_success(){
-		
-		
-		
 		vendor('Wxpay.WxPayPubHelper');
 		$notify = new \Notify_pub();
 		$xml 	= $GLOBALS['HTTP_RAW_POST_DATA'];
-		
-		file_put_contents('Runtime/1.txt',var_export($xml, TRUE));
-		
-		
 		$notify->saveData($xml);
 		if($notify->checkSign($this->cfg['wx_key']) == FALSE){
 			//logit('签名失败：FAIL');
@@ -102,6 +95,9 @@ class PayHelper extends BaseHelper{
 		echo $returnXml;
 
 		$temp = $notify->checkSign($this->cfg['wx_key']);
+		
+		
+		file_put_contents('Runtime/1.txt',var_export($notify->data, TRUE));
 
 		//==商户根据实际情况设置相应的处理流程=======
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
