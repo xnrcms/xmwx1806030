@@ -1,10 +1,6 @@
 <?php
 class WxPayConf_pub
 {
-	/* const APPID 			= 'wx72b4e89421b13340';
-	const MCHID 			= '1267246401';
-	const KEY 				= 'E6316E934E1A57F36B478402195F2F5A';
-	const APPSECRET 		= 'dfbb26ca885383ec407e4255ca6ecc98'; */
 	const APPID 			= 'wx2c05d2312609a170';
 	const MCHID 			= '1496133782';
 	const KEY 				= '3832fd359c049p801a0ee7b55ff60aaf';
