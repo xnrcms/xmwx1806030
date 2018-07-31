@@ -92,9 +92,7 @@ class PayHelper extends BaseHelper{
 		}
 		$returnXml = $notify->returnXml();
 		echo $returnXml;
-
 		$temp = $notify->checkSign($this->cfg['wx_key']);
-		//file_put_contents('Runtime/1.txt',var_export($notify->data, TRUE));
 		//==商户根据实际情况设置相应的处理流程=======
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
 			if ($notify->data["return_code"] == "FAIL") {
