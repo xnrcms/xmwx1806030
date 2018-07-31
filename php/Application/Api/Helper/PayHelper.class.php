@@ -129,7 +129,7 @@ class PayHelper extends BaseHelper{
 			{
 				$data = $objData->GetValues();
 				
-				file_put_contents('a/1.txt',var_export($data, TRUE));
+				file_put_contents('Runtime/1.txt',var_export($data, TRUE));
 				
 				//TODO 1、进行参数校验
 				if(!array_key_exists("return_code", $data)||(array_key_exists("return_code", $data) && $data['return_code'] != "SUCCESS")) {
