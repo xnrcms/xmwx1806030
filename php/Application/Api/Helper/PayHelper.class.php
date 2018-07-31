@@ -83,9 +83,28 @@ class PayHelper extends BaseHelper{
 		
 		
 		vendor('Wxpay.lib.WxPay#Api');
+		vendor('Wxpay.example.WxPay#Config');
 		
 		class PayNotifyCallBack extends \WxPayNotify
 		{
+			//查询订单
+			public function Queryorder($transaction_id)
+			{
+				$input = new \WxPayOrderQuery();
+				$input->SetTransaction_id($transaction_id);
+			
+				$config = new \WxPayConfig();
+				$result = \WxPayApi::orderQuery($config, $input);
+				//Log::DEBUG("query:" . json_encode($result));
+				if(array_key_exists("return_code", $result)
+						&& array_key_exists("result_code", $result)
+						&& $result["return_code"] == "SUCCESS"
+						&& $result["result_code"] == "SUCCESS")
+				{
+					return true;
+				}
+				return false;
+			}
 			/**
 			 *
 			 * 回包前的回调方法
@@ -95,7 +114,7 @@ class PayHelper extends BaseHelper{
 			 **/
 			public function LogAfterProcess($xmlData)
 			{
-				Log::DEBUG("call back， return xml:" . $xmlData);
+				//Log::DEBUG("call back， return xml:" . $xmlData);
 				return;
 			}
 		
@@ -109,9 +128,11 @@ class PayHelper extends BaseHelper{
 			public function NotifyProcess($objData, $config, &$msg)
 			{
 				$data = $objData->GetValues();
+				
+				file_put_contents('a/1.txt',var_export($data, TRUE));
+				
 				//TODO 1、进行参数校验
-				if(!array_key_exists("return_code", $data)
-						||(array_key_exists("return_code", $data) && $data['return_code'] != "SUCCESS")) {
+				if(!array_key_exists("return_code", $data)||(array_key_exists("return_code", $data) && $data['return_code'] != "SUCCESS")) {
 							//TODO失败,不是支付成功的通知
 							//如果有需要可以做失败时候的一些清理处理，并且做一些监控
 							$msg = "异常异常";
@@ -148,7 +169,7 @@ class PayHelper extends BaseHelper{
 			}
 		}
 		
-		vendor('Wxpay.example.WxPay#Config');
+		
 		$config = new \WxPayConfig();
 		//Log::DEBUG("begin notify");
 		$notify = new \PayNotifyCallBack();
