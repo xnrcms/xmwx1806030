@@ -11,7 +11,7 @@
 			<th width="10%" data-field="td_goodsprice">现价</th>
 			<th width="10%" data-field="td_stock">库存</th>
 			<th width="10%" data-field="td_create_time">添加时间</th>
-			<th width="10%" data-field="td_update_time">修改时间</th>
+			<th width="10%" data-field="td_url">商品链接</th>
 			<th width="10%" data-field="td_done">操作</th>
 		</tr>
     </thead>
@@ -28,7 +28,7 @@
 			<td class="td_goodsprice">{$vo.goodsprice}</td>
 			<td class="td_stock">{$vo.stock}</td>
 			<td class="td_create_time">{$vo.create_time}</td>
-			<td class="td_update_time">{$vo.update_time}</td>
+			<td class="td_url">http://xmwx1806030.h5.hzxmnet.com/#/detail?id={$vo.id}</td>
 			<td class="td_done"><include file="Public/button-right" /></td>
 		</tr>
 		</volist>
