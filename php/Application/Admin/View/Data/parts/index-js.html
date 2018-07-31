@@ -1,0 +1,33 @@
+<script type="text/javascript">
+$("#search").click(function() {
+	var create_time_s = $("input[name='create_time_s']").val();
+	var create_time_e = $("input[name='create_time_e']").val();
+	
+	/* if(!CheckJs.required(create_time_s)){
+		_inform('请选择开始时间',function(){CommonJs.Loading = false;});return false;
+	}
+	if(!CheckJs.required(create_time_e)){
+		_inform('请选择结束时间',function(){CommonJs.Loading = false;});return false;
+	} */
+    var url 	= $(this).attr('url');
+    var query 	= $('.search-form').serialize();
+    	query 	= query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+    	query 	= query.replace(/^&/g, '');
+     if (url.indexOf('?') > 0) {
+         url += '&' + query;
+     } else {
+         url += '?' + query;
+     }
+     window.location.href = url;
+});
+//回车搜索
+$(".search-input").keyup(function(e) {
+    if (e.keyCode === 13) { $("#search").click();return false;}
+});
+
+CommonJs.SetTableWidth();
+CommonJs.SetColspan();
+/*此处可扩展更多JS代码*/
+
+/*此处可扩展更多JS代码*/
+</script>

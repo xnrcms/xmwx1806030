@@ -1,0 +1,18 @@
+<div class="mt-5">
+	<table class="table table-border table-bordered table-bg table-hover table-sort tabwidth">
+	    <thead>
+			<tr class="text-l">
+				<th width="33%" data-field="td_total_order">销售额</th>
+				<th width="33%" data-field="td_total_goods">订单数</th>
+				<th width="33%" data-field="td_total_money">新增会员</th>
+			</tr>
+	    </thead>
+		<tbody>
+			<tr>
+				<td class="td_total_order">{$totalMoney|default="0"}</td>
+				<td class="td_total_goods">{$totalOrder|default="0"}</td>
+				<td class="td_total_money">{$totalMember|default="0"}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

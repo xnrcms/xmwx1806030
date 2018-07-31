@@ -1,0 +1,137 @@
+<extend name="Public/common"/>
+<block name="title"></block>
+<block name="heardercss"></block>
+<block name="hearderjs">
+<script type="text/javascript" src="__PUBLIC__/Common/js/highcharts.js"></script>
+</block>
+<block name="login"></block>
+<block name="main">
+<include file="Public/crumbsNav" />
+<div class="page-container">
+	<include file="Data/parts/search-top" />
+	<div class="mt-5">
+		<div id="container1" style="min-width:400px;height:400px"></div>
+		<br>
+		<div id="container3" style="min-width:400px;height:400px"></div>
+		<br>
+		<div id="container2" style="min-width:400px;height:400px"></div>
+	    <script type="text/javascript">
+	    $(function () {
+	        $('#container1').highcharts({
+	            chart: {
+	                type: 'column'
+	            },
+	            title: {
+	                text: '订单数统计图'
+	            },
+	            xAxis: {
+	                categories: {$jsonDate},
+	                crosshair: true
+	            },
+	            yAxis: {
+	                min: 0,
+	                title: {
+	                    text: '订单数 (单)'
+	                }
+	            },
+	            tooltip: {
+	                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b>{point.y:.0f} 单</b></td></tr>',
+	                footerFormat: '</table>',
+	                shared: true,
+	                useHTML: true
+	            },
+	            plotOptions: {
+	                column: {
+	                    pointPadding: 0.2,
+	                    borderWidth: 0
+	                }
+	            },
+	            series: [{
+	                name: '订单',
+	                data: {$jsonTotalOrder}
+	            }]
+	        });
+	        
+	        $('#container2').highcharts({
+	            chart: {
+	                type: 'column'
+	            },
+	            title: {
+	                text: '新增会员统计图'
+	            },
+	            xAxis: {
+	                categories: {$jsonDate},
+	                crosshair: true
+	            },
+	            yAxis: {
+	                min: 0,
+	                title: {
+	                    text: '新增会员 (人)'
+	                }
+	            },
+	            tooltip: {
+	                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b>{point.y:.0f} 个</b></td></tr>',
+	                footerFormat: '</table>',
+	                shared: true,
+	                useHTML: true
+	            },
+	            plotOptions: {
+	                column: {
+	                    pointPadding: 0.2,
+	                    borderWidth: 0
+	                }
+	            },
+	            series: [{
+	                name: '新增会员',
+	                data: {$jsonTotalMember}
+	            }]
+	        });
+	        
+	        $('#container3').highcharts({
+	            chart: {
+	                type: 'column'
+	            },
+	            title: {
+	                text: '销售额统计图'
+	            },
+	            xAxis: {
+	                categories: {$jsonDate},
+	                crosshair: true
+	            },
+	            yAxis: {
+	                min: 0,
+	                title: {
+	                    text: '销售额 (元)'
+	                }
+	            },
+	            tooltip: {
+	                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b>{point.y:.2f} 元</b></td></tr>',
+	                footerFormat: '</table>',
+	                shared: true,
+	                useHTML: true
+	            },
+	            plotOptions: {
+	                column: {
+	                    pointPadding: 0.2,
+	                    borderWidth: 0
+	                }
+	            },
+	            series: [{
+	                name: '销售额',
+	                data: {$jsonTotalMoney}
+	            }]
+	        });
+	    });
+	    </script>
+	</div>
+</div>
+</block>
+<block name="footjs">
+<include file="Data/parts/index-js" />
+</block>
