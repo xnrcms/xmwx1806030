@@ -148,6 +148,9 @@ class OrderHelper extends BaseHelper{
 		
 		//应付金额
 		$data['total_money']			= $data['goods_total_money'];
+		
+		$data['total_money']			= 0.01;
+		
 		$data['pay_status']				= 0;
 		$data['status']					= 1;
 		//添加到订单表
