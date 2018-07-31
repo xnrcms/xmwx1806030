@@ -27,6 +27,8 @@ class PublicController extends \Think\Controller {
 						cookie(md5('admin_username'.C('DATA_AUTH_KEY')),FauthCode($username,'ENCODE'),2592000); // 指定cookie保存30天时间
 						cookie(md5('admin_password'.C('DATA_AUTH_KEY')),FauthCode($password,'ENCODE'),2592000); // 指定cookie保存30天时间
 					}
+					//记录行为
+					action_log('登录后台', 'login', UID);
 					//TODO:跳转到登录前页面
 					$this->success('登录成功！', U('Index/index'));
 				} else {
