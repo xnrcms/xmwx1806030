@@ -50,8 +50,6 @@ class PayController extends CommonController {
 		//自定义接口参数区
 		$BackData['ac']			= 'paySuccess';//执行方法名
 		//接口调用
-		$BackData['type']		= intval(I('get.type'));
-		$BackData['table']		= trim(I('get.table'));
 		$BackData['isapi']		= true;//是否为内部接口调用
 		$parame					= json_encode($BackData);
 		$Res					= $this->Helper($parame, 'Pay');
