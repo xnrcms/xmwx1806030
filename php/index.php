@@ -23,6 +23,7 @@ define ( 'BUILD_LITE_FILE',true);
  */
 define ( 'RUNTIME_PATH', './Runtime/' );
 define('WEB_DOMAIN', $_SERVER['HTTP_HOST']);
+define('H5_WEB_DOMAIN', 'xmwx1806030.h5.hzxmnet.com');
 /**
  * 引入核心入口
  * ThinkPHP亦可移动到WEB以外的目录
