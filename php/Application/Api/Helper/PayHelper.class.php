@@ -74,7 +74,6 @@ class PayHelper extends BaseHelper{
 	
 	//支付成功回调地址
 	private function paySuccess(){
-		
 		$this->wechat_success();
 	}
 
@@ -95,10 +94,7 @@ class PayHelper extends BaseHelper{
 		echo $returnXml;
 
 		$temp = $notify->checkSign($this->cfg['wx_key']);
-		
-		
-		file_put_contents('Runtime/1.txt',var_export($notify->data, TRUE));
-
+		//file_put_contents('Runtime/1.txt',var_export($notify->data, TRUE));
 		//==商户根据实际情况设置相应的处理流程=======
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
 			if ($notify->data["return_code"] == "FAIL") {
@@ -109,142 +105,27 @@ class PayHelper extends BaseHelper{
 			}
 			else{
 				//此处应该更新一下订单状态，商户自行增删操作
-				$order_sn 	= $notify->data['out_trade_no'];
-				//$res		= $this->updateOrder($order_sn,$goodsclass);
-				
-				$res		= $this->updateOrder($table,$order_sn);
-			}
-		}
-	}
-
-	//阿里通知
-	private function alipay_success($table){
-		
-		Vendor('Alipay.AopClient');
-		$aop = new \AopClient;
-		$aop->alipayrsaPublicKey = C('RSAPUBLICKEY');
-		$flag 			= $aop->rsaCheckV1($_POST, NULL, "RSA2");
-		if($flag === true){
-			$res		= $this->updateOrder($table,$_POST['out_trade_no'],$_POST['receipt_amount']);
-			if($res !== true){
-				echo 'fail' ;
-			}
-		}else{
-			echo 'fail' ;
-		}
-		//file_put_contents('a/1.txt',var_export($flag, TRUE));
-	}
-	
-	//回调处理
-	private function updateOrder($table,$order_no,$money=''){
-		switch ($table){
-			case 'order':
-				$this->order_table($order_no,$money);
-				break;
-			case 'advertisement':
-				$this->advertisement_table($order_no,$money);
-				break;
-			case 'video':
-				$this->video_table($order_no,$money);
-				break;
-		}
-	
-	}
-	
-	//福利商城订单
-	private function order_table($order_no,$money){
-		//file_put_contents('a/1.txt',var_export(array($order_no,$money), TRUE));
-		
-		//修改订单
-		$data 							= array();
-		$data['status'] 				= 2;
-		$data['pay_status']				= 1;
-		$data['pay_time']				= NOW_TIME;
-		$res 							= M('order')->where(array('order_no'=>$order_no))->save($data);
-		if($res != false){
-			//支付成功增加销量
-			$oid = M('order')->where(array('order_no'=>$order_no))->getField('id');
-			$orderDesc	= M('order_desc')->where(array('oid'=>$oid))->select();
-			if(!empty($orderDesc)){
-				foreach ($orderDesc as $key=>$value){
-					$row 						= array();
-					$row['salenum'] 			= array('exp',"salenum+{$value['num']}");
-					M('goods')->where(array('id'=>$value['gid']))->save($row);
+				$order_no_arr 	= explode('_', $notify->data['out_trade_no']);
+				$order_no		= $order_no_arr[0];
+				$data 							= array();
+				$data['status'] 				= 2;
+				$data['pay_status']				= 1;
+				$data['pay_time']				= NOW_TIME;
+				$res 							= M('order')->where(array('order_no'=>$order_no))->save($data);
+				if($res != false){
+					//支付成功增加销量
+					$oid = M('order')->where(array('order_no'=>$order_no))->getField('id');
+					$orderDesc	= M('order_desc')->where(array('oid'=>$oid))->select();
+					if(!empty($orderDesc)){
+						foreach ($orderDesc as $key=>$value){
+							$row 						= array();
+							$row['salenum'] 			= array('exp',"salenum+{$value['num']}");
+							M('goods')->where(array('id'=>$value['gid']))->save($row);
+						}
+					}
 				}
 			}
-			return true;
 		}
-		return false;
 	}
-	
-	//消费让利订单
-	private function advertisement_table($order_no,$money){
-		//修改订单
-		$data 							= array();
-		$data['pay_status']				= 1;
-		$data['pay_time']				= NOW_TIME;
-		$res 							= M('advertisement')->where(array('order_no'=>$order_no))->save($data);
-		if($res != false){
-			return true;
-		}
-		return false;
-	}
-	
-	//商家视频订单
-	private function video_table($order_no,$money){
-		//修改订单
-		$data 							= array();
-		$data['pay_status']				= 1;
-		$data['pay_time']				= NOW_TIME;
-		$res 							= M('video')->where(array('order_no'=>$order_no))->save($data);
-		if($res != false){
-			return true;
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	/*
-	 *	微信支付
-	 *	2015-12-22 15:40:16
-	 *	@param $trade_no	订单号
-	 *	@param $body		商品描述
-	 *	@param $attach		商户附带
-	 *	@param $fee			总金额
-	 *	@param $notify_url	通知地址
-	 */
-	/* private function wechat_app($trade_no,$body,$attach,$fee,$notify_url){
-		//	$body = '2234dfsfsdf' ;dblog($body) ;
-		vendor('Wxpay.WxPayPubHelper');
-		$unifiedOrder = new \UnifiedOrder_pub();
-		$unifiedOrder->setParameter("attach",$attach);
-		$unifiedOrder->setParameter("body",$body);
-		$unifiedOrder->setParameter("out_trade_no",$trade_no);
-		$unifiedOrder->setParameter("total_fee",$fee);
-		$unifiedOrder->setParameter("notify_url",$notify_url);
-		$unifiedOrder->setParameter("trade_type","APP");
-		$order 		= $unifiedOrder->getPrepayId();
-		$prepay_id 	= $order['prepay_id'];
-		if($prepay_id){
-			$temp = array(
-					'appid'=>$order['appid'],
-					'noncestr'=>$order['nonce_str'],
-					'package'=>'Sign=WXPay',
-					'partnerid'=>$order['mch_id'],
-					'prepayid'=>$order['prepay_id'],
-					'timestamp'=>(string)NOW_TIME
-			);
-			ksort($temp);
-			$temp['sign'] = $unifiedOrder->getSign($temp);dblog(array('wxPay'=>$temp)) ;
-			return array('Code' =>'0','Msg'=>$this->Lang['100013'],'Data'=>array('payInfo'=>$temp, 'trade_no'=>$trade_no));
-		}else{
-			return array('Code' =>'100705','Msg'=>$this->Lang['100705'],'Data'=>array('payInfoWechat'=>$temp));
-		}
-	} */
-	
 }
 ?>
