@@ -9,9 +9,9 @@ $(function(){
 			CommonJs.SubmitData							= {};
 			CommonJs.SubmitData.MOBILE					= $("input[name='MOBILE']").val();
 			//CommonJs.SubmitData.DISCOUNT				= $("input[name='DISCOUNT']").val();
-			CommonJs.SubmitData.SHARE_TITLE				= $("input[name='SHARE_TITLE']").val();
-			CommonJs.SubmitData.SHARE_CONTENT			= $("textarea[name='SHARE_CONTENT']").val();
-			CommonJs.SubmitData.SHARE_IMG				= $("input[name='SHARE_IMG']").val();
+			//CommonJs.SubmitData.SHARE_TITLE				= $("input[name='SHARE_TITLE']").val();
+			//CommonJs.SubmitData.SHARE_CONTENT			= $("textarea[name='SHARE_CONTENT']").val();
+			//CommonJs.SubmitData.SHARE_IMG				= $("input[name='SHARE_IMG']").val();
 			
 			if(!CheckJs.required(CommonJs.SubmitData.MOBILE)){
 				_inform('请输入平台电话',function(){CommonJs.Loading = false;});return false;
@@ -22,7 +22,6 @@ $(function(){
 			if(CommonJs.SubmitData.DISCOUNT > 10){
 				_inform('折扣不能大于10',function(){CommonJs.Loading = false;});return false;
 			}
-			*/
 			if(!CheckJs.required(CommonJs.SubmitData.SHARE_TITLE)){
 				_inform('请输入分享标题',function(){CommonJs.Loading = false;});return false;
 			}
@@ -32,6 +31,7 @@ $(function(){
 			if(!CheckJs.required(CommonJs.SubmitData.SHARE_IMG)){
 				_inform('请上传分享图片',function(){CommonJs.Loading = false;});return false;
 			}
+			*/
 			CommonJs.Loading = false
 			return true;
 	};

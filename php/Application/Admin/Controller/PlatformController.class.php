@@ -25,7 +25,7 @@ class PlatformController extends AdminController {
 			if($param['MOBILE'] == ''){
 				$this->error('请输入平台电话');
 			}
-			if($param['SHARE_TITLE'] == ''){
+			/* if($param['SHARE_TITLE'] == ''){
 				$this->error('请输入分享标题');
 			}
 			if($param['SHARE_CONTENT'] == ''){
@@ -33,7 +33,7 @@ class PlatformController extends AdminController {
 			}
 			if($param['SHARE_IMG'] == ''){
 				$this->error('请输入分享图片');
-			}
+			} */
 			foreach ($param as $key=>$value){
 				M('platformConfig')->where(array('name'=>$key))->save(array('value'=>$value));
 			}
@@ -80,9 +80,9 @@ class PlatformController extends AdminController {
 		$FormData[0] = array(
 			array('fieldName'=>'平台电话','fieldValue'=>'MOBILE','fieldType'=>'text','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入平台电话"'),
 			//array('fieldName'=>'折扣','fieldValue'=>'DISCOUNT','fieldType'=>'text','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入折扣"'),
-			array('fieldName'=>'分享标题','fieldValue'=>'SHARE_TITLE','fieldType'=>'text','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入分享标题"'),
-			array('fieldName'=>'分享内容','fieldValue'=>'SHARE_CONTENT','fieldType'=>'textarea','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入分享内容" rows="5" style="height:100%;"'),
-			array('fieldName'=>'分享图片','fieldValue'=>'SHARE_IMG','fieldType'=>'image','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'data-table="demo" data-field="image" data-size=""'),
+			//array('fieldName'=>'分享标题','fieldValue'=>'SHARE_TITLE','fieldType'=>'text','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入分享标题"'),
+			//array('fieldName'=>'分享内容','fieldValue'=>'SHARE_CONTENT','fieldType'=>'textarea','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入分享内容" rows="5" style="height:100%;"'),
+			//array('fieldName'=>'分享图片','fieldValue'=>'SHARE_IMG','fieldType'=>'image','isMust'=>1,'fieldData'=>array(),'attrExtend'=>'data-table="demo" data-field="image" data-size=""'),
 			//array('fieldName'=>'QQ1','fieldValue'=>'QQ_ONE','fieldType'=>'text','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入QQ1"'),
 			//array('fieldName'=>'QQ2','fieldValue'=>'QQ_TWO','fieldType'=>'text','isMust'=>0,'fieldData'=>array(),'attrExtend'=>'placeholder="请输入QQ2"'),
 		);
