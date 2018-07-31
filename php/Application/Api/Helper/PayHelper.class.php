@@ -75,9 +75,7 @@ class PayHelper extends BaseHelper{
 	//支付成功回调地址
 	private function paySuccess(){
 		
-		
-		
-		wechat_success();
+		$this->wechat_success();
 	}
 
 	//微信通知.v2
