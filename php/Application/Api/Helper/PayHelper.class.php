@@ -24,11 +24,11 @@ class PayHelper extends BaseHelper{
 		$order = M('order')->where(array('id'=>$orderId))->find();
 		vendor('Wxpay.lib.WxPay#Api');
 		vendor('Wxpay.example.WxPay#Config');
-		//②、统一下单
+		//统一下单
 		$input = new \WxPayUnifiedOrder();
 		$input->SetBody("商品支付");
-		$input->SetOut_trade_no($order['order_no']);
-		$input->SetTotal_fee(1);
+		$input->SetOut_trade_no($order['order_no'].'_'.time());
+		$input->SetTotal_fee($order['total_money']*100);
 		$input->SetNotify_url('http://'.WEB_DOMAIN.'/api/pay/paySuccess/');
 		$input->SetTrade_type("JSAPI");
 		$openId = M('user')->where(array('id'=>$order['uid']))->getField('openid');
