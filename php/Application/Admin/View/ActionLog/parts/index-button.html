@@ -1,0 +1,26 @@
+{/*按钮区域=============================================================================start*/}
+<div class="cl pd-5 bg-1 bk-gray mt-20">
+	<span class="l">
+		<notempty name="ListTopNav">
+		<volist name="ListTopNav" id="ltn">
+			<switch name="ltn.posttype">
+				<case value="1"><a class="btn btn-primary radius" onClick="return layer_show('{$ltn.title}','{:U($ltn[url],$extends_param)}',800,500);" href="javascript:;">{$ltn.title}</a></case>
+				<case value="2">&nbsp;<a class="btn btn-primary radius" onClick="return layer_show('{$ltn.title}','{:U($ltn[url],$extends_param)}',800,500);" href="javascript:;">{$ltn.title}</a></case>
+				<case value="3">&nbsp;<a class="btn" href="javascript:void(0);">{$ltn.title}</a></case>
+				<case value="4">&nbsp;<a class="btn btn-danger radius" onClick="CommonJs.JsStatus(0,'{:U($ltn[url],$extends_param)}',4)" href="javascript:;">{$ltn.title}</a></case>
+				<case value="5">&nbsp;
+				<php>if((strpos($ltn['url'],'/resume') >0)){</php>
+				<a class="btn btn-primary radius" onClick="CommonJs.JsStatus('0','{:U($ltn['url'],$extends_param)}',5)" href="javascript:;" title="{$ltn.title}">{$ltn.title}</a>
+				<php>}</php>
+				<php>if((strpos($ltn['url'],'/forbid') >0)){</php>
+				<a class="btn btn-primary radius" onClick="CommonJs.JsStatus('0','{:U($ltn['url'],$extends_param)}',6)" href="javascript:;" title="{$ltn.title}">{$ltn.title}</a>
+				<php>}</php>
+				</case>
+				<default/>&nbsp;<a class="btn" href="{:U($ltn['url'])}">{$ltn.title}</a>
+			</switch>
+		</volist>
+		</notempty>
+	</span>
+	<span class="r page">{$_page}</span>
+</div>
+{/*按钮区域*=============================================================================end*/}
