@@ -175,7 +175,8 @@ class OrderHelper extends BaseHelper{
 			}
 			//添加到订单详情表
 			$result = M('orderDesc')->addAll(array_values($dataDesc));
-			 
+			//用户总订单数加一
+			M('user')->where(array('id'=>$uid))->setInc('order_num');
 			//判断商品类型用什么支付
 			if($result){
 				//删除购物车

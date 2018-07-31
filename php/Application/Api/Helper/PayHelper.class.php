@@ -112,7 +112,10 @@ class PayHelper extends BaseHelper{
 				$res 							= M('order')->where(array('order_no'=>$order_no))->save($data);
 				if($res != false){
 					//支付成功增加销量
-					$oid = M('order')->where(array('order_no'=>$order_no))->getField('id');
+					$orderInfo = M('order')->where(array('order_no'=>$order_no))->find();
+					$oid = $orderInfo['id'];
+					$uid = $orderInfo['uid'];
+					$totalMoney = $orderInfo['total_money'];
 					$orderDesc	= M('order_desc')->where(array('oid'=>$oid))->select();
 					if(!empty($orderDesc)){
 						foreach ($orderDesc as $key=>$value){
@@ -121,6 +124,10 @@ class PayHelper extends BaseHelper{
 							M('goods')->where(array('id'=>$value['gid']))->save($row);
 						}
 					}
+					//增加用户消费金额
+					$row 						= array();
+					$row['consumption_money'] 	= array('exp',"consumption_money+$totalMoney");
+					M('user')->where(array('id'=>$uid))->save($row);
 				}
 			}
 		}
