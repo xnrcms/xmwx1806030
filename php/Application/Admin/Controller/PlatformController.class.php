@@ -17,9 +17,6 @@ class PlatformController extends AdminController {
 	 */
 	public function config(){
 		//操作权限
-		if(!IS_ROOT && $this->group_id != 1){
-			$this->error('你没权限设置！');
-		}
 		if (IS_POST){
 			$param = I('post.');
 			if($param['MOBILE'] == ''){

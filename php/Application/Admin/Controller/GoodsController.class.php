@@ -88,9 +88,6 @@ class GoodsController extends AdminController {
         if (!empty($status) && $status > 0) {
             $map['main.status'] = $status;
         }
-        if (UID != 1) {
-            $this->error('您没有权限！');
-        }
         //排序
         $order = $MainAlias . '.id desc';
 
