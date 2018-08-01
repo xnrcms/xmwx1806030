@@ -71,19 +71,17 @@ class BusinessController extends CommonController {
 	}
 	
 	/**
-	 * 确认订单
+	 * 发送信息
 	 */
-	public function orderConfirm(){
+	public function sendMessage(){
 		$CheckParam = array(
 				array('time','Int',1,$this->Lang['100001'],'100001'),
 				array('hash','String',1,$this->Lang['100002'],'100002'),
-				array('hashid','String',1, $this->Lang['100041'],'100041'),
-				array('uid', 'Int', 1, $this->Lang['100005'], '100005'),
 				array('id', 'String', 1, $this->Lang['101729'], '101729'),
 		);
 		$BackData               = $this->CheckData(I('request.'),$CheckParam);
 		//自定义接口参数区
-		$BackData['ac']         = 'orderConfirm';//执行方法名
+		$BackData['ac']         = 'sendMessage';//执行方法名
 		//接口调用
 		$BackData['isapi']      = true;//是否为内部接口调用
 		$parame                 = json_encode($BackData);

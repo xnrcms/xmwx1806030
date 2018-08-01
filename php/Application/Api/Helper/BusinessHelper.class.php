@@ -67,6 +67,8 @@ class BusinessHelper extends BaseHelper{
 			$data['order_no'] 			= $order['order_no'];
 			//订单状态
 			$data['status'] 			= $order['status'];
+			//是否发送通知
+			$data['is_send'] 			= $order['is_send'];
 			//下单时间
 			$data['create_time'] 		= date('Y/m/d H:i:s', $order['create_time']);
 			//付款时间
@@ -123,6 +125,7 @@ class BusinessHelper extends BaseHelper{
 				$arr[$v['id']]['id']			= $v['id'];
 				$arr[$v['id']]['order_no']		= $v['order_no'];
 				$arr[$v['id']]['status']		= $v['status'];
+				$arr[$v['id']]['is_send']		= $v['is_send'];
 				$arr[$v['id']]['total_money']	= $v['total_money'];
 				$arr[$v['id']]['create_time']	= date('Y-m-d', $v['create_time']);
 				$arr[$v['id']]['sublist'][] 	= $v;
@@ -136,13 +139,22 @@ class BusinessHelper extends BaseHelper{
 	/**
 	 * 确认订单
 	 */
-	private function orderConfirm($Parame){
+	private function sendMessage($Parame){
 		$id 	= intval($Parame['id']);
-		$uid 	= intval($Parame['uid']);
 		if($id <= 0){
 			return array('Code' =>'101729','Msg'=>$this->Lang['101729']);
 		}
-		$res = M('order')->where(array('uid'=>$uid, 'id'=>$id))->save(array('status'=>3, 'receipt_time'=>NOW_TIME));
+		$uid = M('order')->where(array('id'=>$id))->getField('uid');
+		if(!$uid){
+			return array('Code' =>'1','Msg'=>'订单信息错误');
+		}
+		$res = M('message')->add(array(
+				'type' => 1,
+				'uid' => $uid,
+				'title' => '取货提醒',
+				'description' => '您的订单已经到货,请到店来取',
+				'create_time' => NOW_TIME
+		));
 		if($res != false){
 			return array('Code' =>'0','Msg'=>$this->Lang['100018']);
 		}
