@@ -18,6 +18,36 @@ class BusinessHelper extends BaseHelper{
 		return array('Code' =>'100007','Msg'=>$this->Lang['100007']);
 	}
 	
+	//登录
+	private function login($Parame){
+		//登录验证
+		$username 	= safe_replace($Parame['username']);//过滤
+		$password	= $Parame['password'];
+	
+		$user = M('shop')->where(array('phone'=>$username))->find();
+		if(empty($user['id'])){
+			return array('Code' =>'100033','Msg'=>$this->Lang['100033']);
+		}
+		if($user['password'] != $password){
+			return array('Code' =>'100034','Msg'=>$this->Lang['100034']);
+		}
+		//UC登录成功
+		if($user['id'] > 0){
+			if(!empty($user) && $user['id'] > 0){
+				/*登录成功后*/
+				$data					= array();
+				$data['shop_id']		= intval($user['id']);
+				$data['face']			= $user['face'];
+				$data['name']			= $user['shop_name'];
+				return array('Code' =>'0','Msg'=>$this->Lang['100049'],'Data'=>$data);
+			} else {
+				return array('Code' =>'100037','Msg'=>$this->Lang['100037']);
+			}
+		} else { //登录失败
+			return array('Code' => '100037','Msg'=>$this->Lang['100037']);
+		}
+	}
+	
 	private function orderDetail($Parame){
 		$order = M('order')->where(array('id'=>$Parame['id']))->find();
 		$data = array();

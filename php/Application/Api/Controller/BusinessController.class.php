@@ -10,6 +10,26 @@ class BusinessController extends CommonController {
 	}
 	
 	/**
+	 * 商家登录
+	 */
+	public function login(){
+		$CheckParam	= array(
+			array('time','Int',1,$this->Lang['100001'],'100001'),
+			array('hash','String',1,$this->Lang['100002'],'100002'),
+			array('username','String',1,$this->Lang['100031'],'100031'),
+			array('password','String',1,$this->Lang['100032'],'100032'),
+		);
+		$BackData 				= $this->CheckData(I('request.'),$CheckParam);
+		//自定义接口参数区
+		$BackData['ac']			= 'login';//执行方法名
+		//接口调用
+		$BackData['isapi']		= true;//是否为内部接口调用
+		$parame					= json_encode($BackData);
+		$Res					= $this->Helper($parame, 'Business');
+		$this->ReturnJson($Res);
+	}
+	
+	/**
 	 * 订单详情
 	 */
 	public function orderDetail(){
