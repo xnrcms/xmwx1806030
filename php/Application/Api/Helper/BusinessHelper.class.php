@@ -102,7 +102,7 @@ class BusinessHelper extends BaseHelper{
 		$map['main.is_delete']		= 1;
 		$map['main.pay_status']		= 1;
 		if(!empty($Parame['keyword'])){
-			$map['phone'] 			= array('like', '%'.$Parame['keyword'].'%');
+			$map['main.phone'] 		= array('like', '%'.$Parame['keyword'].'%');
 		}
 		$type 						= $Parame['type'];
 		if($type == 1){
