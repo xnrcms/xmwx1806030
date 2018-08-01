@@ -37,6 +37,7 @@ class BusinessController extends CommonController {
 			array('hash','String',1,$this->Lang['100002'],'100002'),
 			array('shop_id', 'Int', 1, $this->Lang['101826'], '101826'),
 			array('type', 'Int', 0, $this->Lang['101735'], '101735'),
+			array('keyword', 'Int', 0, $this->Lang['101604'], '101604'),
 	        array('page','Int',1,$this->Lang['100709'],'100709'),
 		);
 	    $BackData 				= $this->CheckData(I('request.'),$CheckParam);

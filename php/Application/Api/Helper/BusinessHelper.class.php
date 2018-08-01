@@ -68,6 +68,9 @@ class BusinessHelper extends BaseHelper{
 		$map 						= array();
 		$map['main.shop_id']		= $Parame['shop_id'];
 		$map['main.is_delete']		= 1;
+		if(!empty($Parame['keyword'])){
+			$map['phone'] 			= array('like', '%'.$Parame['keyword'].'%');
+		}
 		$type 						= $Parame['type'];
 		/* if($type == 1){
 			$map['main.status']		= 1;
