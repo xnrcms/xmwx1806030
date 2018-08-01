@@ -24,7 +24,7 @@ class BusinessHelper extends BaseHelper{
 		$username 	= safe_replace($Parame['username']);//过滤
 		$password	= $Parame['password'];
 	
-		$user = M('shop')->where(array('phone'=>$username))->find();
+		$user = M('shop')->where(array('phone'=>$username, 'status'=>1))->find();
 		if(empty($user['id'])){
 			return array('Code' =>'100033','Msg'=>$this->Lang['100033']);
 		}
