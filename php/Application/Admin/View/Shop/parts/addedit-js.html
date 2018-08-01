@@ -7,6 +7,8 @@ $(function(){
 			if(CommonJs.Loading){ return false;}
 			CommonJs.Loading 	= true;
 			CommonJs.SubmitData							= {};
+			CommonJs.SubmitData.phone					= $("input[name='phone']").val();
+			CommonJs.SubmitData.password				= $("input[name='password']").val();
 			CommonJs.SubmitData.shop_name				= $("input[name='shop_name']").val();
 			CommonJs.SubmitData.mobile					= $("input[name='mobile']").val();
 			CommonJs.SubmitData.face 					= $("input[name='face']").val();
@@ -18,6 +20,12 @@ $(function(){
 			CommonJs.SubmitData.latitude				= $("input[name='latitude']").val();
 			CommonJs.SubmitData.sort					= $("input[name='sort']").val();
 			
+			if(!CheckJs.required(CommonJs.SubmitData.phone)){
+				_inform('请输入商家登录手机号',function(){CommonJs.Loading = false;});return false;
+			}
+			if(!CheckJs.required(CommonJs.SubmitData.password)){
+				_inform('请输入商家登录密码',function(){CommonJs.Loading = false;});return false;
+			}
 			if(!CheckJs.required(CommonJs.SubmitData.shop_name)){
 				_inform('请输入门店名称',function(){CommonJs.Loading = false;});return false;
 			}

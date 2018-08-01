@@ -3,7 +3,9 @@
     <thead>
 		<tr class="text-l">
 			<th width="2%" class="td_id">id</th>
-			<th width="8%" data-field="td_face">商家图片</th>
+			<th width="5%" data-field="td_face">商家图片</th>
+			<th width="8%" data-field="td_phone">商家登录手机号</th>
+			<th width="8%" data-field="td_password">商家登录密码</th>
 			<th width="10%" data-field="td_shop_name">商家名称</th>
 			<th width="10%" data-field="td_mobile">联系方式</th>
 			<th width="10%" data-field="td_create_time">添加时间</th>
@@ -17,6 +19,8 @@
 		<tr>
 			<td class="td_id" title="{$vo.id}"><input type="checkbox" value="{$vo['id']}" name="ids[]" id="selectid_{$vo['id']}"></td>
             <td class="td_face"><img src="{$vo.face}" width="80" height="80"></td>
+            <td class="td_phone">{$vo.phone}</td>
+            <td class="td_password">{$vo.password}</td>
             <td class="td_shop_name">{$vo.shop_name}</td>
 			<td class="td_name">{$vo.mobile}</td>
 			<td class="td_create_time">{$vo.create_time}</td>

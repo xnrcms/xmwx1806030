@@ -131,6 +131,7 @@ class OrderHelper extends BaseHelper{
 		}
 		//入库数据
 		$data 							= array();
+		$data['shop_id'] 				= $shopId;
 		$data['uid'] 					= $uid;
 		$data['order_no'] 				= create_orderid();
 		$data['out_trade_no'] 			= 'REWORD'.date('YmdHis',NOW_TIME).randomString('6',0);

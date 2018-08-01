@@ -78,7 +78,6 @@ class ShopController extends AdminController {
             foreach ($list as $k => $v) {
                 //数据格式化
                 $user 						= M('user')->where(array('id'=>$v['uid']))->find();
-            	$list[$k]['phone'] 			= $user['phone'];
                 $list[$k]['create_time'] 	= $v['create_time'] > 0 ? date('Y-m-d H:i:s', $v['create_time']) : '--';
                 $list[$k]['verify_time'] 	= $v['verify_time'] > 0 ? date('Y-m-d H:i:s', $v['verify_time']) : '--';
             }
@@ -117,15 +116,19 @@ class ShopController extends AdminController {
      */
     public function add() {
         //数据提交
-        if (IS_POST)
-            $this->update();
-
-        //表单数据
-        $FormData = $this->CustomerForm(0);
-        $this->assign('FormData', $FormData);
-
-        $this->NavTitle = '新增配置';
-        $this->display('addedit');
+        if (IS_POST){
+        	if (!Mobile_check(I('post.phone'), array(1,2,3,4))) {
+        		$this->error('请输入正确格式的用户登录手机号');
+        	}
+        	$this->update();
+        }else{
+        	//表单数据
+        	$FormData = $this->CustomerForm(0);
+        	$this->assign('FormData', $FormData);
+        	
+        	$this->NavTitle = '新增配置';
+        	$this->display('addedit');
+        }
     }
 
     /**
@@ -133,27 +136,31 @@ class ShopController extends AdminController {
      */
     public function edit($id = 0) {
         //数据提交
-        if (IS_POST)
-            $this->update();
-        //页面数据
-        $info = M('Shop')->field(true)->find($id);
-        if (false === $info) {
-            $this->error('获取配置信息错误');
+        if (IS_POST){
+        	if (!Mobile_check(I('post.phone'), array(1,2,3,4))) {
+        		$this->error('请输入正确格式的用户登录手机号');
+        	}
+        	$this->update();
+        }else{
+        	//页面数据
+        	$info = M('Shop')->field(true)->find($id);
+        	if (false === $info) {
+        		$this->error('获取配置信息错误');
+        	}
+        	/* if(!empty($info['longitude']) && !empty($info['latitude'])){
+        	 $gcj02tobd09 		= gcj02tobd09($info['longitude'], $info['latitude']);
+        	 $info['longitude'] 	= $gcj02tobd09['longitude'];
+        	 $info['latitude'] 	= $gcj02tobd09['latitude'];
+        	 } */
+        	$this->assign('info', $info);
+        	
+        	//表单数据
+        	$FormData = $this->CustomerForm(0);
+        	$this->assign('FormData', $FormData);
+        	
+        	$this->NavTitle = '编辑配置';
+        	$this->display('addedit');
         }
-        /* if(!empty($info['longitude']) && !empty($info['latitude'])){
-        	$gcj02tobd09 		= gcj02tobd09($info['longitude'], $info['latitude']);
-        	$info['longitude'] 	= $gcj02tobd09['longitude'];
-        	$info['latitude'] 	= $gcj02tobd09['latitude'];
-        } */
-        $info['phone'] = M('user')->where(array('id'=>$info['uid']))->getField('phone');
-        $this->assign('info', $info);
-
-        //表单数据
-        $FormData = $this->CustomerForm(0);
-        $this->assign('FormData', $FormData);
-
-        $this->NavTitle = '编辑配置';
-        $this->display('addedit');
     }
 
     /**
@@ -328,6 +335,8 @@ class ShopController extends AdminController {
     protected function CustomerForm($index = 0) {
 
         $FormData[0] = array(
+        	array('fieldName' => '商家登录手机号', 'fieldValue' => 'phone', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商家登录手机号"'),
+        	array('fieldName' => '商家登录密码', 'fieldValue' => 'password', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商家登录密码"'),
         	array('fieldName' => '商家名称', 'fieldValue' => 'shop_name', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入商家名称"'),
         	array('fieldName' => '联系方式', 'fieldValue' => 'mobile', 'fieldType' => 'text', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'placeholder="请输入联系方式"'),
         	array('fieldName' => '商家封面', 'fieldValue' => 'face', 'fieldType' => 'image', 'isMust' => 1, 'fieldData' => array(), 'attrExtend' => 'data-table="avatar" data-field="pic" data-size=""'),

@@ -35,6 +35,8 @@ class ShopModel extends Model{
 	 * 				self::MODEL_BOTH或者3	:全部情况下验证(默认)
 	 * */
 	protected $_validate = array(
+		array('phone', 'require', '请输入商家登录手机号', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+		array('password', 'require', '请输入商家登录密码', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 		array('shop_name', 'require', '请输入商家名称', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 		array('mobile', 'require', '请输入联系方式', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 		array('face', 'require', '请上传商家封面', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
@@ -85,9 +87,21 @@ class ShopModel extends Model{
 		$this->data['latitude'] 	= $bd09togcj02['latitude']; */
 		/* 添加或更新数据 */
 		if(empty($data['id'])){
+			//判断手机号是否重复
+			$count = $this->where(array('phone'=>$data['phone']))->count();
+			if($count > 0){
+				$this->error = '该手机已经注册！';
+				return false;
+			}
 			$res = $this->add();
 			if(!$res) {$this->error = '新增失败！';return false;}
 		}else{
+			//判断手机号是否重复
+			$count = $this->where(array('phone'=>$data['phone'],'id'=>array('neq',$data['id'])))->count();
+			if($count > 0){
+				$this->error = '该手机已经注册！';
+				return false;
+			}
 			$res = $this->save();
 			if(false === $res) {$this->error = '更新失败！';return false;}
 		}
