@@ -105,9 +105,9 @@ class BusinessHelper extends BaseHelper{
 		}
 		$type 						= $Parame['type'];
 		if($type == 1){
-			$map['main.create_time']		= array('ELT',mktime(23,59,59,date('m'),date('d'),date('Y')));
+			$map['main.create_time']		= array('EGT',mktime(0,0,0,date('m'),date('d'),date('Y')));
 		}elseif($type == 2){
-			$map['main.create_time']		= array('GT',mktime(23,59,59,date('m'),date('d'),date('Y')));
+			$map['main.create_time']		= array('LT',mktime(0,0,0,date('m'),date('d'),date('Y')));
 		}
 		//排序
 		$order						= $MainAlias.'.id DESC';
