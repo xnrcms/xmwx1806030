@@ -104,14 +104,11 @@ class BusinessHelper extends BaseHelper{
 			$map['phone'] 			= array('like', '%'.$Parame['keyword'].'%');
 		}
 		$type 						= $Parame['type'];
-		/* if($type == 1){
-			$map['main.status']		= 1;
+		if($type == 1){
+			$map['main.create_time']		= array('ELT',mktime(23,59,59,date('m'),date('d'),date('Y')));
 		}elseif($type == 2){
-			$map['main.status']		= 2;
-		}elseif($type == 3){
-			$map['main.status']		= 3;
-		} */
-		
+			$map['main.create_time']		= array('GT',mktime(23,59,59,date('m'),date('d'),date('Y')));
+		}
 		//排序
 		$order						= $MainAlias.'.id DESC';
 		//检索字段
@@ -155,7 +152,8 @@ class BusinessHelper extends BaseHelper{
 				'description' => '您的订单已经到货,请到店来取',
 				'create_time' => NOW_TIME
 		));
-		if($res != false){
+		$res1 = M('order')->where(array('id'=>$id))->save(array('is_send'=>1));
+		if($res != false && $res1 != false){
 			return array('Code' =>'0','Msg'=>$this->Lang['100018']);
 		}
 		return array('Code' =>'100019','Msg'=>$this->Lang['100019']);
