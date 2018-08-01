@@ -85,7 +85,7 @@ class BusinessHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'order';
 		$MainAlias					= 'main';
-		$MainField					= array('id,order_no,status,total_money,create_time');
+		$MainField					= array('id,order_no,status,total_money,create_time,is_send');
 		
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
