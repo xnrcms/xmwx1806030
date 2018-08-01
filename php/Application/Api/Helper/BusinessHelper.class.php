@@ -141,15 +141,18 @@ class BusinessHelper extends BaseHelper{
 		if($id <= 0){
 			return array('Code' =>'101729','Msg'=>$this->Lang['101729']);
 		}
-		$uid = M('order')->where(array('id'=>$id))->getField('uid');
+		$order = M('order')->where(array('id'=>$id))->find();
+		$uid = $order['uid'];
+		$shopId = $order['shop_id'];
 		if(!$uid){
 			return array('Code' =>'1','Msg'=>'订单信息错误');
 		}
+		$shopName = M('shop')->where(array('id'=>$shopId))->getField('shop_name');
 		$res = M('message')->add(array(
 				'type' => 1,
 				'uid' => $uid,
 				'title' => '取货提醒',
-				'description' => '您的订单已经到货,请到店来取',
+				'description' => '您的订单已经到货,请到'.$shopName.'来取货',
 				'create_time' => NOW_TIME
 		));
 		$res1 = M('order')->where(array('id'=>$id))->save(array('is_send'=>1));
