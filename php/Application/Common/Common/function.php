@@ -1377,7 +1377,7 @@ function CheckSubstrs($substrs,$text){
  *手机号格式验证
  */
 function Mobile_check($mobile,$type = array()){
-	$res[1]	= preg_match('/^1(3[0-9]|5[0-35-9]|7[0-9]|8[0-9])\\d{8}$/', $mobile);//手机号码 移动|联通|电信
+	$res[1]	= preg_match('/^1(3[0-9]|5[0-35-9]|7[0-9]|8[0-9]|9[0-9])\\d{8}$/', $mobile);//手机号码 移动|联通|电信
 	$res[2]	= preg_match('/^1(34[0-8]|(3[5-9]|5[017-9]|8[0-9])\\d)\\d{7}$/', $mobile);//中国移动
 	$res[3]	= preg_match('/^1(3[0-2]|5[256]|8[56])\\d{8}$/', $mobile);//中国联通
 	$res[4]	= preg_match('/^1((33|53|8[09])[0-9]|349)\\d{7}$/', $mobile);//中国电信
