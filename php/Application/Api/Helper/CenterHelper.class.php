@@ -312,7 +312,7 @@ class CenterHelper extends BaseHelper{
 		$uid 			= intval($Parame['uid']);
 		//总数
 		$count      	= M('shop')->where(array('status'=>1))->count();
-		$Page       	= new \Think\Page($count,10);
+		$Page       	= new \Think\Page($count,300);
 		$message 		= M('shop')->where(array('status'=>1))->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 		$data = $row = array();
 		if(!empty($message)){
