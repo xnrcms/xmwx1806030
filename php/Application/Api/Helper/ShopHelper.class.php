@@ -127,7 +127,7 @@ class ShopHelper extends BaseHelper{
 		//获取数据
 		$MainTab					= 'shop';
 		$MainAlias					= 'main';
-		$MainField					= array('id,shop_name,face,longitude,latitude');
+		$MainField					= array('id,shop_name,face,longitude,latitude,address');
 		//主表模型
 		$MainModel 					= M($MainTab)->alias($MainAlias);
 		$RelationTab				= array();
