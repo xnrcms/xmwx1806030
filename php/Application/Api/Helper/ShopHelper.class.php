@@ -180,7 +180,7 @@ class ShopHelper extends BaseHelper{
 			}else{
 				array_multisort($row, SORT_ASC, $list);
 			}
-			$list = array_chunk($list, 10);
+			$list = array_chunk($list, 300);
 			$list = $list[$Parame['page']-1];
 		}
 		$data['list']			= empty($list) ? array() : $list;
