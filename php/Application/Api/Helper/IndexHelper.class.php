@@ -66,7 +66,7 @@ class IndexHelper extends BaseHelper{
 	 * 首页推荐3个商品
 	 */
 	private function getGoods(){
-		$goods = M('goods')->where(array('is_recommend'=>1, 'status'=>1))->order('create_time ASC')->limit('0,4')->select();
+		$goods = M('goods')->where(array('is_recommend'=>1, 'status'=>1))->order('goodssorts DESC,create_time ASC')->limit('0,4')->select();
 		return $goods = empty($goods) ? '' : $goods;
 	}
 	
