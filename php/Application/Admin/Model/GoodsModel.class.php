@@ -58,7 +58,7 @@ class GoodsModel extends Model{
 	protected $_auto = array(
 	array('create_time', NOW_TIME, self::MODEL_INSERT),
 	array('update_time', NOW_TIME, self::MODEL_UPDATE),
-	array('status', '1', self::MODEL_INSERT, 'string'),
+	//array('status', '1', self::MODEL_INSERT, 'string'),
 	array('uid', 'is_login', self::MODEL_INSERT, 'function'),
 	);
 	/**
