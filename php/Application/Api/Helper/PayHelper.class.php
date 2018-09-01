@@ -111,7 +111,7 @@ file_put_contents('./Data/5.txt',$returnXml);
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
 
 
-			file_put_contents('./Data/1.txt',var_export($notify));
+			file_put_contents('./Data/1.txt',var_export($notify->data));
 
 
 			if ($notify->data["return_code"] == "FAIL") {
