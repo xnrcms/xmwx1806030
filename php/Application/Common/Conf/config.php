@@ -78,7 +78,7 @@ return array(
 			'APPSECRET'		=> 'dfbb26ca885383ec407e4255ca6ecc98',
 	), */
 	'GZH'=>array(
-			'APPID' 		=> 'wx2c05d2312609a170',
-			'APPSECRET'		=> 'ed8947c764fd9ae9b1a7c1572827e4a3',
+			'APPID' 		=> 'wx484feb08028f9fa0',
+			'APPSECRET'		=> '403da36622b0e2364f5cd2b56c6ba639',
 	),
 );
