@@ -84,11 +84,6 @@ class PayHelper extends BaseHelper{
 		$xml 	= $GLOBALS['HTTP_RAW_POST_DATA'];
 		$notify->saveData($xml);
 
-
-
-file_put_contents('./Data/2.txt',var_export($notify->data,true));
-
-
 		if($notify->checkSign($this->cfg['wx_key']) == FALSE){
 			//logit('签名失败：FAIL');
 			$notify->setReturnParameter("return_code","FAIL");//返回状态码
@@ -100,15 +95,8 @@ file_put_contents('./Data/2.txt',var_export($notify->data,true));
 		echo $returnXml;
 		$temp = $notify->checkSign($this->cfg['wx_key']);
 
-file_put_contents('./Data/5.txt',$returnXml);
-
 		//==商户根据实际情况设置相应的处理流程=======
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
-
-
-			file_put_contents('./Data/1.txt',var_export($notify->data,true));
-
-
 			if ($notify->data["return_code"] == "FAIL") {
 				//logit("【通信出错】:\n".$xml."\n");
 			}
