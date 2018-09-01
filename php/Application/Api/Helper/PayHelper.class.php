@@ -84,7 +84,7 @@ class PayHelper extends BaseHelper{
 		$xml 	= $GLOBALS['HTTP_RAW_POST_DATA'];
 		$notify->saveData($xml);
 
-file_put_contents('./Data/2.txt',var_export($notify->data));
+file_put_contents('./Data/2.txt',var_export($GLOBALS['HTTP_RAW_POST_DATA']));
 
 
 		if($notify->checkSign($this->cfg['wx_key']) == FALSE){
