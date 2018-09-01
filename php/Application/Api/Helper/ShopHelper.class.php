@@ -234,7 +234,7 @@ class ShopHelper extends BaseHelper{
 	private function goodsList($Parame){
 	
 		$page						= $Parame['page'];
-		$limit						= 10;
+		$limit						= 500;
 		//获取数据
 		$MainTab					= 'goods';
 		$MainAlias					= 'main';
