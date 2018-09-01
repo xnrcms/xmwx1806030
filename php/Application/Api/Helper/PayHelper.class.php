@@ -90,15 +90,10 @@ file_put_contents('./Data/2.txt',var_export($notify->data,true));
 
 
 		if($notify->checkSign($this->cfg['wx_key']) == FALSE){
-
-file_put_contents('./Data/3.txt',1);
-
 			//logit('签名失败：FAIL');
 			$notify->setReturnParameter("return_code","FAIL");//返回状态码
 			$notify->setReturnParameter("return_msg","签名失败");//返回信息
 		}else{
-file_put_contents('./Data/4.txt',2);
-
 			$notify->setReturnParameter("return_code","SUCCESS");//设置返回码
 		}
 		$returnXml = $notify->returnXml();
@@ -111,7 +106,7 @@ file_put_contents('./Data/5.txt',$returnXml);
 		if($notify->checkSign($this->cfg['wx_key']) == TRUE){
 
 
-			file_put_contents('./Data/1.txt',var_export($notify->data));
+			file_put_contents('./Data/1.txt',var_export($notify->data,true));
 
 
 			if ($notify->data["return_code"] == "FAIL") {
