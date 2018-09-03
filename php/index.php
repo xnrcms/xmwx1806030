@@ -1,10 +1,4 @@
 <?php
-function p($a){
-	header("Content-type: text/html; charset=utf-8");
-	echo "<pre>";
-	print_r($a);
-	echo "</pre>";
-}
 if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 /**
  * 系统调试设置
