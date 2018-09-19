@@ -139,12 +139,12 @@ class ShopHelper extends BaseHelper{
 		$map 						= array();
 		$map['main.status']			= 1;
 		//定位所在的市
-		if($Parame['area_string']){
+		/* if($Parame['area_string']){
 			$area 					= M('area')->where(array('area'=>$Parame['area_string']))->getField('id');
 			if($area){
 				$map['area']		= $area;
 			}
-		}
+		} */
 		//筛选市所在的区
 		if($Parame['county']){
 			$map['county']			= $Parame['county'];
